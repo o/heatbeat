@@ -14,15 +14,19 @@ namespace Rosso\Command;
  * @license    http://www.opensource.org/licenses/bsd-license.php BSD License
  * @link       http://github.com/import/rosso
  */
-
 use \Rosso\Command;
 
-/**
-* Dependencies of command
-* Arguments : filename
-*
-*/
-class Shared extends Command
-{
+abstract class Shared extends Command {
+	const SEPERATOR = ':';
+	const EXECUTABLE = 'rrdtool';
+
+	public function __construct() {
+		$this->setCommand(self::EXECUTABLE);
+		$this->setSubCommand(self::SUBCOMMAND);
+	}
+
+	public function setFilename($filename) {
+		$this->addArgument($filename);
+	}
 
 }
