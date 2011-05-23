@@ -3,9 +3,9 @@
 namespace Rosso\Command;
 
 /**
- * Graph
+ * Shared
  *
- * Implementation of graph command
+ * Common methods for commands
  *
  * @package    Rosso
  * @subpackage Rosso\Command
