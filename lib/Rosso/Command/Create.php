@@ -23,6 +23,7 @@ namespace Rosso\Command;
  */
 class Create extends Shared {
 	const PARAMETER_STEP = 'step';
+	const SUBCOMMAND = 'create';
 
 	public function setStep($step = 300) {
 		$this->setOption(self::PARAMETER_STEP, $step);

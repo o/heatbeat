@@ -14,13 +14,31 @@ namespace Rosso\Command;
  * @license    http://www.opensource.org/licenses/bsd-license.php BSD License
  * @link       http://github.com/import/rosso
  */
+class Update extends Shared {
+	const SUBCOMMAND = 'update';
 
-/**
-* Dependencies of command
-* Arguments : filename, time and values
-*
-*/
-class Update extends Shared
-{
+	private $time;
+	private $values;
+
+	public function setTime($time = 'N') {
+		$this->time = $time;
+	}
+
+	public function setValues(array $values) {
+		$this->values = \implode(self::SEPERATOR, $values);
+	}
+
+	public function getTime() {
+		return $this->time;
+	}
+
+	public function getValues() {
+		return $this->values;
+	}
+
+	public function execute() {
+		$this->addArgument($this->getTime() . self::SEPERATOR . $this->getValues());
+		return parent::execute();
+	}
 
 }

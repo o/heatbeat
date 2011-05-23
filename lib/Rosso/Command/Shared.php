@@ -16,7 +16,14 @@ namespace Rosso\Command;
  */
 use \Rosso\Command;
 
-class Shared extends Command {
+abstract class Shared extends Command {
+	const SEPERATOR = ':';
+	const EXECUTABLE = 'rrdtool';
+
+	public function __construct() {
+		$this->setCommand(self::EXECUTABLE);
+		$this->setSubCommand(self::SUBCOMMAND);
+	}
 
 	public function setFilename($filename) {
 		$this->addArgument($filename);
