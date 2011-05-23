@@ -139,7 +139,11 @@ abstract class Command {
     }
 
     public function execute() {
-        return \shell_exec($this->prepare());
+        \exec($this->prepare(), $output, $return_var);
+        if ($return_var > 0) {
+            throw new \RuntimeException(implode(PHP_EOL, $output), $return_var);
+        }
+        return $output;
     }
 
 }
