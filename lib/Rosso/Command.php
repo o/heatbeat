@@ -143,7 +143,7 @@ abstract class Command {
         if ($return_var > 0) {
             throw new \RuntimeException(implode(PHP_EOL, $output), $return_var);
         }
-        return $output;
+        return implode(PHP_EOL, $output);
     }
 
 }
