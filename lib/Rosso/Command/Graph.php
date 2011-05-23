@@ -22,6 +22,7 @@ class Graph extends Shared {
 	const PARAMETER_VERTICAL_LABEL = 'vertical-label';
 	const PARAMETER_LOWER_LIMIT = 'lower-limit';
 	const PARAMETER_UPPER_LIMIT = 'upper-limit';
+	const PARAMETER_BASE = 'base';
 
 	public function setGraphFilename($graphFilename) {
 		$this->addArgument($graphFilename);
@@ -45,6 +46,10 @@ class Graph extends Shared {
 
 	public function setUpperlimit($upperlimit) {
 		$this->setOption(self::PARAMETER_UPPER_LIMIT, $upperlimit);
+	}
+
+	public function setBase($base) {
+		$this->setOption(self::PARAMETER_BASE, $base);
 	}
 
 	public function setDefs(array $defs) {
