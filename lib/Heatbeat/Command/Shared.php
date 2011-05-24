@@ -17,16 +17,16 @@ namespace Heatbeat\Command;
 use \Heatbeat\Command;
 
 abstract class Shared extends Command {
-	const SEPERATOR = ':';
-	const EXECUTABLE = 'rrdtool';
+    const SEPERATOR = ':';
+    const EXECUTABLE = 'rrdtool';
 
-	public function __construct() {
-		$this->setCommand(self::EXECUTABLE);
-		$this->setSubCommand(self::SUBCOMMAND);
-	}
+    public function __construct() {
+        $this->setCommand(self::EXECUTABLE);
+        $this->setSubCommand(self::SUBCOMMAND);
+    }
 
-	public function setFilename($filename) {
-		$this->addArgument($filename);
-	}
+    public function setFilename($filename) {
+        $this->addArgument($filename);
+    }
 
 }

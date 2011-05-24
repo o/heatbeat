@@ -1,6 +1,5 @@
 #!/usr/bin/env php
 <?php
-
 require '../lib/Heatbeat/Autoloader.php';
 \Heatbeat\Autoloader::getInstance();
 $cli = new \Heatbeat\Cli;

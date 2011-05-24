@@ -14,16 +14,16 @@ namespace Heatbeat;
  * @link       http://github.com/import/heatbeat
  */
 use Symfony\Component\Console\Application,
-	Application\Cli\Command;
+    Application\Cli\Command;
 
 class Cli extends Application {
 
-	public function __construct() {
-		parent::__construct('Welcome to Heatbeat Graphing Tool CLI Interface', '1.0');
+    public function __construct() {
+        parent::__construct('Welcome to Heatbeat Graphing Tool CLI Interface', '1.0');
 
-		$this->addCommands(array(
-			new \Heatbeat\Cli\Update()
-		));
-	}
+        $this->addCommands(array(
+            new \Heatbeat\Cli\Update()
+        ));
+    }
 
 }

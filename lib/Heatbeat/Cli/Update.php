@@ -14,25 +14,25 @@ namespace Heatbeat\Cli;
  * @link       http://github.com/import/heatbeat
  */
 use Symfony\Component\Console\Input\InputArgument,
-	Symfony\Component\Console\Input\InputOption,
-	Symfony\Component\Console,
-	Symfony\Component\Console\Input\InputInterface,
-	Symfony\Component\Console\Output\OutputInterface;
+    Symfony\Component\Console\Input\InputOption,
+    Symfony\Component\Console,
+    Symfony\Component\Console\Input\InputInterface,
+    Symfony\Component\Console\Output\OutputInterface;
 
 class Update extends Console\Command\Command {
 
-	public function configure() {
-		$this
-				->setName('update')
-				->setDescription('Updates all RRD files')
-				->setDefinition(array(
-					new InputOption('verbose', 'v', InputOption::VALUE_OPTIONAL, 'Prints verbose information about update process')
-				));
-	}
+    public function configure() {
+        $this
+                ->setName('update')
+                ->setDescription('Updates all RRD files')
+                ->setDefinition(array(
+                    new InputOption('verbose', 'v', InputOption::VALUE_OPTIONAL, 'Prints verbose information about update process')
+                ));
+    }
 
-	protected function execute(InputInterface $input, OutputInterface $output) {
-		// dummy
-		$output->write('All of RRDs updated');
-	}
+    protected function execute(InputInterface $input, OutputInterface $output) {
+        // dummy
+        $output->write('All of RRDs updated');
+    }
 
 }
