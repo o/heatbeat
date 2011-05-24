@@ -1,17 +1,17 @@
 <?php
 
-namespace Rosso;
+namespace Heatbeat;
 
 /**
  * Autoloader
  *
- * Rosso autoloader
+ * Heatbeat autoloader
  *
- * @package    Rosso
+ * @package    Heatbeat
  * @author     Osman Üngür <osmanungur@gmail.com>
  * @copyright  2011 Osman Üngür
  * @license    http://www.opensource.org/licenses/bsd-license.php BSD License
- * @link       http://github.com/import/rosso
+ * @link       http://github.com/import/heatbeat
  */
 use \Symfony\Component\ClassLoader\UniversalClassLoader;
 
@@ -19,6 +19,7 @@ class Autoloader {
     const FOLDER_TEMPLATE = 'template';
     const FOLDER_EXTERNAL = 'external';
     const FOLDER_LIBRARY = 'lib';
+    const FOLDER_RRD = 'rrd';
 
     private static $instance;
     private $loader;
@@ -42,16 +43,17 @@ class Autoloader {
             'root' => $rootPath,
             'lib' => $rootPath . \DIRECTORY_SEPARATOR . self::FOLDER_LIBRARY,
             'template' => $rootPath . \DIRECTORY_SEPARATOR . self::FOLDER_TEMPLATE,
-            'external' => $rootPath . \DIRECTORY_SEPARATOR . self::FOLDER_EXTERNAL
+            'external' => $rootPath . \DIRECTORY_SEPARATOR . self::FOLDER_EXTERNAL,
+            'rrd' => $rootPath . \DIRECTORY_SEPARATOR . self::FOLDER_RRD
         );
     }
 
     private function register() {
-        require_once 'lib/Symfony/Component/ClassLoader/UniversalClassLoader.php';
+        require_once $this->getPath('lib') . '/Symfony/Component/ClassLoader/UniversalClassLoader.php';
         $loader = new UniversalClassLoader();
         $loader->registerNamespaces(array(
             'Symfony\Component' => $this->getPath('lib'),
-            'Rosso' => $this->getPath('lib'),
+            'Heatbeat' => $this->getPath('lib'),
                 )
         );
 

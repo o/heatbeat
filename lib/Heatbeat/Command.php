@@ -1,17 +1,17 @@
 <?php
 
-namespace Rosso;
+namespace Heatbeat;
 
 /**
  * Command
  *
  * Abstract class for interacting with command line
  *
- * @package    Rosso
+ * @package    Heatbeat
  * @author     Osman Üngür <osmanungur@gmail.com>
  * @copyright  2011 Osman Üngür
  * @license    http://www.opensource.org/licenses/bsd-license.php BSD License
- * @link       http://github.com/import/rosso
+ * @link       http://github.com/import/heatbeat
  */
 abstract class Command {
     const LONG_OPTION = '--';
@@ -139,7 +139,11 @@ abstract class Command {
     }
 
     public function execute() {
-        return \shell_exec($this->prepare());
+        \exec($this->prepare(), $output, $return_var);
+        if ($return_var > 0) {
+            throw new \RuntimeException(implode(PHP_EOL, $output), $return_var);
+        }
+        return implode(PHP_EOL, $output);
     }
 
 }
