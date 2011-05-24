@@ -49,7 +49,7 @@ class Autoloader {
     }
 
     private function register() {
-        require_once 'lib/Symfony/Component/ClassLoader/UniversalClassLoader.php';
+        require_once $this->getPath('lib') . '/Symfony/Component/ClassLoader/UniversalClassLoader.php';
         $loader = new UniversalClassLoader();
         $loader->registerNamespaces(array(
             'Symfony\Component' => $this->getPath('lib'),
