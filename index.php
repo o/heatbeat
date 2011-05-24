@@ -1,3 +1,3 @@
 <?php
-require 'lib/Rosso/Autoloader.php';
-var_dump(\Rosso\Autoloader::getInstance());
+require 'lib/Heatbeat/Autoloader.php';
+var_dump(\Heatbeat\Autoloader::getInstance());

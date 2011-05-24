@@ -1,17 +1,17 @@
 <?php
 
-namespace Rosso;
+namespace Heatbeat;
 
 /**
  * Autoloader
  *
- * Rosso autoloader
+ * Heatbeat autoloader
  *
- * @package    Rosso
+ * @package    Heatbeat
  * @author     Osman Üngür <osmanungur@gmail.com>
  * @copyright  2011 Osman Üngür
  * @license    http://www.opensource.org/licenses/bsd-license.php BSD License
- * @link       http://github.com/import/rosso
+ * @link       http://github.com/import/heatbeat
  */
 use \Symfony\Component\ClassLoader\UniversalClassLoader;
 
@@ -53,7 +53,7 @@ class Autoloader {
         $loader = new UniversalClassLoader();
         $loader->registerNamespaces(array(
             'Symfony\Component' => $this->getPath('lib'),
-            'Rosso' => $this->getPath('lib'),
+            'Heatbeat' => $this->getPath('lib'),
                 )
         );
 

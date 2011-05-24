@@ -1,26 +1,20 @@
 <?php
 
-namespace Rosso\Command;
+namespace Heatbeat\Command;
 
 /**
  * Create
  *
  * Implementation of create command
  *
- * @package    Rosso
- * @subpackage Rosso\Command
+ * @package    Heatbeat
+ * @subpackage Heatbeat\Command
  * @author     Osman Üngür <osmanungur@gmail.com>
  * @copyright  2011 Osman Üngür
  * @license    http://www.opensource.org/licenses/bsd-license.php BSD License
- * @link       http://github.com/import/rosso
+ * @link       http://github.com/import/heatbeat
  */
 
-/**
- * Dependencies of command
- * Arguments : filename, --step and --start argument (oh also --no-overwrite)
- * Objects : Datastore and RRA arguments
- *
- */
 class Create extends Shared {
 	const PARAMETER_STEP = 'step';
 	const SUBCOMMAND = 'create';
