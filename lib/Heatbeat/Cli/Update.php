@@ -24,10 +24,7 @@ class Update extends Console\Command\Command {
     public function configure() {
         $this
                 ->setName('update')
-                ->setDescription('Updates all RRD files')
-                ->setDefinition(array(
-                    new InputOption('verbose', 'v', InputOption::VALUE_OPTIONAL, 'Prints verbose information about update process')
-                ));
+                ->setDescription('Updates all RRD files');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output) {
