@@ -15,30 +15,30 @@ namespace Heatbeat\Command;
  * @link       http://github.com/import/heatbeat
  */
 class Update extends Shared {
-	const SUBCOMMAND = 'update';
+    const SUBCOMMAND = 'update';
 
-	private $time;
-	private $values;
+    private $time;
+    private $values;
 
-	public function setTime($time = 'N') {
-		$this->time = $time;
-	}
+    public function setTime($time = 'N') {
+        $this->time = $time;
+    }
 
-	public function setValues(array $values) {
-		$this->values = \implode(self::SEPERATOR, $values);
-	}
+    public function setValues(array $values) {
+        $this->values = \implode(self::SEPERATOR, $values);
+    }
 
-	public function getTime() {
-		return $this->time;
-	}
+    public function getTime() {
+        return $this->time;
+    }
 
-	public function getValues() {
-		return $this->values;
-	}
+    public function getValues() {
+        return $this->values;
+    }
 
-	public function execute() {
-		$this->addArgument($this->getTime() . self::SEPERATOR . $this->getValues());
-		return parent::execute();
-	}
+    public function execute() {
+        $this->addArgument($this->getTime() . self::SEPERATOR . $this->getValues());
+        return parent::execute();
+    }
 
 }

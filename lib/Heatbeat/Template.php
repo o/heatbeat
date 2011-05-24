@@ -17,14 +17,12 @@ use Symfony\Component\Yaml\Yaml;
 
 class Template {
 
-	private $parser;
-	
-	function __construct() {
-		$this->parser = new Yaml();
-	}
+    private $parser;
 
-	
-	
+    function __construct() {
+        $this->parser = new Yaml();
+    }
+
 }
 
 ?>
