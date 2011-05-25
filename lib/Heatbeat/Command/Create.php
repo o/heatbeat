@@ -49,6 +49,11 @@ class Create extends Shared {
         throw new \InvalidArgumentException("You must provide an integer for step argument");
     }
 
+    /**
+     *
+     * @param array $datastores
+     * @return bool 
+     */
     public function setDatastores(array $datastores) {
         foreach ($datastores as $datastore) {
             $this->addArgument($datastore);
@@ -56,7 +61,12 @@ class Create extends Shared {
         return true;
     }
 
-    public function setRras($rras) {
+    /**
+     *
+     * @param array  $rras
+     * @return bool 
+     */
+    public function setRras(array $rras) {
         foreach ($rras as $rra) {
             $this->addArgument($rra);
         }
