@@ -1,3 +1,6 @@
 <?php
+
+namespace Heatbeat;
+
 require 'lib/Heatbeat/Autoloader.php';
-\Heatbeat\Autoloader::getInstance();
+Autoloader::getInstance();
