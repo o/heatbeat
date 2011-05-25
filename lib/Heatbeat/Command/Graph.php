@@ -22,6 +22,7 @@
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  * @link        http://github.com/import/heatbeat
  */
+
 namespace Heatbeat\Command;
 
 /**
@@ -31,9 +32,8 @@ namespace Heatbeat\Command;
  * @package     Heatbeat\Command
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-
 class Graph extends Shared {
-    const SUBCOMMAND = 'graph';
+    protected $subCommand = 'graph';
 
     const PARAMETER_START = 'start';
     const PARAMETER_TITLE = 'title';

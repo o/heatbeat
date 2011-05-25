@@ -32,14 +32,13 @@ namespace Heatbeat\Command;
  * @package     Heatbeat\Command
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-
 class Update extends Shared {
-    const SUBCOMMAND = 'update';
 
+    protected $subCommand = 'update';
     private $time;
     private $values;
 
-    public function setTime($time = 'N') {
+    public function setTime($time) {
         $this->time = $time;
     }
 

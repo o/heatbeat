@@ -40,7 +40,7 @@ abstract class Shared extends Command {
 
     public function __construct() {
         $this->setCommand(self::EXECUTABLE);
-        $this->setSubCommand(self::SUBCOMMAND);
+        $this->setSubCommand($this->subCommand);
     }
 
     public function setFilename($filename) {

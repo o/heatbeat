@@ -22,6 +22,7 @@
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  * @link        http://github.com/import/heatbeat
  */
+
 namespace Heatbeat\Command;
 
 /**
@@ -33,22 +34,33 @@ namespace Heatbeat\Command;
  */
 class Create extends Shared {
     const PARAMETER_STEP = 'step';
-    const SUBCOMMAND = 'create';
+    protected $subCommand = 'create';
 
-    public function setStep($step = 300) {
-        $this->setOption(self::PARAMETER_STEP, $step);
+    /**
+     *
+     * @param int $step
+     * @return bool | InvalidArgumentException 
+     */
+    public function setStep($step) {
+        if (is_int($step)) {
+            $this->setOption(self::PARAMETER_STEP, $step);
+            return true;
+        }
+        throw new \InvalidArgumentException("You must provide an integer for step argument");
     }
 
     public function setDatastores(array $datastores) {
         foreach ($datastores as $datastore) {
             $this->addArgument($datastore);
         }
+        return true;
     }
 
     public function setRras($rras) {
         foreach ($rras as $rra) {
             $this->addArgument($rra);
         }
+        return true;
     }
 
 }
