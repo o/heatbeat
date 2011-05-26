@@ -35,28 +35,19 @@ namespace Heatbeat\Command;
 class Update extends Shared {
 
     protected $subCommand = 'update';
-    private $time;
-    private $values;
 
-    public function setTime($time) {
-        $this->time = $time;
+    public function setValues($time, array $values) {
+        $this->addArgument($this->getRoundedTime($time) . self::SEPERATOR . \implode(self::SEPERATOR, $values));
     }
 
-    public function setValues(array $values) {
-        $this->values = \implode(self::SEPERATOR, $values);
-    }
-
-    public function getTime() {
-        return $this->time;
-    }
-
-    public function getValues() {
-        return $this->values;
-    }
-
-    public function execute() {
-        $this->addArgument($this->getTime() . self::SEPERATOR . $this->getValues());
-        return parent::execute();
+    /**
+     * Rounds timestamp to the nearest minute 
+     *
+     * @param int $time
+     * @return int 
+     */
+    private function getRoundedTime() {
+        return $time - ($time % 60);
     }
 
 }
