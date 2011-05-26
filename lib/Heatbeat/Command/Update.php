@@ -46,7 +46,7 @@ class Update extends Shared {
      * @param int $time
      * @return int 
      */
-    private function getRoundedTime() {
+    private function getRoundedTime($time) {
         return $time - ($time % 60);
     }
 
