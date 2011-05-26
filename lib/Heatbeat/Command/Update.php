@@ -37,7 +37,11 @@ class Update extends Shared {
     protected $subCommand = 'update';
 
     public function setValues($time, array $values) {
+        if (!is_int($time)) {
+            $time = strtotime($time);
+        }
         $this->addArgument($this->getRoundedTime($time) . self::SEPERATOR . \implode(self::SEPERATOR, $values));
+        return true;
     }
 
     /**
