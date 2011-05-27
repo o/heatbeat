@@ -1,6 +1,6 @@
 <?php
 
-namespace Heatbeat\Command;
+namespace Heatbeat\Command\RRDTool;
 
 /**
  * Test class for Create.
