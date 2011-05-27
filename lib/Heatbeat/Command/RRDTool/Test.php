@@ -16,42 +16,48 @@
  * limitations under the License. 
  *
  * @category    Heatbeat
- * @package     Heatbeat\Command
+ * @package     Heatbeat\Command\RRDTool
  * @author      Osman Ungur <osmanungur@gmail.com>
  * @copyright   2011 Osman Ungur
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  * @link        http://github.com/import/heatbeat
  */
 
-namespace Heatbeat\Command;
+namespace Heatbeat\Command\RRDTool;
 
 /**
- * Implementation for RRDTool update command
+ * Test command for unit tests
  *
  * @category    Heatbeat
- * @package     Heatbeat\Command
+ * @package     Heatbeat\Command\RRDTool
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class Update extends Shared {
+class Test extends Shared {
 
-    protected $subCommand = 'update';
+    protected $commandName = 'test';
 
-    public function setValues($time, array $values) {
-        if (!is_int($time)) {
-            $time = strtotime($time);
-        }
-        $this->addArgument($this->getRoundedTime($time) . self::SEPERATOR . \implode(self::SEPERATOR, $values));
-        return true;
+    public function setFooFlag() {
+        $this->setOption('foo');
     }
 
-    /**
-     * Rounds timestamp to the nearest minute 
-     *
-     * @param int $time
-     * @return int 
-     */
-    private function getRoundedTime($time) {
-        return $time - ($time % 60);
+    public function setBarValue($bar) {
+        $this->setOption('bar', $bar);
+    }
+
+    public function overrideOptions(array $options) {
+        $this->setOptions($options);
+    }
+
+    public function addAnArgument($value) {
+        $this->addArgument($value);
+    }
+
+    public function overrideCommand($command) {
+        $this->setCommand($command);
+    }
+
+    public function overrideSubcommand($subCommand) {
+        $this->setSubCommand($subCommand);
     }
 
 }

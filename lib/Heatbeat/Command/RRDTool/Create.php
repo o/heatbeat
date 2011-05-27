@@ -16,20 +16,20 @@
  * limitations under the License. 
  *
  * @category    Heatbeat
- * @package     Heatbeat\Command
+ * @package     Heatbeat\Command\RRDTool
  * @author      Osman Ungur <osmanungur@gmail.com>
  * @copyright   2011 Osman Ungur
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  * @link        http://github.com/import/heatbeat
  */
 
-namespace Heatbeat\Command;
+namespace Heatbeat\Command\RRDTool;
 
 /**
  * Implementation for RRDTool create command
  *
  * @category    Heatbeat
- * @package     Heatbeat\Command
+ * @package     Heatbeat\Command\RRDTool
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
 class Create extends Shared {

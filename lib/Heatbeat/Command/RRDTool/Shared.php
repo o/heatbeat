@@ -16,48 +16,35 @@
  * limitations under the License. 
  *
  * @category    Heatbeat
- * @package     Heatbeat\Command
+ * @package     Heatbeat\Command\RRDTool
  * @author      Osman Ungur <osmanungur@gmail.com>
  * @copyright   2011 Osman Ungur
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  * @link        http://github.com/import/heatbeat
  */
 
-namespace Heatbeat\Command;
+namespace Heatbeat\Command\RRDTool;
+
+use \Heatbeat\Command;
 
 /**
- * Test command for unit tests
+ * Common methods for rrdtool commands
  *
  * @category    Heatbeat
- * @package     Heatbeat\Command
+ * @package     Heatbeat\Command\RRDTool
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class Test extends Shared {
+abstract class Shared extends Command {
+    const SEPERATOR = ':';
+    const EXECUTABLE = 'rrdtool';
 
-    protected $commandName = 'test';
-
-    public function setFooFlag() {
-        $this->setOption('foo');
+    public function __construct() {
+        $this->setCommand(self::EXECUTABLE);
+        $this->setSubCommand($this->subCommand);
     }
 
-    public function setBarValue($bar) {
-        $this->setOption('bar', $bar);
-    }
-
-    public function overrideOptions(array $options) {
-        $this->setOptions($options);
-    }
-
-    public function addAnArgument($value) {
-        $this->addArgument($value);
-    }
-
-    public function overrideCommand($command) {
-        $this->setCommand($command);
-    }
-
-    public function overrideSubcommand($subCommand) {
-        $this->setSubCommand($subCommand);
+    public function setFilename($filename) {
+        $this->addArgument($filename);
     }
 
 }
