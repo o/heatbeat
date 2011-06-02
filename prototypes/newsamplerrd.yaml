@@ -1,52 +1,70 @@
---- # Name of template
+# Name of template
 name :
---- # Version of template
+# Version of template
 version :
---- # Name of the source for gathering data
+# Name of the source for gathering data
 source-name :
 rrd:
-    --- # Specifies the base interval in seconds with which data will be fed into the RRD, defaults to 300
+    # Specifies the base interval in seconds with which data will be fed into the RRD, defaults to 300
     step:
     datastores:
-        --- # Name you will use to reference this particular data source from an RRD. Must be 1 to 19 and [a-zA-Z0-9_]. 
+        # Name you will use to reference this particular data source from an RRD. Must be 1 to 19 and [a-zA-Z0-9_]. 
         - name:   
-          --- # Data Source Type, allowed types : GAUGE, COUNTER, DERIVE, and ABSOLUTE
+          # Data Source Type, allowed types : GAUGE, COUNTER, DERIVE, and ABSOLUTE
           type:
-          --- # Maximum acceptable interval between samples/updates
+          # Maximum acceptable interval between samples/updates
           heartbeat:
-          --- # Expected range values for data supplied by a data source.
+          # Expected range values for data supplied by a data source.
           min:  
           max: 
     rras:
-        --- # Consolidation function for RRA archives, allowed values : AVERAGE, MIN, MAX, LAST
+        # Consolidation function for RRA archives, allowed values : AVERAGE, MIN, MAX, LAST
         - cf:
-          --- # XFiles factor, it ranges from 0 to 1. 
+          # XFiles factor, it ranges from 0 to 1. 
           xff:
-          --- # How many of these primary data points are used to build a consolidated data point which then goes into the archive.
+          # How many of these primary data points are used to build a consolidated data point which then goes into the archive.
           steps:
-          --- # how many generations of data values are kept in an RRA.
+          # how many generations of data values are kept in an RRA.
           rows: 
 graphs :
-    name :
-    label :
-    base :
-    items :
-        - type :
-          name :
-          input :
-          color :
-          legend :      
-    gprints :
-        - definition-name :
-          format:
-    definitions:
-      defs:
-          - name:
-            datastore-name:
-            cf:
-      cdefs:
-          - name:
-            rpn:
-      vdefs:
-          - name:
-            rpn:
+    # Name of graph, it will be show in top of graph
+    - name :
+      # Vertical label of graph
+      label :
+      # Base multiplier for values. For graphing memory this should be set to 1024, for other common things it can be 1000
+      base :
+      # Graph elements
+      items :
+          # Type of element, allowed values are AREA and LINE[width]
+          - type :
+            # Name of definition for use as value
+            definition-name:
+            # Source output name
+            input :
+            # Hex color value
+            color :
+            # String is printed in the legend section
+            legend :      
+      gprints :
+          # Name of definition for use as value
+          - definition-name :
+            # Format of string
+            format:
+      definitions:
+        defs:
+            # Name of definition 
+            - name:
+              # Base data store name
+              datastore-name:
+              # Consolidation function for RRA archives, allowed values : AVERAGE, MIN, MAX, LAST    
+              cf:
+        cdefs:
+            # Name of defitinition
+            - name:
+              # RPN expression for calculating result value
+              rpn:
+        vdefs:
+            # Name of definition
+            - name:
+              # RPN expression for calculating result value  
+              rpn:
