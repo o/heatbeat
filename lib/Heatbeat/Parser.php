@@ -42,8 +42,9 @@ abstract class Parser {
 
     CONST YAML_EXT = '.yml';
 
-    public function __construct() {
+    protected function __construct() {
         $this->setParser(new Yaml());
+        $this->setFilePath();
     }
 
     private function getParser() {
@@ -72,7 +73,7 @@ abstract class Parser {
         return $this->getFilepath() . \DIRECTORY_SEPARATOR . $this->getFilename() . self::YAML_EXT;
     }
 
-    public function parse() {
+    protected function parse() {
         return $this->getParser()->load($this->getFullPath());
     }
 
