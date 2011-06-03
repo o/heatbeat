@@ -33,6 +33,9 @@ graphs :
       label :
       # Base multiplier for values. For graphing memory this should be set to 1024, for other common things it can be 1000
       base :
+      # Lower an upper limit for graphs, allowed values auto or [0-9]
+      lower : 
+      upper : 
       # Graph elements
       items :
           # Type of element, allowed values are AREA and LINE[width]
