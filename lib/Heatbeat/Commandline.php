@@ -16,39 +16,33 @@
  * limitations under the License. 
  *
  * @category    Heatbeat
- * @package     Heatbeat\Cli
+ * @package     Heatbeat
  * @author      Osman Ungur <osmanungur@gmail.com>
  * @copyright   2011 Osman Ungur
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  * @link        http://github.com/import/heatbeat
  */
 
-namespace Heatbeat\Cli;
+namespace Heatbeat;
 
-use Symfony\Component\Console\Input\InputArgument,
-    Symfony\Component\Console\Input\InputOption,
-    Symfony\Component\Console,
-    Symfony\Component\Console\Input\InputInterface,
-    Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Application,
+    Application\Cli\Command;
 
 /**
- * Callback for CLI Tool update command
+ * Application class for Heatbeat CLI interface.
  *
  * @category    Heatbeat
- * @package     Heatbeat\Cli
+ * @package     Heatbeat
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class Update extends Console\Command\Command {
+class Commandline extends Application {
 
-    public function configure() {
-        $this
-                ->setName('update')
-                ->setDescription('Updates all RRD files');
-    }
+    public function __construct() {
+        parent::__construct('Welcome to Heatbeat Graphing Tool', '1.0');
 
-    protected function execute(InputInterface $input, OutputInterface $output) {
-        // dummy
-        $output->write('All of RRDs updated');
+        $this->addCommands(array(
+            new \Heatbeat\Commandline\Update()
+        ));
     }
 
 }
