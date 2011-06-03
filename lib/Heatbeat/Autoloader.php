@@ -35,9 +35,10 @@ namespace Heatbeat;
 use \Symfony\Component\ClassLoader\UniversalClassLoader;
 
 class Autoloader {
+    const FOLDER_ROOT = 'root';
+    const FOLDER_LIBRARY = 'lib';
     const FOLDER_TEMPLATE = 'template';
     const FOLDER_EXTERNAL = 'external';
-    const FOLDER_LIBRARY = 'lib';
     const FOLDER_RRD = 'rrd';
 
     private static $instance;
