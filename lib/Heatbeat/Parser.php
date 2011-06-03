@@ -34,12 +34,46 @@ namespace Heatbeat;
  */
 use Symfony\Component\Yaml\Yaml;
 
-class Template {
+abstract class Parser {
 
     private $parser;
+    private $filename;
+    protected $filepath;
 
-    function __construct() {
-        $this->parser = new Yaml();
+    CONST YAML_EXT = '.yml';
+
+    public function __construct() {
+        $this->setParser(new Yaml());
+    }
+
+    private function getParser() {
+        return $this->parser;
+    }
+
+    private function setParser($parser) {
+        $this->parser = $parser;
+    }
+
+    private function getFilename() {
+        return $this->filename;
+    }
+
+    protected function setFilename($filename) {
+        $this->filename = $filename;
+    }
+
+    private function getFilepath() {
+        return $this->filepath;
+    }
+
+    abstract protected function setFilePath();
+
+    private function getFullPath() {
+        return $this->getFilepath() . \DIRECTORY_SEPARATOR . $this->getFilename() . self::YAML_EXT;
+    }
+
+    public function parse() {
+        return $this->getParser()->load($this->getFullPath());
     }
 
 }
