@@ -16,35 +16,33 @@
  * limitations under the License. 
  *
  * @category    Heatbeat
- * @package     Heatbeat\Command\RRDTool
+ * @package     Heatbeat
  * @author      Osman Ungur <osmanungur@gmail.com>
  * @copyright   2011 Osman Ungur
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  * @link        http://github.com/import/heatbeat
  */
 
-namespace Heatbeat\Command\RRDTool;
+namespace Heatbeat;
 
-use \Heatbeat\Command;
+use Symfony\Component\Console\Application,
+    Heatbeat\Commandline\Callback;
 
 /**
- * Common methods for rrdtool commands
+ * Application class for Heatbeat CLI interface.
  *
  * @category    Heatbeat
- * @package     Heatbeat\Command\RRDTool
+ * @package     Heatbeat
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-abstract class Shared extends Command {
-    const SEPERATOR = ':';
-    const EXECUTABLE = 'rrdtool';
+class Commandline extends Application {
 
     public function __construct() {
-        $this->setCommand(self::EXECUTABLE);
-        $this->setSubCommand($this->subCommand);
-    }
+        parent::__construct('Welcome to Heatbeat Graphing Tool', '1.0');
 
-    public function setFilename($filename) {
-        $this->addArgument($filename);
+        $this->addCommands(array(
+            new Update()
+        ));
     }
 
 }

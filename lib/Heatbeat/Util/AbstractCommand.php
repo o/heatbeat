@@ -16,23 +16,23 @@
  * limitations under the License. 
  *
  * @category    Heatbeat
- * @package     Heatbeat
+ * @package     Heatbeat\Util
  * @author      Osman Ungur <osmanungur@gmail.com>
  * @copyright   2011 Osman Ungur
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  * @link        http://github.com/import/heatbeat
  */
 
-namespace Heatbeat;
+namespace Heatbeat\Util;
 
 /**
  * Abstract class for implementing shell commands.
  *
  * @category    Heatbeat
- * @package     Heatbeat
+ * @package     Heatbeat\Util
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-abstract class Command {
+abstract class AbstractCommand {
     const LONG_OPTION = '--';
 
     private $command;
@@ -43,9 +43,9 @@ abstract class Command {
     /**
      *
      * @param string $command
-     * @return Command
+     * @return AbstractCommand
      */
-    protected function setCommand($command) {
+    public function setCommand($command) {
         $this->command = $command;
         return $this;
     }
@@ -53,9 +53,9 @@ abstract class Command {
     /**
      *
      * @param string $subCommand
-     * @return Command
+     * @return AbstractCommand
      */
-    protected function setSubCommand($subCommand) {
+    public function setSubCommand($subCommand) {
         $this->subCommand = $subCommand;
         return $this;
     }
@@ -63,9 +63,9 @@ abstract class Command {
     /**
      *
      * @param array $arguments
-     * @return Command
+     * @return AbstractCommand
      */
-    protected function setArguments(array $arguments) {
+    public function setArguments(array $arguments) {
         $this->arguments = $arguments;
         return $this;
     }
@@ -73,9 +73,9 @@ abstract class Command {
     /**
      *
      * @param string $value
-     * @return Command
+     * @return AbstractCommand
      */
-    protected function addArgument($value) {
+    public function addArgument($value) {
         $this->arguments[] = $value;
         return $this;
     }
@@ -83,9 +83,9 @@ abstract class Command {
     /**
      *
      * @param array $options
-     * @return Command
+     * @return AbstractCommand
      */
-    protected function setOptions(array $options) {
+    public function setOptions(array $options) {
         $this->options = $options;
         return $this;
     }
@@ -94,9 +94,9 @@ abstract class Command {
      *
      * @param string $name
      * @param string $value
-     * @return Command
+     * @return AbstractCommand
      */
-    protected function setOption($name, $value = true) {
+    public function setOption($name, $value = true) {
         $this->options[$name] = $value;
         return $this;
     }
@@ -105,7 +105,7 @@ abstract class Command {
      *
      * @return string
      */
-    private function getCommand() {
+    public function getCommand() {
         return $this->command;
     }
 
@@ -113,7 +113,7 @@ abstract class Command {
      *
      * @return string
      */
-    private function getSubCommand() {
+    public function getSubCommand() {
         return $this->subCommand;
     }
 
@@ -121,7 +121,7 @@ abstract class Command {
      *
      * @return array
      */
-    private function getArguments() {
+    public function getArguments() {
         return $this->arguments;
     }
 
@@ -129,40 +129,8 @@ abstract class Command {
      *
      * @return array
      */
-    private function getOptions() {
+    public function getOptions() {
         return $this->options;
-    }
-
-    /**
-     * Prepares command for execution
-     *
-     * @return string
-     */
-    public function prepare() {
-        $result = new \ArrayObject();
-        $result->append($this->getCommand());
-        $result->append($this->getSubCommand());
-        foreach ($this->getOptions() as $key => $option) {
-            if ($option === false) {
-                continue;
-            }
-            $result->append(self::LONG_OPTION . $key);
-            if ($option !== true) {
-                $result->append(\escapeshellarg($option));
-            }
-        }
-        foreach ($this->getArguments() as $argument) {
-            $result->append(\escapeshellarg($argument));
-        }
-        return \implode(\chr(32), \iterator_to_array($result));
-    }
-
-    public function execute() {
-        \exec($this->prepare(), $output, $return_var);
-        if ($return_var > 0) {
-            throw new \RuntimeException(implode(PHP_EOL, $output), $return_var);
-        }
-        return implode(PHP_EOL, $output);
     }
 
 }

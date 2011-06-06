@@ -16,48 +16,35 @@
  * limitations under the License. 
  *
  * @category    Heatbeat
- * @package     Heatbeat\Command\RRDTool
+ * @package     Heatbeat\Parser\Template
  * @author      Osman Ungur <osmanungur@gmail.com>
  * @copyright   2011 Osman Ungur
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  * @link        http://github.com/import/heatbeat
  */
 
-namespace Heatbeat\Command\RRDTool;
+namespace Heatbeat\Parser\Template;
+
+use Heatbeat\Parser\AbstractParser;
 
 /**
- * Test command for unit tests
+ * Template file parser
  *
  * @category    Heatbeat
- * @package     Heatbeat\Command\RRDTool
+ * @package     Heatbeat\Parser\Template
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class Test extends Shared {
+class TemplateParser extends AbstractParser {
 
-    protected $commandName = 'test';
-
-    public function setFooFlag() {
-        $this->setOption('foo');
+    public function __construct($filename) {
+        parent::__construct();
+        $this->setFilePath();
+        $this->setFilename($filename);
+        $this->setValues($this->parse());
     }
 
-    public function setBarValue($bar) {
-        $this->setOption('bar', $bar);
-    }
-
-    public function overrideOptions(array $options) {
-        $this->setOptions($options);
-    }
-
-    public function addAnArgument($value) {
-        $this->addArgument($value);
-    }
-
-    public function overrideCommand($command) {
-        $this->setCommand($command);
-    }
-
-    public function overrideSubcommand($subCommand) {
-        $this->setSubCommand($subCommand);
+    protected function setFilePath() {
+        $this->filepath = Autoloader::getInstance()->getPath(Autoloader::FOLDER_TEMPLATE);
     }
 
 }

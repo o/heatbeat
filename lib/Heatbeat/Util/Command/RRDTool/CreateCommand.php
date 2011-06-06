@@ -26,32 +26,51 @@
 namespace Heatbeat\Command\RRDTool;
 
 /**
- * Implementation for RRDTool update command
+ * Implementation for RRDTool create command
  *
  * @category    Heatbeat
  * @package     Heatbeat\Command\RRDTool
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class Update extends Shared {
+class CreateCommand extends AbstractShared {
+    const PARAMETER_STEP = 'step';
+    protected $subCommand = 'create';
 
-    protected $subCommand = 'update';
-
-    public function setValues($time, array $values) {
-        if (!is_int($time)) {
-            $time = strtotime($time);
+    /**
+     *
+     * @param int $step
+     * @return bool | InvalidArgumentException 
+     */
+    public function setStep($step) {
+        if (is_int($step)) {
+            $this->setOption(self::PARAMETER_STEP, $step);
+            return true;
         }
-        $this->addArgument($this->getRoundedTime($time) . self::SEPERATOR . \implode(self::SEPERATOR, $values));
+        throw new \InvalidArgumentException("You must provide an integer for step argument");
+    }
+
+    /**
+     *
+     * @param array $datastores
+     * @return bool 
+     */
+    public function setDatastores(array $datastores) {
+        foreach ($datastores as $datastore) {
+            $this->addArgument($datastore);
+        }
         return true;
     }
 
     /**
-     * Rounds timestamp to the nearest minute 
      *
-     * @param int $time
-     * @return int 
+     * @param array  $rras
+     * @return bool 
      */
-    private function getRoundedTime($time) {
-        return $time - ($time % 60);
+    public function setRras(array $rras) {
+        foreach ($rras as $rra) {
+            $this->addArgument($rra);
+        }
+        return true;
     }
 
 }

@@ -16,33 +16,36 @@
  * limitations under the License. 
  *
  * @category    Heatbeat
- * @package     Heatbeat
+ * @package     Heatbeat\Parser\Config
  * @author      Osman Ungur <osmanungur@gmail.com>
  * @copyright   2011 Osman Ungur
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  * @link        http://github.com/import/heatbeat
  */
 
-namespace Heatbeat;
+namespace Heatbeat\Parser\Config;
 
-use Symfony\Component\Console\Application,
-    Application\Cli\Command;
+use Heatbeat\Parser\AbstractParser;
 
 /**
- * Application class for Heatbeat CLI interface.
+ * Config file parser
  *
  * @category    Heatbeat
- * @package     Heatbeat
+ * @package     Heatbeat\Parser\Config
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class Commandline extends Application {
+class ConfigParser extends AbstractParser {
+    const FILENAME = 'config';
 
     public function __construct() {
-        parent::__construct('Welcome to Heatbeat Graphing Tool', '1.0');
+        parent::__construct();
+        $this->setFilePath();
+        $this->setFilename(self::FILENAME);
+        $this->setValues($this->parse());
+    }
 
-        $this->addCommands(array(
-            new \Heatbeat\Commandline\Update()
-        ));
+    protected function setFilePath() {
+        $this->filepath = Autoloader::getInstance()->getPath(Autoloader::FOLDER_ROOT);
     }
 
 }

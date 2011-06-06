@@ -16,25 +16,25 @@
  * limitations under the License. 
  *
  * @category    Heatbeat
- * @package     Heatbeat
+ * @package     Heatbeat\Parser
  * @author      Osman Ungur <osmanungur@gmail.com>
  * @copyright   2011 Osman Ungur
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  * @link        http://github.com/import/heatbeat
  */
 
-namespace Heatbeat;
+namespace Heatbeat\Parser;
 
 /**
  * Class for parsing/passing YAML templates.
  *
  * @category    Heatbeat
- * @package     Heatbeat
+ * @package     Heatbeat\Parser
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
 use Symfony\Component\Yaml\Yaml;
 
-abstract class Parser implements \IteratorAggregate {
+abstract class AbstractParser implements \IteratorAggregate {
 
     private $filename;
     protected $filepath;

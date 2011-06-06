@@ -16,33 +16,42 @@
  * limitations under the License. 
  *
  * @category    Heatbeat
- * @package     Heatbeat
+ * @package     Heatbeat\Command\RRDTool
  * @author      Osman Ungur <osmanungur@gmail.com>
  * @copyright   2011 Osman Ungur
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  * @link        http://github.com/import/heatbeat
  */
 
-namespace Heatbeat;
+namespace Heatbeat\Command\RRDTool;
 
 /**
- * Template file parser
+ * Implementation for RRDTool update command
  *
  * @category    Heatbeat
- * @package     Heatbeat
+ * @package     Heatbeat\Command\RRDTool
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class Template extends Parser {
+class UpdateCommand extends RRDToolCommand {
 
-    public function __construct($filename) {
-        parent::__construct();
-        $this->setFilePath();
-        $this->setFilename($filename);
-        $this->setValues($this->parse());
+    protected $subCommand = 'update';
+
+    public function setValues($time, array $values) {
+        if (!is_int($time)) {
+            $time = strtotime($time);
+        }
+        $this->addArgument($this->getRoundedTime($time) . self::SEPERATOR . \implode(self::SEPERATOR, $values));
+        return true;
     }
 
-    protected function setFilePath() {
-        $this->filepath = Autoloader::getInstance()->getPath(Autoloader::FOLDER_TEMPLATE);
+    /**
+     * Rounds timestamp to the nearest minute 
+     *
+     * @param int $time
+     * @return int 
+     */
+    private function getRoundedTime($time) {
+        return $time - ($time % 60);
     }
 
 }

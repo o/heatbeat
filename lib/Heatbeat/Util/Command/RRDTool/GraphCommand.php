@@ -32,7 +32,7 @@ namespace Heatbeat\Command\RRDTool;
  * @package     Heatbeat\Command\RRDTool
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class Graph extends Shared {
+class GraphCommand extends RRDToolCommand {
     protected $subCommand = 'graph';
 
     const PARAMETER_START = 'start';

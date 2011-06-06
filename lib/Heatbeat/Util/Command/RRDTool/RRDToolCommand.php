@@ -16,34 +16,35 @@
  * limitations under the License. 
  *
  * @category    Heatbeat
- * @package     Heatbeat
+ * @package     Heatbeat\Command\RRDTool
  * @author      Osman Ungur <osmanungur@gmail.com>
  * @copyright   2011 Osman Ungur
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  * @link        http://github.com/import/heatbeat
  */
 
-namespace Heatbeat;
+namespace Heatbeat\Command\RRDTool;
+
+use Heatbeat\Util\AbstractCommand;
 
 /**
- * Config file parser
+ * Common methods for rrdtool commands
  *
  * @category    Heatbeat
- * @package     Heatbeat
+ * @package     Heatbeat\Command\RRDTool
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class Config extends Parser {
-    const FILENAME = 'config';
+abstract class RRDToolCommand extends Command {
+    const SEPERATOR = ':';
+    const EXECUTABLE = 'rrdtool';
 
     public function __construct() {
-        parent::__construct();
-        $this->setFilePath();
-        $this->setFilename(self::FILENAME);
-        $this->setValues($this->parse());
+        $this->setCommand(self::EXECUTABLE);
+        $this->setSubCommand($this->subCommand);
     }
 
-    protected function setFilePath() {
-        $this->filepath = Autoloader::getInstance()->getPath(Autoloader::FOLDER_ROOT);
+    public function setFilename($filename) {
+        $this->addArgument($filename);
     }
 
 }

@@ -26,51 +26,38 @@
 namespace Heatbeat\Command\RRDTool;
 
 /**
- * Implementation for RRDTool create command
+ * Test command for unit tests
  *
  * @category    Heatbeat
  * @package     Heatbeat\Command\RRDTool
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class Create extends Shared {
-    const PARAMETER_STEP = 'step';
-    protected $subCommand = 'create';
+class TestCommand extends RRDToolCommand {
 
-    /**
-     *
-     * @param int $step
-     * @return bool | InvalidArgumentException 
-     */
-    public function setStep($step) {
-        if (is_int($step)) {
-            $this->setOption(self::PARAMETER_STEP, $step);
-            return true;
-        }
-        throw new \InvalidArgumentException("You must provide an integer for step argument");
+    protected $commandName = 'test';
+
+    public function setFooFlag() {
+        $this->setOption('foo');
     }
 
-    /**
-     *
-     * @param array $datastores
-     * @return bool 
-     */
-    public function setDatastores(array $datastores) {
-        foreach ($datastores as $datastore) {
-            $this->addArgument($datastore);
-        }
-        return true;
+    public function setBarValue($bar) {
+        $this->setOption('bar', $bar);
     }
 
-    /**
-     *
-     * @param array  $rras
-     * @return bool 
-     */
-    public function setRras(array $rras) {
-        foreach ($rras as $rra) {
-            $this->addArgument($rra);
-        }
-        return true;
+    public function overrideOptions(array $options) {
+        $this->setOptions($options);
+    }
+
+    public function addAnArgument($value) {
+        $this->addArgument($value);
+    }
+
+    public function overrideCommand($command) {
+        $this->setCommand($command);
+    }
+
+    public function overrideSubcommand($subCommand) {
+        $this->setSubCommand($subCommand);
     }
 
 }
