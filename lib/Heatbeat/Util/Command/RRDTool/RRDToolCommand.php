@@ -25,7 +25,7 @@
 
 namespace Heatbeat\Util\Command\RRDTool;
 
-use Heatbeat\Util\AbstractCommand;
+use Heatbeat\Util\AbstractCommand as Command;
 
 /**
  * Common methods for rrdtool commands

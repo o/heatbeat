@@ -34,7 +34,7 @@ namespace Heatbeat\Util\Command\RRDTool;
  */
 class TestCommand extends RRDToolCommand {
 
-    protected $commandName = 'test';
+    protected $subCommand = 'test';
 
     public function setFooFlag() {
         $this->setOption('foo');
