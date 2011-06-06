@@ -16,23 +16,23 @@
  * limitations under the License. 
  *
  * @category    Heatbeat
- * @package     Heatbeat\Command\RRDTool
+ * @package     Heatbeat\Util\Command\RRDTool
  * @author      Osman Ungur <osmanungur@gmail.com>
  * @copyright   2011 Osman Ungur
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  * @link        http://github.com/import/heatbeat
  */
 
-namespace Heatbeat\Command\RRDTool;
+namespace Heatbeat\Util\Command\RRDTool;
 
 /**
  * Implementation for RRDTool create command
  *
  * @category    Heatbeat
- * @package     Heatbeat\Command\RRDTool
+ * @package     Heatbeat\Util\Command\RRDTool
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class CreateCommand extends AbstractShared {
+class CreateCommand extends RRDToolCommand {
     const PARAMETER_STEP = 'step';
     protected $subCommand = 'create';
 

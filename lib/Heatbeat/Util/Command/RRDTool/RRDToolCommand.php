@@ -16,14 +16,14 @@
  * limitations under the License. 
  *
  * @category    Heatbeat
- * @package     Heatbeat\Command\RRDTool
+ * @package     Heatbeat\Util\Command\RRDTool
  * @author      Osman Ungur <osmanungur@gmail.com>
  * @copyright   2011 Osman Ungur
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  * @link        http://github.com/import/heatbeat
  */
 
-namespace Heatbeat\Command\RRDTool;
+namespace Heatbeat\Util\Command\RRDTool;
 
 use Heatbeat\Util\AbstractCommand;
 
@@ -31,7 +31,7 @@ use Heatbeat\Util\AbstractCommand;
  * Common methods for rrdtool commands
  *
  * @category    Heatbeat
- * @package     Heatbeat\Command\RRDTool
+ * @package     Heatbeat\Util\Command\RRDTool
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
 abstract class RRDToolCommand extends Command {
