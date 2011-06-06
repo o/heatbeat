@@ -32,31 +32,18 @@ namespace Heatbeat;
  * @package     Heatbeat
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class Config extends Parser implements \IteratorAggregate {
+class Config extends Parser {
     const FILENAME = 'config';
-    const NODENAME = 'templates';
-    private $values;
-    
+
     public function __construct() {
         parent::__construct();
+        $this->setFilePath();
         $this->setFilename(self::FILENAME);
         $this->setValues($this->parse());
     }
 
     protected function setFilePath() {
         $this->filepath = Autoloader::getInstance()->getPath(Autoloader::FOLDER_ROOT);
-    }
-    
-    public function getValues() {
-        return $this->values;
-    }
-
-    private function setValues($values) {
-        $this->values = $values;
-    }
-    
-    public function getIterator() {
-        return new \ArrayIterator($this->getValues());
     }
 
 }

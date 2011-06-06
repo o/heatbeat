@@ -34,26 +34,13 @@ namespace Heatbeat;
  */
 use Symfony\Component\Yaml\Yaml;
 
-abstract class Parser {
+abstract class Parser implements \IteratorAggregate {
 
-    private $parser;
     private $filename;
     protected $filepath;
+    protected $values;
 
     CONST YAML_EXT = '.yml';
-
-    protected function __construct() {
-        $this->setParser(new Yaml());
-        $this->setFilePath();
-    }
-
-    private function getParser() {
-        return $this->parser;
-    }
-
-    private function setParser($parser) {
-        $this->parser = $parser;
-    }
 
     private function getFilename() {
         return $this->filename;
@@ -74,7 +61,20 @@ abstract class Parser {
     }
 
     protected function parse() {
-        return $this->getParser()->load($this->getFullPath());
+        $yaml = new Yaml();
+        return $yaml->load($this->getFullPath());
+    }
+
+    public function getValues() {
+        return $this->values;
+    }
+
+    protected function setValues($values) {
+        $this->values = $values;
+    }
+
+    public function getIterator() {
+        return new \ArrayIterator($this->getValues());
     }
 
 }
