@@ -33,7 +33,6 @@ namespace Heatbeat\Util;
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
 abstract class AbstractCommand {
-    const LONG_OPTION = '--';
 
     private $command;
     private $subCommand;
