@@ -33,12 +33,10 @@ namespace Heatbeat\Util;
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
 class CommandExecutor {
+    const LONG_OPTION = '--';
 
     private $commandObject;
     private $commandString;
-    private $isSuccess;
-    private $errorString;
-    private $result;
 
     public function getCommandObject() {
         return $this->commandObject;
@@ -56,30 +54,6 @@ class CommandExecutor {
         $this->commandString = $commandString;
     }
 
-    public function getIsSuccess() {
-        return $this->isSuccess;
-    }
-
-    public function setIsSuccess($isSuccess) {
-        $this->isSuccess = $isSuccess;
-    }
-
-    public function getErrorString() {
-        return $this->errorString;
-    }
-
-    public function setErrorString($errorString) {
-        $this->errorString = $errorString;
-    }
-
-    public function getResult() {
-        return $this->result;
-    }
-
-    public function setResult($result) {
-        $this->result = $result;
-    }
-
     /**
      * Prepares command for execution
      *
@@ -89,7 +63,7 @@ class CommandExecutor {
         $result = new \ArrayObject();
         $result->append($this->getCommandObject()->getCommand());
         $result->append($this->getCommandObject()->getSubCommand());
-        foreach ($this->getCommand()->getOptions() as $key => $option) {
+        foreach ($this->getCommandObject()->getOptions() as $key => $option) {
             if ($option === false) {
                 continue;
             }
@@ -105,15 +79,9 @@ class CommandExecutor {
     }
 
     public function execute() {
-        $output = false;
-        $return_var = false;
-        \exec($this->getCommandString(), $output, $return_var);
-        if ($return_var > 0) {
-            $this->setIsSuccess(false);
-            $this->setErrorString(implode(PHP_EOL, $output));
-        }
-        $this->setIsSuccess(true);
-        $this->setResult(implode(PHP_EOL, $output));
+        /**
+         * New implementation will be comes here
+         */
     }
 
 }
