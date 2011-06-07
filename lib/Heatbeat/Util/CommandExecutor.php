@@ -86,4 +86,10 @@ class CommandExecutor {
         return $process->isSuccessful();
     }
 
+    public function dirtyExecute($command) {
+        $process = new Process($command);
+        $process->run();
+        return $process;
+    }
+
 }
