@@ -40,6 +40,7 @@ class Autoloader {
     const FOLDER_TEMPLATE = 'template';
     const FOLDER_EXTERNAL = 'external';
     const FOLDER_RRD = 'rrd';
+    const FOLDER_VENDOR = 'vendor';
 
     private static $instance;
     private $loader;
@@ -64,15 +65,16 @@ class Autoloader {
             'lib' => $rootPath . \DIRECTORY_SEPARATOR . self::FOLDER_LIBRARY,
             'template' => $rootPath . \DIRECTORY_SEPARATOR . self::FOLDER_TEMPLATE,
             'external' => $rootPath . \DIRECTORY_SEPARATOR . self::FOLDER_EXTERNAL,
-            'rrd' => $rootPath . \DIRECTORY_SEPARATOR . self::FOLDER_RRD
+            'rrd' => $rootPath . \DIRECTORY_SEPARATOR . self::FOLDER_RRD,
+            'vendor' => $rootPath . \DIRECTORY_SEPARATOR . self::FOLDER_VENDOR
         );
     }
 
     private function register() {
-        require_once $this->getPath('lib') . '/Symfony/Component/ClassLoader/UniversalClassLoader.php';
+        require_once $this->getPath('vendor') . '/Symfony/Component/ClassLoader/UniversalClassLoader.php';
         $loader = new UniversalClassLoader();
         $loader->registerNamespaces(array(
-            'Symfony\Component' => $this->getPath('lib'),
+            'Symfony' => $this->getPath('vendor'),
             'Heatbeat' => $this->getPath('lib'),
                 )
         );
