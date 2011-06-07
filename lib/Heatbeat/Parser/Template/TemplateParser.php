@@ -25,7 +25,8 @@
 
 namespace Heatbeat\Parser\Template;
 
-use Heatbeat\Parser\AbstractParser;
+use Heatbeat\Parser\AbstractParser,
+    Heatbeat\Autoloader;
 
 /**
  * Template file parser
@@ -37,7 +38,6 @@ use Heatbeat\Parser\AbstractParser;
 class TemplateParser extends AbstractParser {
 
     public function __construct($filename) {
-        parent::__construct();
         $this->setFilePath();
         $this->setFilename($filename);
         $this->setValues($this->parse());

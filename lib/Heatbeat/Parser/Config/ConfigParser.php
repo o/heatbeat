@@ -25,7 +25,8 @@
 
 namespace Heatbeat\Parser\Config;
 
-use Heatbeat\Parser\AbstractParser;
+use Heatbeat\Parser\AbstractParser,
+    Heatbeat\Autoloader;
 
 /**
  * Config file parser
@@ -38,7 +39,6 @@ class ConfigParser extends AbstractParser {
     const FILENAME = 'config';
 
     public function __construct() {
-        parent::__construct();
         $this->setFilePath();
         $this->setFilename(self::FILENAME);
         $this->setValues($this->parse());
