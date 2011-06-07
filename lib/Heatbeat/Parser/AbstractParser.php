@@ -70,7 +70,7 @@ abstract class AbstractParser {
     }
 
     protected function setValues($values) {
-        $this->values = new \ArrayObject($values);
+        $this->values = new \ArrayIterator($values);
     }
 
 }
