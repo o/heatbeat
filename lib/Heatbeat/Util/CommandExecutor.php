@@ -83,7 +83,7 @@ class CommandExecutor {
     public function execute() {
         $process = new Process($this->getCommandString());
         $process->run();
-        return $process;
+        return $process->isSuccessful();
     }
 
 }
