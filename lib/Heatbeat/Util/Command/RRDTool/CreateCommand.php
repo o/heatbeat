@@ -46,7 +46,6 @@ class CreateCommand extends RRDToolCommand {
             $this->setOption(self::PARAMETER_STEP, $step);
             return true;
         }
-        throw new \InvalidArgumentException("You must provide an integer for step argument");
     }
 
     /**
@@ -56,7 +55,7 @@ class CreateCommand extends RRDToolCommand {
      */
     public function setDatastores(array $datastores) {
         foreach ($datastores as $datastore) {
-            $this->addArgument($datastore);
+            $this->addArgument($datastore->getAsString());
         }
         return true;
     }
@@ -68,7 +67,7 @@ class CreateCommand extends RRDToolCommand {
      */
     public function setRras(array $rras) {
         foreach ($rras as $rra) {
-            $this->addArgument($rra);
+            $this->addArgument($rra->getAsString());
         }
         return true;
     }

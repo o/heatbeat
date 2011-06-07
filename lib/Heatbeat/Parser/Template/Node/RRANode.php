@@ -26,34 +26,35 @@
 namespace Heatbeat\Parser\Template\Node;
 
 /**
- * Datastore node of template
+ * RRA node of template
  *
  * @category    Heatbeat
  * @package     Heatbeat\Parser\Template\Node
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class Datastore extends AbstractNode implements NodeInterface {
-    const PREFIX = 'DS';
-    private $validTypes = array(
-        'GAUGE',
-        'COUNTER',
-        'DERIVE',
-        'ABSOLUTE'
+class RraNode extends AbstractNode implements NodeInterface {
+    const PREFIX = 'RRA';
+    private $validCfs = array(
+        'AVERAGE',
+        'MIN',
+        'MAX',
+        'LAST'
     );
 
     public function getAsString() {
         return implode(self::SEPERATOR, array(
             self::PREFIX,
-            $this->offsetGet('name'),
-            strtoupper($this->offsetGet('type')),
-            $this->offsetGet('heartbeat'),
-            $this->offsetGet('min'),
-            $this->offsetGet('max')
+            strtoupper($this->offsetGet('cf')),
+            $this->offsetGet('xff'),
+            $this->offsetGet('steps'),
+            $this->offsetGet('rows'),
         ));
     }
 
     public function validate() {
-        return in_array(strtoupper($this->offsetGet('type')), $this->validTypes);
+        if (!in_array(strtoupper($this->offsetGet('cf')), $this->validCfs)) {
+            throw new \InvalidArgumentException('RRA consolidation function not valid');
+        };
     }
 
 }

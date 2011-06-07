@@ -26,33 +26,37 @@
 namespace Heatbeat\Parser\Template\Node;
 
 /**
- * RRA node of template
+ * Datastore node of template
  *
  * @category    Heatbeat
  * @package     Heatbeat\Parser\Template\Node
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class RRA extends AbstractNode implements NodeInterface {
-    const PREFIX = 'RRA';
-    private $validCfs = array(
-        'AVERAGE',
-        'MIN',
-        'MAX',
-        'LAST'
+class DatastoreNode extends AbstractNode implements NodeInterface {
+    const PREFIX = 'DS';
+    private $validTypes = array(
+        'GAUGE',
+        'COUNTER',
+        'DERIVE',
+        'ABSOLUTE'
     );
 
     public function getAsString() {
+        $this->validate();
         return implode(self::SEPERATOR, array(
             self::PREFIX,
-            strtoupper($this->offsetGet('cf')),
-            $this->offsetGet('xff'),
-            $this->offsetGet('steps'),
-            $this->offsetGet('rows'),
+            $this->offsetGet('name'),
+            strtoupper($this->offsetGet('type')),
+            $this->offsetGet('heartbeat'),
+            $this->offsetGet('min'),
+            $this->offsetGet('max')
         ));
     }
 
     public function validate() {
-        return in_array(strtoupper($this->offsetGet('cf')), $this->validCfs);
+        if (!in_array(strtoupper($this->offsetGet('type')), $this->validTypes)) {
+            throw new \InvalidArgumentException('Datastore type seems not valid');
+        };
     }
 
 }
