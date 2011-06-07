@@ -26,12 +26,17 @@
 namespace Heatbeat\Parser\Template\Node;
 
 /**
- * Abstract class for template nodes
+ * Interface for template nodes
  *
  * @category    Heatbeat
  * @package     Heatbeat\Parser\Template\Node
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-abstract class AbstractNode extends \ArrayObject {
-    
+interface NodeInterface {
+    const SEPERATOR = ':';
+    const EQUAL = '=';
+
+    public function getAsString();
+
+    public function validate();
 }
