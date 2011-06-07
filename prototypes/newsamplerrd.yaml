@@ -4,6 +4,8 @@ name :
 version :
 # Name of the source for gathering data
 source-name :
+# Format of rrd filename, gives input arguments as %argument
+filename :
 rrd:
     # Specifies the base interval in seconds with which data will be fed into the RRD, defaults to 300
     step:
