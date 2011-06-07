@@ -34,7 +34,7 @@ namespace Heatbeat\Parser;
  */
 use Symfony\Component\Yaml\Yaml;
 
-abstract class AbstractParser implements \IteratorAggregate {
+abstract class AbstractParser {
 
     private $filename;
     protected $filepath;
@@ -70,11 +70,7 @@ abstract class AbstractParser implements \IteratorAggregate {
     }
 
     protected function setValues($values) {
-        $this->values = $values;
-    }
-
-    public function getIterator() {
-        return new \ArrayIterator($this->getValues());
+        $this->values = new \ArrayObject($values);
     }
 
 }
