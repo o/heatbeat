@@ -55,8 +55,9 @@ class DatastoreNode extends AbstractNode implements NodeInterface {
 
     public function validate() {
         if (!in_array(strtoupper($this->offsetGet('type')), $this->validTypes)) {
-            throw new \InvalidArgumentException('Datastore type seems not valid');
+            return false;
         };
+        return true;
     }
 
 }

@@ -53,8 +53,9 @@ class RraNode extends AbstractNode implements NodeInterface {
 
     public function validate() {
         if (!in_array(strtoupper($this->offsetGet('cf')), $this->validCfs)) {
-            throw new \InvalidArgumentException('RRA consolidation function not valid');
+            return false;
         };
+        return true;
     }
 
 }
