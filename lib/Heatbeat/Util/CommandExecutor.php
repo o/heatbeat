@@ -25,6 +25,8 @@
 
 namespace Heatbeat\Util;
 
+use Symfony\Component\Process\Process;
+
 /**
  * Class for executing shell commands.
  *
@@ -79,9 +81,9 @@ class CommandExecutor {
     }
 
     public function execute() {
-        /**
-         * New implementation will be comes here
-         */
+        $process = new Process($this->getCommandString());
+        $process->run();
+        return $process;
     }
 
 }
