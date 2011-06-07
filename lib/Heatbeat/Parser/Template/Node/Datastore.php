@@ -32,6 +32,28 @@ namespace Heatbeat\Parser\Template\Node;
  * @package     Heatbeat\Parser\Template\Node
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class Datastore extends AbstractNode {
-    
+class Datastore extends AbstractNode implements NodeInterface {
+    const PREFIX = 'DS';
+    private $validTypes = array(
+        'GAUGE',
+        'COUNTER',
+        'DERIVE',
+        'ABSOLUTE'
+    );
+
+    public function getAsString() {
+        return implode(self::SEPERATOR, array(
+            self::PREFIX,
+            $this->offsetGet('name'),
+            strtoupper($this->offsetGet('type')),
+            $this->offsetGet('heartbeat'),
+            $this->offsetGet('min'),
+            $this->offsetGet('max')
+        ));
+    }
+
+    public function validate() {
+        return in_array(strtoupper($this->offsetGet('type')), $this->validTypes);
+    }
+
 }
