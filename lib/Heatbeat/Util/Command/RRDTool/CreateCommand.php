@@ -39,7 +39,7 @@ class CreateCommand extends RRDToolCommand {
     /**
      *
      * @param int $step
-     * @return bool | InvalidArgumentException 
+     * @return bool 
      */
     public function setStep($step) {
         if (is_int($step)) {
