@@ -37,7 +37,7 @@ use \Symfony\Component\ClassLoader\UniversalClassLoader;
 class Autoloader {
     const FOLDER_ROOT = 'root';
     const FOLDER_LIBRARY = 'lib';
-    const FOLDER_TEMPLATE = 'template';
+    const FOLDER_TEMPLATE = 'templates';
     const FOLDER_EXTERNAL = 'external';
     const FOLDER_RRD = 'rrd';
     const FOLDER_VENDOR = 'vendor';
@@ -63,7 +63,7 @@ class Autoloader {
         $this->paths = array(
             'root' => $rootPath,
             'lib' => $rootPath . \DIRECTORY_SEPARATOR . self::FOLDER_LIBRARY,
-            'template' => $rootPath . \DIRECTORY_SEPARATOR . self::FOLDER_TEMPLATE,
+            'templates' => $rootPath . \DIRECTORY_SEPARATOR . self::FOLDER_TEMPLATE,
             'external' => $rootPath . \DIRECTORY_SEPARATOR . self::FOLDER_EXTERNAL,
             'rrd' => $rootPath . \DIRECTORY_SEPARATOR . self::FOLDER_RRD,
             'vendor' => $rootPath . \DIRECTORY_SEPARATOR . self::FOLDER_VENDOR
