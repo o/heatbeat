@@ -33,13 +33,18 @@ namespace Heatbeat\Parser\Template\Node;
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
 class CDefNode extends AbstractNode implements NodeInterface {
+    const PREFIX = 'CDEF';
 
     public function getAsString() {
-        
+        return implode(self::SEPERATOR, array(
+            self::PREFIX,
+            $this->offsetGet('name'),
+            $this->offsetGet('rpn')
+        ));
     }
 
     public function validate() {
-        
+        return true;
     }
 
 }
