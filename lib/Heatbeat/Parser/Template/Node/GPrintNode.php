@@ -33,13 +33,18 @@ namespace Heatbeat\Parser\Template\Node;
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
 class GPrintNode extends AbstractNode implements NodeInterface {
+    const PREFIX = 'GPRINT';
 
     public function getAsString() {
-        
+        return implode(self::SEPERATOR, array(
+            self::PREFIX,
+            $this->offsetGet('definition-name'),
+            $this->offsetGet('format')
+        ));
     }
 
     public function validate() {
-        
+        return true;
     }
 
 }
