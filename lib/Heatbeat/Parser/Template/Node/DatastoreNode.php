@@ -42,7 +42,6 @@ class DatastoreNode extends AbstractNode implements NodeInterface {
     );
 
     public function getAsString() {
-        $this->validate();
         return implode(self::SEPERATOR, array(
             self::PREFIX,
             $this->offsetGet('name'),
