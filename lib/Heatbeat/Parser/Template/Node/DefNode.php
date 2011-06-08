@@ -33,13 +33,29 @@ namespace Heatbeat\Parser\Template\Node;
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
 class DefNode extends AbstractNode implements NodeInterface {
+    const PREFIX = 'DEF';
+    private $validCfs = array(
+        'AVERAGE',
+        'MIN',
+        'MAX',
+        'LAST'
+    );
 
     public function getAsString() {
-        
+        return implode(self::SEPERATOR, array(
+            self::PREFIX,
+            $this->offsetGet('name') . self::EQUAL,
+            $this->offsetGet('filename'),
+            $this->offsetGet('datastore-name'),
+            strtoupper($this->offsetGet('cf'))
+        ));
     }
 
     public function validate() {
-        
+        if (!in_array(strtoupper($this->offsetGet('cf')), $this->validCfs)) {
+            return false;
+        };
+        return true;
     }
 
 }
