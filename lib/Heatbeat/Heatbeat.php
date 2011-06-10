@@ -25,6 +25,11 @@
 
 namespace Heatbeat;
 
+use Heatbeat\Parser\Config\ConfigParser as Config,
+    Heatbeat\Parser\Template\TemplateParser as TemplateLoader,
+    Heatbeat\Util\Command\RRDTool\CreateCommand as RRDToolCreate,
+    Heatbeat\Util\CommandExecutor as Executor;
+
 /**
  * Heatbeat runner
  *
@@ -32,14 +37,32 @@ namespace Heatbeat;
  * @package     Heatbeat
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class Runner {
+class Heatbeat {
 
-    /**
-     *
-     * @param type $foo
-     */
-    public function __construct($foo = null) {
-        $this->foo = $foo;
+    public function getConfig() {
+        $config = new Config;
+        return $config->getValues();
+    }
+
+    public function getTemplate($filename) {
+        $template = new TemplateLoader($filename);
+        return $template->getValues();
+    }
+
+    public function performCreate() {
+        $config = $this->getConfig();
+        foreach ($config->offsetGet('templates') as $item) {
+            $template = $this->getTemplate($item['name']);
+            $commandObject = new RRDToolCreate();
+            $commandObject->setFilename($template->offsetGet('filename'));
+            $rrdDefinition = new \ArrayObject($template->offsetGet('rrd'));
+            $commandObject->setDatastores($rrdDefinition->offsetGet('datastores'));
+            $commandObject->setRras($rrdDefinition->offsetGet('rras'));
+            $executor = new Executor();
+            $executor->setCommandObject($commandObject);
+            $executor->prepare();
+            return $executor->execute();
+        }
     }
 
 }
