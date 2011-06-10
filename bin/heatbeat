@@ -5,5 +5,5 @@ namespace Heatbeat;
 
 require '../lib/Heatbeat/Autoloader.php';
 Autoloader::getInstance();
-$cli = new Commandline;
+$cli = new CommandLine\Runner;
 $cli->run();
