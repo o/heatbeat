@@ -37,6 +37,8 @@ use Heatbeat\Parser\Template\Node\DatastoreNode as Datastore,
  */
 class CreateCommand extends RRDToolCommand {
     const PARAMETER_STEP = 'step';
+    const PARAMETER_START = 'start';
+    const PARAMETER_NO_OVERWRITE = 'no-overwrite';
     protected $subCommand = 'create';
 
     /**
@@ -75,6 +77,20 @@ class CreateCommand extends RRDToolCommand {
             $this->addArgument($object->getAsString());
         }
         return true;
+    }
+
+    public function setOverwrite($value) {
+        $this->setOption(self::PARAMETER_NO_OVERWRITE, ($value ? false : true));
+        return true;
+    }
+
+    private function setStart() {
+        $this->setOption(self::PARAMETER_START, time() - (60 * 60));
+    }
+
+    public function init() {
+        $this->setOverwrite(true);
+        $this->setStart();
     }
 
 }
