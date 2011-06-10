@@ -82,12 +82,14 @@ class CommandExecutor {
 
     public function execute() {
         $process = new Process($this->getCommandString());
+        $process->setEnv(explode(PATH_SEPARATOR, \getenv('PATH')));
         $process->run();
         return $process->isSuccessful();
     }
 
     public function dirtyExecute($command) {
-        $process = new Process($command);
+        $process = new Process($this->getCommandString());
+        $process->setEnv(explode(PATH_SEPARATOR, \getenv('PATH')));
         $process->run();
         return $process;
     }
