@@ -16,14 +16,14 @@
  * limitations under the License. 
  *
  * @category    Heatbeat
- * @package     Heatbeat\Commandline
+ * @package     Heatbeat\CommandLine\Callback
  * @author      Osman Ungur <osmanungur@gmail.com>
  * @copyright   2011 Osman Ungur
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  * @link        http://github.com/import/heatbeat
  */
 
-namespace Heatbeat\Commandline;
+namespace Heatbeat\CommandLine\Callback;
 
 use Symfony\Component\Console\Input\InputArgument,
     Symfony\Component\Console\Input\InputOption,
@@ -35,7 +35,7 @@ use Symfony\Component\Console\Input\InputArgument,
  * Callback for CLI Tool update command
  *
  * @category    Heatbeat
- * @package     Heatbeat\Commandline
+ * @package     Heatbeat\CommandLine\Callback
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
 class Update extends Console\Command\Command {
