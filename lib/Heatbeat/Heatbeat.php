@@ -39,12 +39,12 @@ use Heatbeat\Parser\Config\ConfigParser as Config,
  */
 class Heatbeat {
 
-    public function getConfig() {
+    private function getConfig() {
         $config = new Config;
         return $config->getValues();
     }
 
-    public function getTemplate($filename) {
+    private function getTemplate($filename) {
         $template = new TemplateLoader($filename);
         return $template->getValues();
     }
