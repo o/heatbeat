@@ -71,7 +71,7 @@ class CreateCommand extends RRDToolCommand {
      */
     public function setRras(array $rras) {
         foreach ($rras as $rra) {
-            $object = new RRA($datastore);
+            $object = new RRA($rra);
             $this->addArgument($object->getAsString());
         }
         return true;
