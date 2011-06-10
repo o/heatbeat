@@ -25,7 +25,12 @@
 
 namespace Heatbeat\Source\Plugin\Foo;
 
-use Heatbeat\Source;
+use Heatbeat\Source\AbstractSource,
+    Heatbeat\Source\SourceInterface,
+    Heatbeat\Source\AbstractInputOutput,
+    Heatbeat\Source\SourceInput,
+    Heatbeat\Source\SourceOutput,
+    Heatbeat\Util\CommandExecutor;
 
 /**
  * Abstract source class for data fetching
@@ -44,10 +49,28 @@ class Random extends AbstractSource implements SourceInterface {
         $max = $this->getInput()->getValue('max');
 
         /**
+         * Input argument validation
+         */
+        if (!is_numeric($min) OR !is_numeric($max)) {
+            $this->setIsSuccessful(false);
+            $this->setErrorMessage("Min and max arguments must be an integer");
+            return;
+        }
+
+        /**
          * Getting / fetching data
          */
         $rand1 = mt_rand($min, $max);
-        $rand2 = mt_rand(0, mt_getrandmax());
+        $rand2 = mt_rand(10, 99);
+
+        /**
+         * Output argument validation
+         */
+        if (!is_int($rand1) OR !is_int($rand2)) {
+            $this->setIsSuccessful(false);
+            $this->setErrorMessage("Output values not valid!");
+            return;
+        }
 
         /**
          * Setting output
@@ -66,7 +89,7 @@ class Random extends AbstractSource implements SourceInterface {
          *
          */
         $this->setOutput($output);
-        
+
         /**
          * Mark as successful
          */
