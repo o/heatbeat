@@ -2,12 +2,8 @@ defaults :
     foo : bar
     bar : baz
 templates :
-    - name : template-name
+    - name : random
       enabled : true
       arguments :
-          foo : bar
-          bar : baz
-    - name : other-template-name
-      enabled : false
-      arguments :
-          foo : bar
+          min : 5
+          max : 10
