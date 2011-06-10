@@ -42,7 +42,7 @@ abstract class AbstractSource {
     private $isSuccessful = false;
     private $errorMessage;
 
-    protected function getInput() {
+    public function getInput() {
         return $this->input;
     }
 

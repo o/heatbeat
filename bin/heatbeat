@@ -3,7 +3,9 @@
 
 namespace Heatbeat;
 
+use Heatbeat\CommandLine\Runner as Cli;
+
 require '../lib/Heatbeat/Autoloader.php';
 Autoloader::getInstance();
-$cli = new CommandLine\Runner;
+$cli = new Cli;
 $cli->run();

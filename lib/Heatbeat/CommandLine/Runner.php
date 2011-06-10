@@ -26,7 +26,8 @@
 namespace Heatbeat\CommandLine;
 
 use Symfony\Component\Console\Application,
-    Heatbeat\Commandline\Callback;
+    Heatbeat\Commandline\Callback\Update,
+    Heatbeat\CommandLine\Callback\TestSource;
 
 /**
  * Application class for Heatbeat CLI interface.
@@ -41,8 +42,8 @@ class Runner extends Application {
         parent::__construct('Welcome to Heatbeat Graphing Tool', '1.0');
 
         $this->addCommands(array(
-            new Callback\Update(),
-            new Callback\TestSource()
+            new Update(),
+            new TestSource()
         ));
     }
 
