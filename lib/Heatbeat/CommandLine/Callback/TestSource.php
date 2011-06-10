@@ -29,7 +29,8 @@ use Symfony\Component\Console\Input\InputArgument,
     Symfony\Component\Console\Input\InputOption,
     Symfony\Component\Console,
     Symfony\Component\Console\Input\InputInterface,
-    Symfony\Component\Console\Output\OutputInterface;
+    Symfony\Component\Console\Output\OutputInterface,
+    Heatbeat\Source\SourceInput;
 
 /**
  * Callback for CLI Tool test command
@@ -43,11 +44,43 @@ class TestSource extends Console\Command\Command {
     public function configure() {
         $this
                 ->setName('test:source')
-                ->setDescription('Makes tests for source plugin with given arguments');
+                ->setDescription('Makes tests for source plugin with given arguments')
+                ->setDefinition(array(
+                    new InputArgument('source', InputArgument::REQUIRED, 'Source plugin name'),
+                    new InputArgument('args', InputArgument::OPTIONAL, 'Arguments as key:value')
+                ));
     }
 
     protected function execute(InputInterface $input, OutputInterface $output) {
-        $output->write('No subliminal messages here');
+        $namespaced = str_replace('_', "\\", $input->getArgument('source'));
+        $class = 'Heatbeat\\Source\\Plugin\\' . $namespaced;
+        $instance = new $class;
+        $arguments = $input->getArgument('args');
+        if ($arguments) {
+            $sourceArray = array();
+            $argumentsArray = explode("|", $arguments);
+            foreach ($argumentsArray as $argument) {
+                $kv = explode(":", $argument);
+                $sourceArray[$kv[0]] = $kv[1];
+            }
+            $inputArguments = new SourceInput($sourceArray);
+            $instance->setInput($inputArguments);
+        }
+        $instance->perform();
+        if ($instance->getIsSuccessful()) {
+            $output->write('Status : Success', true);
+            $output->write('Results :', true);
+            foreach ($instance->getOutput() as $key => $value) {
+                $output->write(sprintf("Key : %s, Value : %s", $key, $value), true);
+            }
+        } else {
+            $output->write('Status : Failed', true);
+            $output->write(sprintf('Error message : %s', $instance->getErrorMessage()), true);            
+            $output->write('Input values :', true);
+            foreach ($instance->getInput() as $key => $value) {
+                $output->write(sprintf("Key : %s, Value : %s", $key, $value), true);
+            }
+        }
     }
 
 }
