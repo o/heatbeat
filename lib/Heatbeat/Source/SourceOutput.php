@@ -23,7 +23,7 @@
  * @link        http://github.com/import/heatbeat
  */
 
-namespace Heatbeat;
+namespace Heatbeat\Source;
 
 /**
  * Abstract source class for data fetching
@@ -32,6 +32,6 @@ namespace Heatbeat;
  * @package     Heatbeat\Source
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class SourceOutput extends \ArrayObject {
+class SourceOutput extends AbstractInputOutput {
     
 }
