@@ -16,14 +16,14 @@
  * limitations under the License. 
  *
  * @category    Heatbeat
- * @package     Heatbeat
+ * @package     Heatbeat\CommandLine
  * @author      Osman Ungur <osmanungur@gmail.com>
  * @copyright   2011 Osman Ungur
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  * @link        http://github.com/import/heatbeat
  */
 
-namespace Heatbeat;
+namespace Heatbeat\CommandLine;
 
 use Symfony\Component\Console\Application,
     Heatbeat\Commandline\Callback;
@@ -32,16 +32,17 @@ use Symfony\Component\Console\Application,
  * Application class for Heatbeat CLI interface.
  *
  * @category    Heatbeat
- * @package     Heatbeat
+ * @package     Heatbeat\CommandLine
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class Commandline extends Application {
+class Runner extends Application {
 
     public function __construct() {
         parent::__construct('Welcome to Heatbeat Graphing Tool', '1.0');
 
         $this->addCommands(array(
-            new Update()
+            new Callback\Update(),
+            new Callback\TestSource()
         ));
     }
 
