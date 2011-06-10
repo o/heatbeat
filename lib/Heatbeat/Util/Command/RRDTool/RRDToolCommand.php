@@ -25,7 +25,8 @@
 
 namespace Heatbeat\Util\Command\RRDTool;
 
-use Heatbeat\Util\AbstractCommand as Command;
+use Heatbeat\Util\AbstractCommand as Command,
+    Heatbeat\Autoloader as Autoloader;
 
 /**
  * Common methods for rrdtool commands
@@ -37,6 +38,7 @@ use Heatbeat\Util\AbstractCommand as Command;
 abstract class RRDToolCommand extends Command {
     const SEPERATOR = ':';
     const EXECUTABLE = 'rrdtool';
+    const RRD_EXT = '.rrd';
 
     public function __construct() {
         $this->setCommand(self::EXECUTABLE);
@@ -44,7 +46,7 @@ abstract class RRDToolCommand extends Command {
     }
 
     public function setFilename($filename) {
-        $this->addArgument($filename);
+        $this->addArgument(Autoloader::getInstance()->getPath(Autoloader::FOLDER_RRD) . \DIRECTORY_SEPARATOR . $filename . self::RRD_EXT);
     }
 
 }
