@@ -23,7 +23,7 @@
  * @link        http://github.com/import/heatbeat
  */
 
-namespace Heatbeat;
+namespace Heatbeat\Source;
 
 /**
  * Abstract source class for data fetching
