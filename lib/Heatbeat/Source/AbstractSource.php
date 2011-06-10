@@ -23,7 +23,7 @@
  * @link        http://github.com/import/heatbeat
  */
 
-namespace Heatbeat;
+namespace Heatbeat\Source;
 
 use Heatbeat\Util\CommandExecutor,
     Heatbeat\Autoloader;
@@ -39,6 +39,8 @@ abstract class AbstractSource {
 
     private $input;
     private $output;
+    private $isSuccessful = false;
+    private $errorMessage;
 
     protected function getInput() {
         return $this->input;
@@ -58,6 +60,22 @@ abstract class AbstractSource {
 
     public function getExternalFolderPath() {
         return Autoloader::getInstance()->getPath(Autoloader::FOLDER_EXTERNAL);
+    }
+
+    public function getIsSuccessful() {
+        return $this->isSuccessful;
+    }
+
+    public function setIsSuccessful($isSuccessful) {
+        $this->isSuccessful = $isSuccessful;
+    }
+
+    public function getErrorMessage() {
+        return $this->errorMessage;
+    }
+
+    public function setErrorMessage($errorMessage) {
+        $this->errorMessage = $errorMessage;
     }
 
 }
