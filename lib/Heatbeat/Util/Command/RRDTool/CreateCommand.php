@@ -25,6 +25,9 @@
 
 namespace Heatbeat\Util\Command\RRDTool;
 
+use Heatbeat\Parser\Template\Node\DatastoreNode as Datastore,
+    Heatbeat\Parser\Template\Node\RraNode as RRA;
+
 /**
  * Implementation for RRDTool create command
  *
@@ -55,7 +58,8 @@ class CreateCommand extends RRDToolCommand {
      */
     public function setDatastores(array $datastores) {
         foreach ($datastores as $datastore) {
-            $this->addArgument($datastore->getAsString());
+            $object = new Datastore($datastore);
+            $this->addArgument($object->getAsString());
         }
         return true;
     }
@@ -67,7 +71,8 @@ class CreateCommand extends RRDToolCommand {
      */
     public function setRras(array $rras) {
         foreach ($rras as $rra) {
-            $this->addArgument($rra->getAsString());
+            $object = new RRA($datastore);
+            $this->addArgument($object->getAsString());
         }
         return true;
     }

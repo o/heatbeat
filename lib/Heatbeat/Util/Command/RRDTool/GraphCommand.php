@@ -25,6 +25,12 @@
 
 namespace Heatbeat\Util\Command\RRDTool;
 
+use Heatbeat\Parser\Template\Node\DefNode as DEF,
+    Heatbeat\Parser\Template\Node\CDefNode as CDEF,
+    Heatbeat\Parser\Template\Node\VDefNode as VDEF,
+    Heatbeat\Parser\Template\Node\GPrintNode as GPrint,
+    Heatbeat\Parser\Template\Node\ItemNode as Item;
+
 /**
  * Implementation for RRDTool graph command
  *
@@ -33,6 +39,7 @@ namespace Heatbeat\Util\Command\RRDTool;
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
 class GraphCommand extends RRDToolCommand {
+
     protected $subCommand = 'graph';
 
     const PARAMETER_START = 'start';
@@ -72,31 +79,36 @@ class GraphCommand extends RRDToolCommand {
 
     public function setDefs(array $defs) {
         foreach ($defs as $def) {
-            $this->addArgument($def);
+            $object = new DEF($def);
+            $this->addArgument($object->getAsString());
         }
     }
 
     public function setCdefs(array $cdefs) {
         foreach ($cdefs as $cdef) {
-            $this->addArgument($cdef);
+            $object = new CDEF($cdef);
+            $this->addArgument($object->getAsString());
         }
     }
 
     public function setVdefs(array $vdefs) {
         foreach ($vdefs as $vdef) {
-            $this->addArgument($vdef);
+            $object = new VDEF($vdef);
+            $this->addArgument($object->getAsString());
         }
     }
 
     public function setGprints(array $gprints) {
         foreach ($gprints as $gprint) {
-            $this->addArgument($gprint);
+            $object = new GPrint($gprint);
+            $this->addArgument($object->getAsString());
         }
     }
 
-    public function setElements(array $elements) {
-        foreach ($elements as $element) {
-            $this->addArgument($element);
+    public function setItems(array $items) {
+        foreach ($items as $item) {
+            $object = new Item($item);
+            $this->addArgument($object->getAsString());
         }
     }
 
