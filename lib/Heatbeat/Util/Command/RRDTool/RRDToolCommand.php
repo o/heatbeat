@@ -43,10 +43,15 @@ abstract class RRDToolCommand extends Command {
     public function __construct() {
         $this->setCommand(self::EXECUTABLE);
         $this->setSubCommand($this->subCommand);
+        $this->init();
     }
 
     public function setFilename($filename) {
         $this->addArgument(Autoloader::getInstance()->getPath(Autoloader::FOLDER_RRD) . \DIRECTORY_SEPARATOR . $filename . self::RRD_EXT);
+    }
+    
+    public function init() {
+
     }
 
 }
