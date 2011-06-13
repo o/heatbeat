@@ -26,7 +26,6 @@
 namespace Heatbeat\Parser\Template;
 
 use Heatbeat\Parser\AbstractParser,
-    Heatbeat\Parser\ParserInterface,
     Heatbeat\Autoloader;
 
 /**
