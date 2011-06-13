@@ -16,42 +16,47 @@
  * limitations under the License. 
  *
  * @category    Heatbeat
- * @package     Heatbeat\Util\Command\RRDTool
+ * @package     Heatbeat\Parser\Template\Node
  * @author      Osman Ungur <osmanungur@gmail.com>
  * @copyright   2011 Osman Ungur
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  * @link        http://github.com/import/heatbeat
  */
 
-namespace Heatbeat\Util\Command\RRDTool;
-
-use Heatbeat\Util\AbstractCommand as Command,
-    Heatbeat\Autoloader as Autoloader;
+namespace Heatbeat\Parser\Template\Node;
 
 /**
- * Common methods for rrdtool commands
+ * Datastore node of template
  *
  * @category    Heatbeat
- * @package     Heatbeat\Util\Command\RRDTool
+ * @package     Heatbeat\Parser\Template\Node
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-abstract class RRDToolCommand extends Command {
-    const SEPERATOR = ':';
-    const EXECUTABLE = 'rrdtool';
-    const RRD_EXT = '.rrd';
+class DatastoreNode extends AbstractNode implements NodeInterface {
+    const PREFIX = 'DS';
+    private $validTypes = array(
+        'GAUGE',
+        'COUNTER',
+        'DERIVE',
+        'ABSOLUTE'
+    );
 
-    public function __construct() {
-        $this->setCommand(self::EXECUTABLE);
-        $this->setSubCommand($this->subCommand);
-        $this->init();
+    public function getAsString() {
+        return implode(self::SEPERATOR, array(
+            self::PREFIX,
+            $this->offsetGet('name'),
+            strtoupper($this->offsetGet('type')),
+            $this->offsetGet('heartbeat'),
+            $this->offsetGet('min'),
+            $this->offsetGet('max')
+        ));
     }
 
-    public function setFilename($filename) {
-        $this->addArgument(Autoloader::getInstance()->getPath(Autoloader::FOLDER_RRD) . \DIRECTORY_SEPARATOR . $filename . self::RRD_EXT);
-    }
-    
-    public function init() {
-
+    public function validate() {
+        if (!in_array(strtoupper($this->offsetGet('type')), $this->validTypes)) {
+            return false;
+        };
+        return true;
     }
 
 }

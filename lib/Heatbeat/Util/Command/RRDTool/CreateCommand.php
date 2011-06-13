@@ -25,6 +25,9 @@
 
 namespace Heatbeat\Util\Command\RRDTool;
 
+use Heatbeat\Parser\Template\Node\DatastoreNode as Datastore,
+    Heatbeat\Parser\Template\Node\RraNode as RRA;
+
 /**
  * Implementation for RRDTool create command
  *
@@ -34,19 +37,20 @@ namespace Heatbeat\Util\Command\RRDTool;
  */
 class CreateCommand extends RRDToolCommand {
     const PARAMETER_STEP = 'step';
+    const PARAMETER_START = 'start';
+    const PARAMETER_NO_OVERWRITE = 'no-overwrite';
     protected $subCommand = 'create';
 
     /**
      *
      * @param int $step
-     * @return bool | InvalidArgumentException 
+     * @return bool 
      */
     public function setStep($step) {
         if (is_int($step)) {
             $this->setOption(self::PARAMETER_STEP, $step);
             return true;
         }
-        throw new \InvalidArgumentException("You must provide an integer for step argument");
     }
 
     /**
@@ -56,7 +60,8 @@ class CreateCommand extends RRDToolCommand {
      */
     public function setDatastores(array $datastores) {
         foreach ($datastores as $datastore) {
-            $this->addArgument($datastore);
+            $object = new Datastore($datastore);
+            $this->addArgument($object->getAsString());
         }
         return true;
     }
@@ -68,9 +73,24 @@ class CreateCommand extends RRDToolCommand {
      */
     public function setRras(array $rras) {
         foreach ($rras as $rra) {
-            $this->addArgument($rra);
+            $object = new RRA($rra);
+            $this->addArgument($object->getAsString());
         }
         return true;
+    }
+
+    public function setOverwrite($value) {
+        $this->setOption(self::PARAMETER_NO_OVERWRITE, ($value ? false : true));
+        return true;
+    }
+
+    private function setStart() {
+        $this->setOption(self::PARAMETER_START, time() - (60 * 60));
+    }
+
+    public function init() {
+        $this->setOverwrite(true);
+        $this->setStart();
     }
 
 }

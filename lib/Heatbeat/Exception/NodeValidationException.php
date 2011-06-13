@@ -16,42 +16,22 @@
  * limitations under the License. 
  *
  * @category    Heatbeat
- * @package     Heatbeat\Util\Command\RRDTool
+ * @package     Heatbeat\Exception
  * @author      Osman Ungur <osmanungur@gmail.com>
  * @copyright   2011 Osman Ungur
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  * @link        http://github.com/import/heatbeat
  */
 
-namespace Heatbeat\Util\Command\RRDTool;
-
-use Heatbeat\Util\AbstractCommand as Command,
-    Heatbeat\Autoloader as Autoloader;
+namespace Heatbeat\Exception;
 
 /**
- * Common methods for rrdtool commands
+ * Node validation exception class
  *
  * @category    Heatbeat
- * @package     Heatbeat\Util\Command\RRDTool
+ * @package     Heatbeat\Exception
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-abstract class RRDToolCommand extends Command {
-    const SEPERATOR = ':';
-    const EXECUTABLE = 'rrdtool';
-    const RRD_EXT = '.rrd';
-
-    public function __construct() {
-        $this->setCommand(self::EXECUTABLE);
-        $this->setSubCommand($this->subCommand);
-        $this->init();
-    }
-
-    public function setFilename($filename) {
-        $this->addArgument(Autoloader::getInstance()->getPath(Autoloader::FOLDER_RRD) . \DIRECTORY_SEPARATOR . $filename . self::RRD_EXT);
-    }
+class NodeValidationException extends HeatbeatException {
     
-    public function init() {
-
-    }
-
 }

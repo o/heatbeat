@@ -37,14 +37,16 @@ use \Symfony\Component\ClassLoader\UniversalClassLoader;
 class Autoloader {
     const FOLDER_ROOT = 'root';
     const FOLDER_LIBRARY = 'lib';
-    const FOLDER_TEMPLATE = 'template';
+    const FOLDER_TEMPLATE = 'templates';
     const FOLDER_EXTERNAL = 'external';
     const FOLDER_RRD = 'rrd';
     const FOLDER_VENDOR = 'vendor';
+    const FOLDER_LOG = 'logs';
 
     private static $instance;
     private $loader;
     private $paths;
+    private $config;
 
     public static function getInstance() {
         if (null === self::$instance) {
@@ -56,6 +58,8 @@ class Autoloader {
     private function __construct() {
         $this->setPaths();
         $this->register();
+        $this->setErrorExceptionHandling();
+        $this->setConfig();
     }
 
     private function setPaths() {
@@ -63,10 +67,11 @@ class Autoloader {
         $this->paths = array(
             'root' => $rootPath,
             'lib' => $rootPath . \DIRECTORY_SEPARATOR . self::FOLDER_LIBRARY,
-            'template' => $rootPath . \DIRECTORY_SEPARATOR . self::FOLDER_TEMPLATE,
+            'templates' => $rootPath . \DIRECTORY_SEPARATOR . self::FOLDER_TEMPLATE,
             'external' => $rootPath . \DIRECTORY_SEPARATOR . self::FOLDER_EXTERNAL,
             'rrd' => $rootPath . \DIRECTORY_SEPARATOR . self::FOLDER_RRD,
-            'vendor' => $rootPath . \DIRECTORY_SEPARATOR . self::FOLDER_VENDOR
+            'vendor' => $rootPath . \DIRECTORY_SEPARATOR . self::FOLDER_VENDOR,
+            'logs' => $rootPath . \DIRECTORY_SEPARATOR . self::FOLDER_LOG
         );
     }
 
@@ -83,12 +88,27 @@ class Autoloader {
         $this->setLoader($loader);
     }
 
+    private function setErrorExceptionHandling() {
+        error_reporting(E_ALL | E_STRICT);
+        set_error_handler(array('Heatbeat\\Heatbeat', 'handleErrors'));
+        set_exception_handler(array('Heatbeat\\Heatbeat', 'handleExceptions'));
+    }
+
     private function setLoader($loader) {
         $this->loader = $loader;
     }
 
     public function getPath($path) {
         return $this->paths[$path];
+    }
+
+    public function getConfig() {
+        return $this->config;
+    }
+
+    private function setConfig() {
+        $config = new \Heatbeat\Parser\Config\ConfigParser($this->getPath(Autoloader::FOLDER_ROOT));
+        $this->config = $config->getValues();
     }
 
 }

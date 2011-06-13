@@ -16,42 +16,35 @@
  * limitations under the License. 
  *
  * @category    Heatbeat
- * @package     Heatbeat\Util\Command\RRDTool
+ * @package     Heatbeat\CommandLine
  * @author      Osman Ungur <osmanungur@gmail.com>
  * @copyright   2011 Osman Ungur
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  * @link        http://github.com/import/heatbeat
  */
 
-namespace Heatbeat\Util\Command\RRDTool;
+namespace Heatbeat\CommandLine;
 
-use Heatbeat\Util\AbstractCommand as Command,
-    Heatbeat\Autoloader as Autoloader;
+use Symfony\Component\Console\Application,
+    Heatbeat\Commandline\Callback\Update,
+    Heatbeat\CommandLine\Callback\TestSource;
 
 /**
- * Common methods for rrdtool commands
+ * Application class for Heatbeat CLI interface.
  *
  * @category    Heatbeat
- * @package     Heatbeat\Util\Command\RRDTool
+ * @package     Heatbeat\CommandLine
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-abstract class RRDToolCommand extends Command {
-    const SEPERATOR = ':';
-    const EXECUTABLE = 'rrdtool';
-    const RRD_EXT = '.rrd';
+class Runner extends Application {
 
     public function __construct() {
-        $this->setCommand(self::EXECUTABLE);
-        $this->setSubCommand($this->subCommand);
-        $this->init();
-    }
+        parent::__construct('Welcome to Heatbeat Graphing Tool', '1.0');
 
-    public function setFilename($filename) {
-        $this->addArgument(Autoloader::getInstance()->getPath(Autoloader::FOLDER_RRD) . \DIRECTORY_SEPARATOR . $filename . self::RRD_EXT);
-    }
-    
-    public function init() {
-
+        $this->addCommands(array(
+            new Update(),
+            new TestSource()
+        ));
     }
 
 }
