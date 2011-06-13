@@ -1,6 +1,7 @@
 configuration :
     log :
         enabled : true
+        handler : RotatingFile
 
 templates :
     - name : random
