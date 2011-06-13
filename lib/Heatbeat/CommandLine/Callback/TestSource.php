@@ -53,7 +53,10 @@ class TestSource extends Console\Command\Command {
 
     protected function execute(InputInterface $input, OutputInterface $output) {
         $namespaced = str_replace('_', "\\", $input->getArgument('source'));
-        $class = 'Heatbeat\\Source\\Plugin\\' . $namespaced;
+        $class_name = 'Heatbeat\\Source\\Plugin\\' . $namespaced;
+        if (!class_exists($class_name)) {
+            $output->write(sprintf('Failed : Unable to find source plugin %s', $namespaced), true);
+        }
         $instance = new $class;
         $arguments = $input->getArgument('args');
         if ($arguments) {
@@ -75,7 +78,7 @@ class TestSource extends Console\Command\Command {
             }
         } else {
             $output->write('Status : Failed', true);
-            $output->write(sprintf('Error message : %s', $instance->getErrorMessage()), true);            
+            $output->write(sprintf('Error message : %s', $instance->getErrorMessage()), true);
             $output->write('Input values :', true);
             foreach ($instance->getInput() as $key => $value) {
                 $output->write(sprintf("Key : %s, Value : %s", $key, $value), true);

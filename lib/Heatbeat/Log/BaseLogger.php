@@ -26,7 +26,8 @@
 namespace Heatbeat\Log;
 
 use Heatbeat\Autoloader,
-    Heatbeat\Log\Handler;
+    Heatbeat\Log\Handler,
+    Heatbeat\Exception\HeatbeatException;
 
 /**
  * Config file parser
@@ -60,12 +61,9 @@ class BaseLogger {
                 $this->getHandler()->handle($data);
                 return true;
             }
-            return false;
+            throw new \LoggingException("A logging problem occured, please check your logs directory is writable");
         }
         return false;
-        /**
-         * @todo Log handling exception
-         */
     }
 
     private function getIsEnabled() {
@@ -81,10 +79,13 @@ class BaseLogger {
     }
 
     public function setHandler($handler) {
-        $class = "\\Heatbeat\\Log\\Handler\\" . $handler . "Handler";
-        $instance = new $class;
-        $instance->init();
-        $this->handler = $instance;
+        $class_name = "\\Heatbeat\\Log\\Handler\\" . $handler . "Handler";
+        if (class_exists($class_name)) {
+            $instance = new $class;
+            $instance->init();
+            $this->handler = $instance;
+        }
+        throw new HeatbeatException(sprintf("Unable to load log handler class %s", $handler));
     }
 
 }
