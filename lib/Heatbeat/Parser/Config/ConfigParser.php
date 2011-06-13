@@ -26,6 +26,7 @@
 namespace Heatbeat\Parser\Config;
 
 use Heatbeat\Parser\AbstractParser,
+    Heatbeat\Parser\ParserInterface,
     Heatbeat\Autoloader;
 
 /**
@@ -35,7 +36,7 @@ use Heatbeat\Parser\AbstractParser,
  * @package     Heatbeat\Parser\Config
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class ConfigParser extends AbstractParser {
+class ConfigParser extends AbstractParser implements ParserInterface {
     const FILENAME = 'config';
 
     public function __construct() {

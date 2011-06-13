@@ -26,6 +26,7 @@
 namespace Heatbeat\Parser\Template;
 
 use Heatbeat\Parser\AbstractParser,
+    Heatbeat\Parser\ParserInterface,
     Heatbeat\Autoloader;
 
 /**
@@ -35,7 +36,7 @@ use Heatbeat\Parser\AbstractParser,
  * @package     Heatbeat\Parser\Template
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class TemplateParser extends AbstractParser {
+class TemplateParser extends AbstractParser implements ParserInterface {
 
     public function __construct($filename) {
         $this->setFilePath();
