@@ -5,7 +5,7 @@ namespace Heatbeat;
 
 use Heatbeat\CommandLine\Runner as Cli;
 
-require '../lib/Heatbeat/Autoloader.php';
+require realpath(dirname(__FILE__) . \DIRECTORY_SEPARATOR . '..') .'/lib/Heatbeat/Autoloader.php';
 Autoloader::getInstance();
 $cli = new Cli;
 $cli->run();
