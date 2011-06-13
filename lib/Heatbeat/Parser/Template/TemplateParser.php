@@ -36,7 +36,7 @@ use Heatbeat\Parser\AbstractParser,
  * @package     Heatbeat\Parser\Template
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class TemplateParser extends AbstractParser implements ParserInterface {
+class TemplateParser extends AbstractParser {
 
     public function __construct($filename) {
         $this->setFilePath();

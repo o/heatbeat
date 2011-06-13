@@ -36,7 +36,7 @@ use Heatbeat\Parser\AbstractParser,
  * @package     Heatbeat\Parser\Config
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class ConfigParser extends AbstractParser implements ParserInterface {
+class ConfigParser extends AbstractParser {
     const FILENAME = 'config';
 
     public function __construct() {

@@ -71,6 +71,7 @@ abstract class AbstractParser {
         $this->values = new \ArrayIterator($values);
     }
 
+    abstract protected function setFilePath();
 }
 
 ?>
