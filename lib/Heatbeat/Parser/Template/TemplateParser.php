@@ -39,13 +39,9 @@ use Heatbeat\Parser\AbstractParser,
 class TemplateParser extends AbstractParser {
 
     public function __construct($filename) {
-        $this->setFilePath();
+        $this->setFilePath(Autoloader::getInstance()->getPath(Autoloader::FOLDER_TEMPLATE));
         $this->setFilename($filename);
         $this->setValues($this->parse());
-    }
-
-    protected function setFilePath() {
-        $this->filepath = Autoloader::getInstance()->getPath(Autoloader::FOLDER_TEMPLATE);
     }
 
 }

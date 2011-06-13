@@ -39,14 +39,10 @@ use Heatbeat\Parser\AbstractParser,
 class ConfigParser extends AbstractParser {
     const FILENAME = 'config';
 
-    public function __construct() {
-        $this->setFilePath();
+    public function __construct($folder) {
+        $this->setFilePath($folder);
         $this->setFilename(self::FILENAME);
         $this->setValues($this->parse());
-    }
-
-    protected function setFilePath() {
-        $this->filepath = Autoloader::getInstance()->getPath(Autoloader::FOLDER_ROOT);
     }
 
 }

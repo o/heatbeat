@@ -49,6 +49,10 @@ abstract class AbstractParser {
     protected function setFilename($filename) {
         $this->filename = $filename;
     }
+    
+    protected function setFilepath($filepath) {
+        $this->filepath = $filepath;
+    }
 
     private function getFilepath() {
         return $this->filepath;
@@ -71,7 +75,6 @@ abstract class AbstractParser {
         $this->values = new \ArrayIterator($values);
     }
 
-    abstract protected function setFilePath();
 }
 
 ?>
