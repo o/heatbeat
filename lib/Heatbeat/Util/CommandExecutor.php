@@ -88,7 +88,7 @@ class CommandExecutor {
     }
 
     public function dirtyExecute($command) {
-        $process = new Process($this->getCommandString());
+        $process = new Process($command);
         $process->setEnv(explode(PATH_SEPARATOR, \getenv('PATH')));
         $process->run();
         return $process;
