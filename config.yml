@@ -1,6 +1,7 @@
-defaults :
-    foo : bar
-    bar : baz
+configuration :
+    log :
+        enabled : true
+
 templates :
     - name : random
       enabled : true
