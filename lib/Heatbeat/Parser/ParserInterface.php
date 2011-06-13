@@ -26,51 +26,12 @@
 namespace Heatbeat\Parser;
 
 /**
- * Class for parsing/passing YAML templates.
+ * Interface for parsers
  *
  * @category    Heatbeat
  * @package     Heatbeat\Parser
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-use Symfony\Component\Yaml\Yaml;
-
-abstract class AbstractParser {
-
-    private $filename;
-    protected $filepath;
-    protected $values;
-
-    CONST YAML_EXT = '.yml';
-
-    private function getFilename() {
-        return $this->filename;
-    }
-
-    protected function setFilename($filename) {
-        $this->filename = $filename;
-    }
-
-    private function getFilepath() {
-        return $this->filepath;
-    }
-
-    private function getFullPath() {
-        return $this->getFilepath() . \DIRECTORY_SEPARATOR . $this->getFilename() . self::YAML_EXT;
-    }
-
-    protected function parse() {
-        $yaml = new Yaml();
-        return $yaml->load($this->getFullPath());
-    }
-
-    public function getValues() {
-        return $this->values;
-    }
-
-    protected function setValues($values) {
-        $this->values = new \ArrayIterator($values);
-    }
-
+interface ParserInterface {
+    protected function setFilePath();
 }
-
-?>
