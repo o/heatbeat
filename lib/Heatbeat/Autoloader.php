@@ -41,10 +41,12 @@ class Autoloader {
     const FOLDER_EXTERNAL = 'external';
     const FOLDER_RRD = 'rrd';
     const FOLDER_VENDOR = 'vendor';
+    const FOLDER_LOG = 'log';
 
     private static $instance;
     private $loader;
     private $paths;
+    private $config;
 
     public static function getInstance() {
         if (null === self::$instance) {
@@ -56,6 +58,8 @@ class Autoloader {
     private function __construct() {
         $this->setPaths();
         $this->register();
+        $this->setErrorExceptionHandling();
+        $this->setConfig();
     }
 
     private function setPaths() {
@@ -66,7 +70,8 @@ class Autoloader {
             'templates' => $rootPath . \DIRECTORY_SEPARATOR . self::FOLDER_TEMPLATE,
             'external' => $rootPath . \DIRECTORY_SEPARATOR . self::FOLDER_EXTERNAL,
             'rrd' => $rootPath . \DIRECTORY_SEPARATOR . self::FOLDER_RRD,
-            'vendor' => $rootPath . \DIRECTORY_SEPARATOR . self::FOLDER_VENDOR
+            'vendor' => $rootPath . \DIRECTORY_SEPARATOR . self::FOLDER_VENDOR,
+            'log' => $rootPath . \DIRECTORY_SEPARATOR . self::FOLDER_LOG
         );
     }
 
@@ -83,12 +88,27 @@ class Autoloader {
         $this->setLoader($loader);
     }
 
+    private function setErrorExceptionHandling() {
+        error_reporting(E_ALL | E_STRICT);
+        set_error_handler(array('Heatbeat\\Heatbeat', 'handleErrors'));
+        set_exception_handler(array('Heatbeat\\Heatbeat', 'handleExceptions'));
+    }
+
     private function setLoader($loader) {
         $this->loader = $loader;
     }
 
     public function getPath($path) {
         return $this->paths[$path];
+    }
+
+    public function getConfig() {
+        return $this->config;
+    }
+
+    private function setConfig() {
+        $config = new \Heatbeat\Parser\Config\ConfigParser();
+        $this->config = $config->getValues();
     }
 
 }
