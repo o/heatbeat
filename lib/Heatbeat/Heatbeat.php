@@ -25,10 +25,12 @@
 
 namespace Heatbeat;
 
-use Heatbeat\Parser\Config\ConfigParser as Config,
+use Heatbeat\Autoloader,
+    Heatbeat\Parser\Config\ConfigParser as Config,
     Heatbeat\Parser\Template\TemplateParser as TemplateLoader,
     Heatbeat\Util\Command\RRDTool\CreateCommand as RRDToolCreate,
-    Heatbeat\Util\CommandExecutor as Executor;
+    Heatbeat\Util\CommandExecutor as Executor,
+    Heatbeat\Log\BaseLogger as Logger;
 
 /**
  * Heatbeat runner
@@ -40,8 +42,7 @@ use Heatbeat\Parser\Config\ConfigParser as Config,
 class Heatbeat {
 
     private function getConfig() {
-        $config = new Config;
-        return $config->getValues();
+        return Autoloader::getConfig();
     }
 
     private function getTemplate($filename) {
@@ -63,6 +64,17 @@ class Heatbeat {
             $executor->prepare();
             return $executor->execute();
         }
+    }
+
+    public static function handleErrors($errno, $errstr = '', $errfile = '', $errline = '') {
+        if (!(error_reporting() & $errno)) {
+            return false;
+        }
+        // Logging
+    }
+
+    public static function handleExceptions(Exception $exc) {
+        // Logging
     }
 
 }
