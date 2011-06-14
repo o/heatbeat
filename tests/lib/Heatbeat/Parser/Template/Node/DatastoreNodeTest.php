@@ -27,6 +27,7 @@ class DatastoreNodeTest extends \PHPUnit_Framework_TestCase {
                     'max' => $max
                 ));
         $this->assertEquals($result, $object->getAsString());
+        $this->assertTrue($object->validate());
     }
 
     public function dsDataProvider() {
@@ -39,7 +40,7 @@ class DatastoreNodeTest extends \PHPUnit_Framework_TestCase {
     /**
      * @expectedException Heatbeat\Exception\NodeValidationException
      */
-    public function testValidate1() {
+    public function testNameNotExists() {
         $array = $this->validationData;
         unset($array['name']);
         $object = new DatastoreNode($array);
@@ -49,7 +50,7 @@ class DatastoreNodeTest extends \PHPUnit_Framework_TestCase {
     /**
      * @expectedException Heatbeat\Exception\NodeValidationException
      */
-    public function testValidate2() {
+    public function testTypeNotExists() {
         $array = $this->validationData;
         unset($array['type']);
         $object = new DatastoreNode($array);
@@ -59,7 +60,7 @@ class DatastoreNodeTest extends \PHPUnit_Framework_TestCase {
     /**
      * @expectedException Heatbeat\Exception\NodeValidationException
      */
-    public function testValidate3() {
+    public function testHeartbeatNotExists() {
         $array = $this->validationData;
         unset($array['heartbeat']);
         $object = new DatastoreNode($array);
@@ -69,7 +70,7 @@ class DatastoreNodeTest extends \PHPUnit_Framework_TestCase {
     /**
      * @expectedException Heatbeat\Exception\NodeValidationException
      */
-    public function testValidate4() {
+    public function testMinNotExists() {
         $array = $this->validationData;
         unset($array['min']);
         $object = new DatastoreNode($array);
@@ -79,7 +80,7 @@ class DatastoreNodeTest extends \PHPUnit_Framework_TestCase {
     /**
      * @expectedException Heatbeat\Exception\NodeValidationException
      */
-    public function testValidate5() {
+    public function testMaxNotExists() {
         $array = $this->validationData;
         unset($array['max']);
         $object = new DatastoreNode($array);
@@ -89,7 +90,7 @@ class DatastoreNodeTest extends \PHPUnit_Framework_TestCase {
     /**
      * @expectedException Heatbeat\Exception\NodeValidationException
      */
-    public function testValidate6() {
+    public function testInvalidType() {
         $array = $this->validationData;
         $array['type'] = 'FOO';
         $object = new DatastoreNode($array);
@@ -99,7 +100,7 @@ class DatastoreNodeTest extends \PHPUnit_Framework_TestCase {
     /**
      * @expectedException Heatbeat\Exception\NodeValidationException
      */
-    public function testValidate7() {
+    public function testInvalidHeartbeat() {
         $array = $this->validationData;
         $array['heartbeat'] = 'foo';        
         $object = new DatastoreNode($array);
@@ -109,7 +110,7 @@ class DatastoreNodeTest extends \PHPUnit_Framework_TestCase {
     /**
      * @expectedException Heatbeat\Exception\NodeValidationException
      */
-    public function testValidate8() {
+    public function testInvalidMin() {
         $array = $this->validationData;
         $array['min'] = 'foo';        
         $object = new DatastoreNode($array);
@@ -119,7 +120,7 @@ class DatastoreNodeTest extends \PHPUnit_Framework_TestCase {
     /**
      * @expectedException Heatbeat\Exception\NodeValidationException
      */
-    public function testValidate9() {
+    public function testInvalidMax() {
         $array = $this->validationData;
         $array['max'] = 'foo';        
         $object = new DatastoreNode($array);

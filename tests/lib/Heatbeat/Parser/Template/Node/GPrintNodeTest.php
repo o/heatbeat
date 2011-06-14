@@ -21,6 +21,7 @@ class GPrintNodeTest extends \PHPUnit_Framework_TestCase {
                     'format' => $format
                 ));
         $this->assertEquals($result, $object->getAsString());
+        $this->assertTrue($object->validate());        
     }
 
     public function gprintDataProvider() {
@@ -33,7 +34,7 @@ class GPrintNodeTest extends \PHPUnit_Framework_TestCase {
     /**
      * @expectedException Heatbeat\Exception\NodeValidationException
      */
-    public function testValidate1() {
+    public function testDefinitionNotExists() {
         $array = $this->validationData;
         unset($array['definition-name']);
         $object = new GPrintNode($array);
@@ -43,7 +44,7 @@ class GPrintNodeTest extends \PHPUnit_Framework_TestCase {
     /**
      * @expectedException Heatbeat\Exception\NodeValidationException
      */
-    public function testValidate2() {
+    public function testFormatNotExists() {
         $array = $this->validationData;
         unset($array['format']);
         $object = new GPrintNode($array);

@@ -21,6 +21,7 @@ class CDefNodeTest extends \PHPUnit_Framework_TestCase {
                     'rpn' => $rpn
                 ));
         $this->assertEquals($result, $object->getAsString());
+        $this->assertTrue($object->validate());
     }
 
     public function cdefDataProvider() {
@@ -33,7 +34,7 @@ class CDefNodeTest extends \PHPUnit_Framework_TestCase {
     /**
      * @expectedException Heatbeat\Exception\NodeValidationException
      */
-    public function testValidate1() {
+    public function testNameNotExists() {
         $array = $this->validationData;
         unset($array['name']);
         $object = new CDefNode($array);
@@ -43,7 +44,7 @@ class CDefNodeTest extends \PHPUnit_Framework_TestCase {
     /**
      * @expectedException Heatbeat\Exception\NodeValidationException
      */
-    public function testValidate2() {
+    public function testRpnNotExists() {
         $array = $this->validationData;
         unset($array['rpn']);
         $object = new CDefNode($array);

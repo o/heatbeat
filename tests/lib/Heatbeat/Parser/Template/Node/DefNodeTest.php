@@ -25,6 +25,7 @@ class DefNodeTest extends \PHPUnit_Framework_TestCase {
                     'cf' => $cf
                 ));
         $this->assertEquals($result, $object->getAsString());
+        $this->assertTrue($object->validate());
     }
 
     public function defDataProvider() {
@@ -37,7 +38,7 @@ class DefNodeTest extends \PHPUnit_Framework_TestCase {
     /**
      * @expectedException Heatbeat\Exception\NodeValidationException
      */
-    public function testValidate1() {
+    public function testNameNotExists() {
         $array = $this->validationData;
         unset($array['name']);
         $object = new DefNode($array);
@@ -47,7 +48,7 @@ class DefNodeTest extends \PHPUnit_Framework_TestCase {
     /**
      * @expectedException Heatbeat\Exception\NodeValidationException
      */
-    public function testValidate2() {
+    public function testFilenameNotExists() {
         $array = $this->validationData;
         unset($array['filename']);
         $object = new DefNode($array);
@@ -57,7 +58,7 @@ class DefNodeTest extends \PHPUnit_Framework_TestCase {
     /**
      * @expectedException Heatbeat\Exception\NodeValidationException
      */
-    public function testValidate3() {
+    public function testDatastoreNotExists() {
         $array = $this->validationData;
         unset($array['datastore-name']);
         $object = new DefNode($array);
@@ -67,7 +68,7 @@ class DefNodeTest extends \PHPUnit_Framework_TestCase {
     /**
      * @expectedException Heatbeat\Exception\NodeValidationException
      */
-    public function testValidate4() {
+    public function testCfNotExists() {
         $array = $this->validationData;
         unset($array['cf']);
         $object = new DefNode($array);
@@ -77,7 +78,7 @@ class DefNodeTest extends \PHPUnit_Framework_TestCase {
     /**
      * @expectedException Heatbeat\Exception\NodeValidationException
      */
-    public function testValidate5() {
+    public function testInvalidCf() {
         $array = $this->validationData;
         $array['cf'] = 'FOO';
         $object = new DefNode($array);
