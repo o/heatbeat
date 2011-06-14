@@ -7,6 +7,11 @@ namespace Heatbeat\Parser\Template\Node;
  */
 class CDefNodeTest extends \PHPUnit_Framework_TestCase {
 
+    private $validationData = array(
+        'name' => 'test',
+        'rpn' => 'inbytes,8,*',
+    );
+
     /**
      * @dataProvider cdefDataProvider
      */
@@ -24,24 +29,24 @@ class CDefNodeTest extends \PHPUnit_Framework_TestCase {
             array('var_name', 'RPN_expression', 'CDEF:var_name=RPN_expression')
         );
     }
-    
+
     /**
      * @expectedException Heatbeat\Exception\NodeValidationException
      */
     public function testValidate1() {
-        $object = new CDefNode(array(
-                    'name' => 'test'
-                ));
+        $array = $this->validationData;
+        unset($array['name']);
+        $object = new CDefNode($array);
         $object->validate();
     }
 
     /**
      * @expectedException Heatbeat\Exception\NodeValidationException
-     */    
+     */
     public function testValidate2() {
-        $object = new CDefNode(array(
-                    'rpn' => 'test'
-                ));
+        $array = $this->validationData;
+        unset($array['rpn']);
+        $object = new CDefNode($array);
         $object->validate();
     }
 

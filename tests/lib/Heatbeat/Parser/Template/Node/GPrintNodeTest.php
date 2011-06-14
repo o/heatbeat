@@ -7,6 +7,11 @@ namespace Heatbeat\Parser\Template\Node;
  */
 class GPrintNodeTest extends \PHPUnit_Framework_TestCase {
 
+    private $validationData = array(
+        'definition-name' => 'ds0',
+        'format' => '%6.2lf %Sbps'
+    );
+
     /**
      * @dataProvider gprintDataProvider
      */
@@ -24,24 +29,24 @@ class GPrintNodeTest extends \PHPUnit_Framework_TestCase {
             array('ds1min', '%6.2lf %Sbps', 'GPRINT:ds1min:"%6.2lf %Sbps"')
         );
     }
-    
+
     /**
      * @expectedException Heatbeat\Exception\NodeValidationException
      */
     public function testValidate1() {
-        $object = new GPrintNode(array(
-                    'definition-name' => 'test'
-                ));
+        $array = $this->validationData;
+        unset($array['definition-name']);
+        $object = new GPrintNode($array);
         $object->validate();
     }
 
     /**
      * @expectedException Heatbeat\Exception\NodeValidationException
-     */    
+     */
     public function testValidate2() {
-        $object = new GPrintNode(array(
-                    'format' => 'test'
-                ));
+        $array = $this->validationData;
+        unset($array['format']);
+        $object = new GPrintNode($array);
         $object->validate();
     }
 

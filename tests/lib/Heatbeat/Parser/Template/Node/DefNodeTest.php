@@ -7,6 +7,13 @@ namespace Heatbeat\Parser\Template\Node;
  */
 class DefNodeTest extends \PHPUnit_Framework_TestCase {
 
+    private $validationData = array(
+        'name' => 'test',
+        'filename' => 'baz.rrd',
+        'datastore-name' => 'ds0',
+        'cf' => 'AVERAGE'
+    );
+
     /**
      * @dataProvider defDataProvider
      */
@@ -31,11 +38,9 @@ class DefNodeTest extends \PHPUnit_Framework_TestCase {
      * @expectedException Heatbeat\Exception\NodeValidationException
      */
     public function testValidate1() {
-        $object = new DefNode(array(
-                    'filename' => 'baz.rrd',
-                    'datastore-name' => 'barDS',
-                    'cf' => 'LAST'
-                ));
+        $array = $this->validationData;
+        unset($array['name']);
+        $object = new DefNode($array);
         $object->validate();
     }
 
@@ -43,11 +48,9 @@ class DefNodeTest extends \PHPUnit_Framework_TestCase {
      * @expectedException Heatbeat\Exception\NodeValidationException
      */
     public function testValidate2() {
-        $object = new DefNode(array(
-                    'name' => 'fooDS',
-                    'datastore-name' => 'barDS',
-                    'cf' => 'LAST'
-                ));
+        $array = $this->validationData;
+        unset($array['filename']);
+        $object = new DefNode($array);
         $object->validate();
     }
 
@@ -55,11 +58,9 @@ class DefNodeTest extends \PHPUnit_Framework_TestCase {
      * @expectedException Heatbeat\Exception\NodeValidationException
      */
     public function testValidate3() {
-        $object = new DefNode(array(
-                    'name' => 'fooDS',
-                    'filename' => 'baz.rrd',
-                    'cf' => 'LAST'
-                ));
+        $array = $this->validationData;
+        unset($array['datastore-name']);
+        $object = new DefNode($array);
         $object->validate();
     }
 
@@ -67,12 +68,19 @@ class DefNodeTest extends \PHPUnit_Framework_TestCase {
      * @expectedException Heatbeat\Exception\NodeValidationException
      */
     public function testValidate4() {
-        $object = new DefNode(array(
-                    'name' => 'fooDS',
-                    'filename' => 'baz.rrd',
-                    'datastore-name' => 'barDS',
-                    'cf' => 'LOL'
-                ));
+        $array = $this->validationData;
+        unset($array['cf']);
+        $object = new DefNode($array);
+        $object->validate();
+    }
+
+    /**
+     * @expectedException Heatbeat\Exception\NodeValidationException
+     */
+    public function testValidate5() {
+        $array = $this->validationData;
+        $array['cf'] = 'FOO';
+        $object = new DefNode($array);
         $object->validate();
     }
 

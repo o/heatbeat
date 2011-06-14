@@ -7,6 +7,14 @@ namespace Heatbeat\Parser\Template\Node;
  */
 class DatastoreNodeTest extends \PHPUnit_Framework_TestCase {
 
+    private $validationData = array(
+        'name' => 'test',
+        'type' => 'GAUGE',
+        'heartbeat' => 600,
+        'min' => 0,
+        'max' => 100
+    );
+
     /**
      * @dataProvider dsDataProvider
      */
@@ -32,12 +40,9 @@ class DatastoreNodeTest extends \PHPUnit_Framework_TestCase {
      * @expectedException Heatbeat\Exception\NodeValidationException
      */
     public function testValidate1() {
-        $object = new DatastoreNode(array(
-                    'type' => 'GAUGE',
-                    'heartbeat' => 1200,
-                    'min' => 0,
-                    'max' => 'baz'
-                ));
+        $array = $this->validationData;
+        unset($array['name']);
+        $object = new DatastoreNode($array);
         $object->validate();
     }
 
@@ -45,13 +50,9 @@ class DatastoreNodeTest extends \PHPUnit_Framework_TestCase {
      * @expectedException Heatbeat\Exception\NodeValidationException
      */
     public function testValidate2() {
-        $object = new DatastoreNode(array(
-                    'name' => 'test',
-                    'type' => 'FOO',
-                    'heartbeat' => 1200,
-                    'min' => 0,
-                    'max' => 10
-                ));
+        $array = $this->validationData;
+        unset($array['type']);
+        $object = new DatastoreNode($array);
         $object->validate();
     }
 
@@ -59,13 +60,9 @@ class DatastoreNodeTest extends \PHPUnit_Framework_TestCase {
      * @expectedException Heatbeat\Exception\NodeValidationException
      */
     public function testValidate3() {
-        $object = new DatastoreNode(array(
-                    'name' => 'test',
-                    'type' => 'GAUGE',
-                    'heartbeat' => 'bar',
-                    'min' => 0,
-                    'max' => 10
-                ));
+        $array = $this->validationData;
+        unset($array['heartbeat']);
+        $object = new DatastoreNode($array);
         $object->validate();
     }
 
@@ -73,13 +70,9 @@ class DatastoreNodeTest extends \PHPUnit_Framework_TestCase {
      * @expectedException Heatbeat\Exception\NodeValidationException
      */
     public function testValidate4() {
-        $object = new DatastoreNode(array(
-                    'name' => 'test',
-                    'type' => 'GAUGE',
-                    'heartbeat' => 1200,
-                    'min' => 'bar',
-                    'max' => 10
-                ));
+        $array = $this->validationData;
+        unset($array['min']);
+        $object = new DatastoreNode($array);
         $object->validate();
     }
 
@@ -87,13 +80,49 @@ class DatastoreNodeTest extends \PHPUnit_Framework_TestCase {
      * @expectedException Heatbeat\Exception\NodeValidationException
      */
     public function testValidate5() {
-        $object = new DatastoreNode(array(
-                    'name' => 'test',
-                    'type' => 'GAUGE',
-                    'heartbeat' => 1200,
-                    'min' => 0,
-                    'max' => 'baz'
-                ));
+        $array = $this->validationData;
+        unset($array['max']);
+        $object = new DatastoreNode($array);
+        $object->validate();
+    }
+
+    /**
+     * @expectedException Heatbeat\Exception\NodeValidationException
+     */
+    public function testValidate6() {
+        $array = $this->validationData;
+        $array['type'] = 'FOO';
+        $object = new DatastoreNode($array);
+        $object->validate();
+    }
+
+    /**
+     * @expectedException Heatbeat\Exception\NodeValidationException
+     */
+    public function testValidate7() {
+        $array = $this->validationData;
+        $array['heartbeat'] = 'foo';        
+        $object = new DatastoreNode($array);
+        $object->validate();
+    }
+
+    /**
+     * @expectedException Heatbeat\Exception\NodeValidationException
+     */
+    public function testValidate8() {
+        $array = $this->validationData;
+        $array['min'] = 'foo';        
+        $object = new DatastoreNode($array);
+        $object->validate();
+    }
+
+    /**
+     * @expectedException Heatbeat\Exception\NodeValidationException
+     */
+    public function testValidate9() {
+        $array = $this->validationData;
+        $array['max'] = 'foo';        
+        $object = new DatastoreNode($array);
         $object->validate();
     }
 

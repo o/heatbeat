@@ -7,6 +7,11 @@ namespace Heatbeat\Parser\Template\Node;
  */
 class VDefNodeTest extends \PHPUnit_Framework_TestCase {
 
+    private $validationData = array(
+        'name' => 'test',
+        'rpn' => 'inbytes,10,*',
+    );
+
     /**
      * @dataProvider vdefDataProvider
      */
@@ -29,9 +34,9 @@ class VDefNodeTest extends \PHPUnit_Framework_TestCase {
      * @expectedException Heatbeat\Exception\NodeValidationException
      */
     public function testValidate1() {
-        $object = new VDefNode(array(
-                    'name' => 'test'
-                ));
+        $array = $this->validationData;
+        unset($array['name']);
+        $object = new VDefNode($array);
         $object->validate();
     }
 
@@ -39,9 +44,9 @@ class VDefNodeTest extends \PHPUnit_Framework_TestCase {
      * @expectedException Heatbeat\Exception\NodeValidationException
      */
     public function testValidate2() {
-        $object = new VDefNode(array(
-                    'rpn' => 'test'
-                ));
+        $array = $this->validationData;
+        unset($array['rpn']);
+        $object = new VDefNode($array);
         $object->validate();
     }
 
