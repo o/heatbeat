@@ -40,7 +40,12 @@ class CDefNode extends AbstractNode implements NodeInterface {
     }
 
     public function validate() {
-        return true;
+        if (!$this->offsetExists('name')) {
+            throw new \Heatbeat\Exception\NodeValidationException('CDef name is not defined');
+        }
+        if (!$this->offsetExists('rpn')) {
+            throw new \Heatbeat\Exception\NodeValidationException('CDef rpn is not defined');
+        }
     }
 
 }

@@ -52,8 +52,17 @@ class DefNode extends AbstractNode implements NodeInterface {
     }
 
     public function validate() {
+        if (!$this->offsetExists('name')) {
+            throw new \Heatbeat\Exception\NodeValidationException('Def name is not defined');
+        }
+        if (!$this->offsetExists('filename')) {
+            throw new \Heatbeat\Exception\NodeValidationException('Def filename is not defined');
+        }
+        if (!$this->offsetExists('datastore-name')) {
+            throw new \Heatbeat\Exception\NodeValidationException('Def datastore-name is not defined');
+        }
         if (!in_array(strtoupper($this->offsetGet('cf')), $this->validCfs)) {
-            throw new NodeValidationException(sprintf("CF parameter in template must be one of these : %s", implode(', ', $this->validCfs)));
+            throw new NodeValidationException(sprintf("Def CF parameter must be one of these : %s", implode(', ', $this->validCfs)));
         };
         return true;
     }

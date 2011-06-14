@@ -55,11 +55,20 @@ class DatastoreNode extends AbstractNode implements NodeInterface {
     }
 
     public function validate() {
+        if (!$this->offsetExists('name')) {
+            throw new \Heatbeat\Exception\NodeValidationException('Datastore name not defined');
+        }
         if (!in_array(strtoupper($this->offsetGet('type')), $this->validTypes)) {
-            throw new NodeValidationException(sprintf("Type parameter in template must be one of these : %s", implode(', ', $this->validTypes)));
+            throw new NodeValidationException(sprintf("Datastore type parameter must be one of these : %s", implode(', ', $this->validTypes)));
         };
         if (!is_int($this->offsetGet('heartbeat'))) {
-            throw new NodeValidationException("Heartbeat parameter in template must be an integer");
+            throw new NodeValidationException("Datastore heartbeat parameter must be an integer");
+        }
+        if (!is_int($this->offsetGet('min'))) {
+            throw new NodeValidationException("Datastore min parameter must be an integer");
+        }
+        if (!is_int($this->offsetGet('max'))) {
+            throw new NodeValidationException("Datastore max parameter must be an integer");
         }
         return true;
     }
