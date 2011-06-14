@@ -48,6 +48,7 @@ class DefNode extends AbstractNode implements NodeInterface {
         $this->isDefined('name');
         $this->isDefined('filename');
         $this->isDefined('datastore-name');
+        $this->isDefined('cf');
         $this->isValidCf('cf');
         return true;
     }

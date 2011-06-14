@@ -34,11 +34,6 @@ namespace Heatbeat\Parser\Template\Node;
  */
 class ItemNode extends AbstractNode implements NodeInterface {
 
-    private $validTypes = array(
-        'AREA',
-        'LINE'
-    );
-
     public function getAsString() {
         return implode(self::SEPERATOR, array(
             $this->offsetGet('type'),
@@ -49,7 +44,7 @@ class ItemNode extends AbstractNode implements NodeInterface {
 
     public function validate() {
         $this->isDefined('type');
-        $this->isValidType('type');
+        $this->isValidGraphType('type');
         $this->isDefined('definition-name');
         $this->isDefined('color');
         $this->isHex('color');
