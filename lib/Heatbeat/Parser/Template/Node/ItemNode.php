@@ -34,6 +34,11 @@ namespace Heatbeat\Parser\Template\Node;
  */
 class ItemNode extends AbstractNode implements NodeInterface {
 
+    private $validTypes = array(
+        'AREA',
+        'LINE'
+    );
+
     public function getAsString() {
         return implode(self::SEPERATOR, array(
             $this->offsetGet('type'),
@@ -43,7 +48,9 @@ class ItemNode extends AbstractNode implements NodeInterface {
     }
 
     public function validate() {
-        return true;
+        if (!in_array(strtoupper($this->offsetGet('type')), $this->validTypes)) {
+            throw new NodeValidationException(sprintf("Type parameter in template must be one of these : %s", implode(', ', $this->validTypes)));
+        };
     }
 
 }

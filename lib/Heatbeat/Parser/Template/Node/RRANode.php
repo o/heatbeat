@@ -53,8 +53,17 @@ class RraNode extends AbstractNode implements NodeInterface {
 
     public function validate() {
         if (!in_array(strtoupper($this->offsetGet('cf')), $this->validCfs)) {
-            return false;
+            throw new NodeValidationException(sprintf("CF parameter in template must be one of these : %s", implode(', ', $this->validCfs)));
         };
+        if ((($this->offsetGet('xff')) > 1) AND (($this->offsetGet('xff')) < 0)) {
+            throw new NodeValidationException("XFF parameter in template must be between of 0 and 1.");
+        }
+        if (!is_int($this->offsetGet('steps'))) {
+            throw new NodeValidationException("Steps parameter in template must be an integer");
+        }
+        if (!is_int($this->offsetGet('rows'))) {
+            throw new NodeValidationException("Rows parameter in template must be an integer");
+        }        
         return true;
     }
 

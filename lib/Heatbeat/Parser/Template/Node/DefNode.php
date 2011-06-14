@@ -53,7 +53,7 @@ class DefNode extends AbstractNode implements NodeInterface {
 
     public function validate() {
         if (!in_array(strtoupper($this->offsetGet('cf')), $this->validCfs)) {
-            return false;
+            throw new NodeValidationException(sprintf("CF parameter in template must be one of these : %s", implode(', ', $this->validCfs)));
         };
         return true;
     }
