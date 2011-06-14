@@ -44,8 +44,6 @@ graphs :
           - type :
             # Name of definition for use as value
             definition-name:
-            # Source output name
-            input :
             # Hex color value
             color :
             # String is printed in the legend section
