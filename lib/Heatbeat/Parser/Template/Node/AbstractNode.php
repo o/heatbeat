@@ -48,6 +48,11 @@ abstract class AbstractNode extends \ArrayObject {
         'MAX',
         'LAST'
     );
+    
+    private $validGraphTypes = array(
+        'AREA',
+        'LINE'
+    );    
 
     protected function isDefined($key) {
         if (!$this->offsetExists($key)) {
@@ -61,6 +66,13 @@ abstract class AbstractNode extends \ArrayObject {
         };
     }
 
+    protected function isValidGraphType($key) {
+        if (!in_array(strtoupper($this->offsetGet($key)), $this->validGraphTypes)) {
+            throw new NodeValidationException(sprintf("%s, %s argument must be one of these : %s.", $this->stripNamespace(get_class($this)), $key, implode(', ', $this->validGraphTypes)));
+        };
+    }
+    
+    
     protected function isValidCf($key) {
         if (!in_array(strtoupper($this->offsetGet($key)), $this->validCfs)) {
             throw new NodeValidationException(sprintf("%s, %s argument must be one of these : %s.", $this->stripNamespace(get_class($this)), $key, implode(', ', $this->validCfs)));
