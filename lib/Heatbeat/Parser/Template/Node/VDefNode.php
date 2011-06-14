@@ -25,6 +25,8 @@
 
 namespace Heatbeat\Parser\Template\Node;
 
+use Heatbeat\Exception\NodeValidationException;
+
 /**
  * VDEF node of template
  *
@@ -40,7 +42,12 @@ class VDefNode extends AbstractNode implements NodeInterface {
     }
 
     public function validate() {
-        return true;
+        if (!$this->offsetExists('name')) {
+            throw new \Heatbeat\Exception\NodeValidationException('VDef name is not defined');
+        }
+        if (!$this->offsetExists('rpn')) {
+            throw new \Heatbeat\Exception\NodeValidationException('VDef rpn is not defined');
+        }
     }
 
 }
