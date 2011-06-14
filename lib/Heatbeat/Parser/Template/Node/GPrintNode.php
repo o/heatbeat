@@ -39,17 +39,14 @@ class GPrintNode extends AbstractNode implements NodeInterface {
         return implode(self::SEPERATOR, array(
             self::PREFIX,
             $this->offsetGet('definition-name'),
-            $this->offsetGet('format')
+            sprintf('"%s"', $this->offsetGet('format')),
         ));
     }
 
     public function validate() {
-        if (!$this->offsetExists('definition-name')) {
-            throw new \Heatbeat\Exception\NodeValidationException('GPrint definition-name is not defined');
-        }
-        if (!$this->offsetExists('format')) {
-            throw new \Heatbeat\Exception\NodeValidationException('GPrint format is not defined');
-        }
+        $this->isDefined('definition-name');
+        $this->isDefined('format');
+        return true;
     }
 
 }

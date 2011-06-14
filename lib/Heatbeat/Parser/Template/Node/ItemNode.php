@@ -43,23 +43,18 @@ class ItemNode extends AbstractNode implements NodeInterface {
         return implode(self::SEPERATOR, array(
             $this->offsetGet('type'),
             $this->offsetGet('definition-name') . $this->offsetGet('color'),
-            $this->offsetGet('legend')
+            sprintf('"%s"', $this->offsetGet('legend'))
         ));
     }
 
     public function validate() {
-        if (!in_array(strtoupper($this->offsetGet('type')), $this->validTypes)) {
-            throw new NodeValidationException(sprintf("Type parameter in template must be one of these : %s", implode(', ', $this->validTypes)));
-        };
-        if (!$this->offsetExists('definition-name')) {
-            throw new \Heatbeat\Exception\NodeValidationException('Item definition-name is not defined');
-        }
-        if (!$this->offsetExists('color')) {
-            throw new \Heatbeat\Exception\NodeValidationException('Item color is not defined');
-        }        
-        if (!$this->offsetExists('legend')) {
-            throw new \Heatbeat\Exception\NodeValidationException('Item legend is not defined');
-        }
+        $this->isDefined('type');
+        $this->isValidType('type');
+        $this->isDefined('definition-name');
+        $this->isDefined('color');
+        $this->isHex('color');
+        $this->isDefined('legend');
+        return true;
     }
 
 }
