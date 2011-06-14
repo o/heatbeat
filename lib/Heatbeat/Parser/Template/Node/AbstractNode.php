@@ -25,6 +25,8 @@
 
 namespace Heatbeat\Parser\Template\Node;
 
+use Heatbeat\Exception\NodeValidationException;
+
 /**
  * Abstract class for template nodes
  *
@@ -33,5 +35,61 @@ namespace Heatbeat\Parser\Template\Node;
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
 abstract class AbstractNode extends \ArrayObject {
-    
+
+    private $validTypes = array(
+        'GAUGE',
+        'COUNTER',
+        'DERIVE',
+        'ABSOLUTE'
+    );
+    private $validCfs = array(
+        'AVERAGE',
+        'MIN',
+        'MAX',
+        'LAST'
+    );
+
+    protected function isDefined($key) {
+        if (!$this->offsetExists($key)) {
+            throw new NodeValidationException(sprintf('%s, %s argument is not defined.', $this->stripNamespace(get_class($this)), $key));
+        }
+    }
+
+    protected function isValidType($key) {
+        if (!in_array(strtoupper($this->offsetGet($key)), $this->validTypes)) {
+            throw new NodeValidationException(sprintf("%s, %s argument must be one of these : %s.", $this->stripNamespace(get_class($this)), $key, implode(', ', $this->validTypes)));
+        };
+    }
+
+    protected function isValidCf($key) {
+        if (!in_array(strtoupper($this->offsetGet($key)), $this->validCfs)) {
+            throw new NodeValidationException(sprintf("%s, %s argument must be one of these : %s.", $this->stripNamespace(get_class($this)), $key, implode(', ', $this->validCfs)));
+        };
+    }
+
+    protected function isValidInt($key) {
+        if (!is_int($this->offsetGet($key))) {
+            throw new NodeValidationException(sprintf('%s, %s argument is not an integer.', $this->stripNamespace(get_class($this)), $key));
+        }
+    }
+
+    protected function isValidXff($key) {
+        if ((($this->offsetGet($key)) > 1) AND (($this->offsetGet($key)) < 0)) {
+            throw new NodeValidationException(sprintf("%s, %s parameter in template must be between of 0 and 1.", $this->stripNamespace(get_class($this)), $key));
+        }
+    }
+
+    protected function isHex($entry) {
+        return (bool) preg_match('/[^0-9a-fA-F]/', $entry);
+    }
+
+    private function stripNamespace($name) {
+        $len = strlen(__NAMESPACE__) + 1;
+        if (substr($name, 0, $len) == __NAMESPACE__ . '\\') {
+            return substr($name, $len);
+        } else {
+            return $name;
+        }
+    }
+
 }
