@@ -24,7 +24,7 @@
  */
 
 namespace Heatbeat\Parser\Template\Node;
-
+use \Heatbeat\Exception\NodeValidationException;
 /**
  * DEF node of template
  *
@@ -44,8 +44,7 @@ class DefNode extends AbstractNode implements NodeInterface {
     public function getAsString() {
         return implode(self::SEPERATOR, array(
             self::PREFIX,
-            $this->offsetGet('name') . self::EQUAL,
-            $this->offsetGet('filename'),
+            $this->offsetGet('name') . self::EQUAL . $this->offsetGet('filename'),
             $this->offsetGet('datastore-name'),
             strtoupper($this->offsetGet('cf'))
         ));
@@ -53,13 +52,13 @@ class DefNode extends AbstractNode implements NodeInterface {
 
     public function validate() {
         if (!$this->offsetExists('name')) {
-            throw new \Heatbeat\Exception\NodeValidationException('Def name is not defined');
+            throw new NodeValidationException('Def name is not defined');
         }
         if (!$this->offsetExists('filename')) {
-            throw new \Heatbeat\Exception\NodeValidationException('Def filename is not defined');
+            throw new NodeValidationException('Def filename is not defined');
         }
         if (!$this->offsetExists('datastore-name')) {
-            throw new \Heatbeat\Exception\NodeValidationException('Def datastore-name is not defined');
+            throw new NodeValidationException('Def datastore-name is not defined');
         }
         if (!in_array(strtoupper($this->offsetGet('cf')), $this->validCfs)) {
             throw new NodeValidationException(sprintf("Def CF parameter must be one of these : %s", implode(', ', $this->validCfs)));
