@@ -90,8 +90,8 @@ class Autoloader {
 
     private function setErrorExceptionHandling() {
         error_reporting(E_ALL | E_STRICT);
-        set_error_handler(array('Heatbeat\\Heatbeat', 'handleErrors'));
-        set_exception_handler(array('Heatbeat\\Heatbeat', 'handleExceptions'));
+        set_error_handler(array('\\Heatbeat\\Heatbeat', 'handleErrors'));
+        set_exception_handler(array('\\Heatbeat\\Heatbeat', 'handleExceptions'));
     }
 
     private function setLoader($loader) {
