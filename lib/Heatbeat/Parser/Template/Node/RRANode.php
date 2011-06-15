@@ -46,6 +46,7 @@ class RraNode extends AbstractNode implements NodeInterface {
     }
 
     public function validate() {
+        $this->isDefined('cf');
         $this->isValidCf('cf');
         $this->isDefined('xff');
         $this->isValidXff('xff');

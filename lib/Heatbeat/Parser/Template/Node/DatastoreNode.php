@@ -25,7 +25,6 @@
 
 namespace Heatbeat\Parser\Template\Node;
 
-
 /**
  * Datastore node of template
  *
@@ -50,13 +49,13 @@ class DatastoreNode extends AbstractNode implements NodeInterface {
     public function validate() {
         $this->isDefined('name');
         $this->isDefined('type');
-        $this->isDefined('min');
-        $this->isDefined('max');
-        $this->isDefined('heartbeat');
         $this->isValidType('type');
-        $this->isValidInt('heartbeat');
+        $this->isDefined('min');
         $this->isValidInt('min');
+        $this->isDefined('max');
         $this->isValidInt('max');
+        $this->isDefined('heartbeat');
+        $this->isValidInt('heartbeat');
         return true;
     }
 
