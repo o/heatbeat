@@ -37,7 +37,7 @@ class ItemNode extends AbstractNode implements NodeInterface {
     public function getAsString() {
         return implode(self::SEPERATOR, array(
             $this->offsetGet('type'),
-            $this->offsetGet('definition-name') . $this->offsetGet('color'),
+            $this->offsetGet('definition-name') . '#' . $this->offsetGet('color'),
             sprintf('"%s"', $this->offsetGet('legend'))
         ));
     }
