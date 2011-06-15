@@ -42,7 +42,7 @@ use Heatbeat\Autoloader,
 class Heatbeat {
 
     private function getConfig() {
-        return Autoloader::getConfig();
+        return Autoloader::getInstance()->getConfig();
     }
 
     private function getTemplate($filename) {
@@ -70,11 +70,11 @@ class Heatbeat {
         if (!(error_reporting() & $errno)) {
             return false;
         }
-        // Logging
+        Logger::getInstance()->log(sprintf('[%s] %s', 'Error', $errstr));
     }
 
     public static function handleExceptions(Exception $exc) {
-        // Logging
+        Logger::getInstance()->log(sprintf('[%s] %s', get_class($exc), $exc->getMessage()));        
     }
 
 }
