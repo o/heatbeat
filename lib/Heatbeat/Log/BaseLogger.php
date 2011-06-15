@@ -81,11 +81,12 @@ class BaseLogger {
     public function setHandler($handler) {
         $class_name = "\\Heatbeat\\Log\\Handler\\" . $handler . "Handler";
         if (class_exists($class_name)) {
-            $instance = new $class;
+            $instance = new $class_name;
             $instance->init();
             $this->handler = $instance;
+        } else {
+            throw new HeatbeatException(sprintf("Unable to load log handler class %s", $handler));
         }
-        throw new HeatbeatException(sprintf("Unable to load log handler class %s", $handler));
     }
 
 }
