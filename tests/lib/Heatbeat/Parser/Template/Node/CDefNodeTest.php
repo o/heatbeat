@@ -8,8 +8,8 @@ namespace Heatbeat\Parser\Template\Node;
 class CDefNodeTest extends \PHPUnit_Framework_TestCase {
 
     private $validationData = array(
-        'name' => 'test',
-        'rpn' => 'inbytes,8,*',
+        'name' => 'result',
+        'rpn' => '1,0,value,IF',
     );
 
     /**
@@ -27,7 +27,7 @@ class CDefNodeTest extends \PHPUnit_Framework_TestCase {
     public function cdefDataProvider() {
         return array(
             array('inbits', 'inbytes,8,*', 'CDEF:inbits=inbytes,8,*'),
-            array('var_name', 'RPN_expression', 'CDEF:var_name=RPN_expression')
+            array('test', 'number,100000,GT,UNKN,number,IF', 'CDEF:test=number,100000,GT,UNKN,number,IF')
         );
     }
 
