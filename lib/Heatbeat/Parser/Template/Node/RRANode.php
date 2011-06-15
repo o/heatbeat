@@ -34,12 +34,6 @@ namespace Heatbeat\Parser\Template\Node;
  */
 class RraNode extends AbstractNode implements NodeInterface {
     const PREFIX = 'RRA';
-    private $validCfs = array(
-        'AVERAGE',
-        'MIN',
-        'MAX',
-        'LAST'
-    );
 
     public function getAsString() {
         return implode(self::SEPERATOR, array(
