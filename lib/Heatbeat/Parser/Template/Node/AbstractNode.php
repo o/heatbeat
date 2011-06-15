@@ -87,12 +87,14 @@ abstract class AbstractNode extends \ArrayObject {
 
     protected function isValidXff($key) {
         if ((($this->offsetGet($key)) > 1) AND (($this->offsetGet($key)) < 0)) {
-            throw new NodeValidationException(sprintf("%s, %s parameter in template must be between of 0 and 1.", $this->stripNamespace(get_class($this)), $key));
+            throw new NodeValidationException(sprintf("%s, %s parameter must be between of 0 and 1.", $this->stripNamespace(get_class($this)), $key));
         }
     }
 
-    protected function isHex($entry) {
-        return (bool) preg_match('/[^0-9a-fA-F]/', $entry);
+    protected function isHex($key) {
+        if (preg_match('/[^0-9a-fA-F]/', $this->offsetGet($key))) {
+            throw new NodeValidationException(sprintf("%s, %s parameter must be a HEX value.", $this->stripNamespace(get_class($this)), $key));            
+        }
     }
 
     private function stripNamespace($name) {
