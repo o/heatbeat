@@ -3,12 +3,7 @@
     <filter>
         <blacklist>
             <directory suffix=".php">../vendor/</directory>
-        </blacklist>
-        <whitelist>
-            <directory suffix=".php">../lib/</directory>
-            <exclude>
-                <file suffix=".php">../lib/Heatbeat/Autoloader.php</file>
-            </exclude>
-        </whitelist>        
+            <file suffix=".php">../lib/Heatbeat/Autoloader.php</file>
+        </blacklist>      
     </filter>
 </phpunit>
