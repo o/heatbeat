@@ -48,62 +48,57 @@ abstract class AbstractNode extends \ArrayObject {
         'MAX',
         'LAST'
     );
-    
     private $validGraphTypes = array(
         'AREA',
         'LINE'
-    );    
+    );
 
     protected function isDefined($key) {
         if (!$this->offsetExists($key)) {
-            throw new NodeValidationException(sprintf('%s, %s argument is not defined.', $this->stripNamespace(get_class($this)), $key));
+            throw new NodeValidationException(sprintf('%s, %s argument is not defined.', $this->getClassName(), $key));
         }
     }
 
     protected function isValidType($key) {
         if (!in_array(strtoupper($this->offsetGet($key)), $this->validTypes)) {
-            throw new NodeValidationException(sprintf("%s, %s argument must be one of these : %s.", $this->stripNamespace(get_class($this)), $key, implode(', ', $this->validTypes)));
+            throw new NodeValidationException(sprintf("%s, %s argument must be one of these : %s.", $this->getClassName(), $key, implode(', ', $this->validTypes)));
         };
     }
 
     protected function isValidGraphType($key) {
         if (!in_array(strtoupper($this->offsetGet($key)), $this->validGraphTypes)) {
-            throw new NodeValidationException(sprintf("%s, %s argument must be one of these : %s.", $this->stripNamespace(get_class($this)), $key, implode(', ', $this->validGraphTypes)));
+            throw new NodeValidationException(sprintf("%s, %s argument must be one of these : %s.", $this->getClassName(), $key, implode(', ', $this->validGraphTypes)));
         };
     }
-    
-    
+
     protected function isValidCf($key) {
         if (!in_array(strtoupper($this->offsetGet($key)), $this->validCfs)) {
-            throw new NodeValidationException(sprintf("%s, %s argument must be one of these : %s.", $this->stripNamespace(get_class($this)), $key, implode(', ', $this->validCfs)));
+            throw new NodeValidationException(sprintf("%s, %s argument must be one of these : %s.", $this->getClassName(), $key, implode(', ', $this->validCfs)));
         };
     }
 
     protected function isValidInt($key) {
         if (!is_int($this->offsetGet($key))) {
-            throw new NodeValidationException(sprintf('%s, %s argument is not an integer.', $this->stripNamespace(get_class($this)), $key));
+            throw new NodeValidationException(sprintf('%s, %s argument is not an integer.', $this->getClassName(), $key));
         }
     }
 
     protected function isValidXff($key) {
-        if ((($this->offsetGet($key)) > 1) AND (($this->offsetGet($key)) < 0)) {
-            throw new NodeValidationException(sprintf("%s, %s parameter must be between of 0 and 1.", $this->stripNamespace(get_class($this)), $key));
+        if ((($this->offsetGet($key)) < 0) OR (($this->offsetGet($key)) > 1)) {
+            throw new NodeValidationException(sprintf("%s, %s parameter must be between of 0 and 1.", $this->getClassName(), $key));
         }
     }
 
     protected function isHex($key) {
         if (preg_match('/[^0-9a-fA-F]/', $this->offsetGet($key))) {
-            throw new NodeValidationException(sprintf("%s, %s parameter must be a HEX value.", $this->stripNamespace(get_class($this)), $key));            
+            throw new NodeValidationException(sprintf("%s, %s parameter must be a HEX value.", $this->getClassName(), $key));
         }
     }
 
-    private function stripNamespace($name) {
+    private function getClassName() {
+        $name = get_class($this);
         $len = strlen(__NAMESPACE__) + 1;
-        if (substr($name, 0, $len) == __NAMESPACE__ . '\\') {
-            return substr($name, $len);
-        } else {
-            return $name;
-        }
+        return substr($name, $len);
     }
 
 }
