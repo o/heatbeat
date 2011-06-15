@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<phpunit colors="true">
+    <filter>
+        <blacklist>
+            <directory suffix=".php">../vendor/</directory>
+        </blacklist>
+        <whitelist>
+            <directory suffix=".php">../lib/</directory>
+            <exclude>
+                <file suffix=".php">../lib/Heatbeat/Autoloader.php</file>
+            </exclude>
+        </whitelist>        
+    </filter>
+</phpunit>
