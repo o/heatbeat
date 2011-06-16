@@ -33,7 +33,8 @@ use Heatbeat\Autoloader,
     Heatbeat\Util\CommandExecutor as Executor,
     Heatbeat\Log\BaseLogger as Logger,
     Heatbeat\Source\SourceInput as Input,
-    Heatbeat\Source\SourceOutput as Output;
+    Heatbeat\Exception\HeatbeatException,
+    Heatbeat\Exception\ExecutionException;
 
 /**
  * Heatbeat runner
@@ -44,19 +45,15 @@ use Heatbeat\Autoloader,
  */
 class Heatbeat {
 
-    private function getConfig() {
-        return Autoloader::getInstance()->getConfig();
-    }
-
     private function getTemplate($filename) {
         $template = new TemplateLoader($filename);
         return $template->getValues();
     }
 
     public function performCreate() {
-        $config = $this->getConfig();
+        $config = Autoloader::getInstance()->getConfig();
         foreach ($config->offsetGet('templates') as $item) {
-            $template = $this->getTemplate($item['name']);
+            $template = $this->getTemplate($item['plugin']);
             $commandObject = new RRDCreate();
             $commandObject->setFilename($item['filename']);
             $rrdDefinition = new \ArrayObject($template->offsetGet('rrd'));
@@ -70,23 +67,15 @@ class Heatbeat {
     }
 
     public function performUpdate() {
-        $config = $this->getConfig();
+        $config = Autoloader::getInstance()->getConfig();
         foreach ($config->offsetGet('templates') as $item) {
-            $template = $this->getTemplate($item['name']);
+            $template = $this->getTemplate($item['plugin']);
             $commandObject = new RRDUpdate();
             $commandObject->setFilename($item['filename']);
-            $namespaced = str_replace('_', "\\", $template->offsetGet('source-name'));
-            $class_name = 'Heatbeat\\Source\\Plugin\\' . $namespaced;
-            if (!class_exists($class_name)) {
-                $output->write(sprintf('Failed : Unable to find source plugin %s', $namespaced), true);
-            }
-            $instance = new $class_name;
-            $instance->setInput(new Input($item['arguments']));
-            $instance->perform();
-            if (!$instance->getIsSuccessful()) {
-                return false;
-            };
-            $commandObject->setValues(time(), iterator_to_array($instance->getOutput()));
+            $pluginInstance = self::getPluginInstance($template->offsetGet('source-name'));
+            $pluginInstance->setInput(new Input($item['arguments']));
+            $pluginInstance->perform();
+            $commandObject->setValues(time(), $pluginInstance->getOutput());
             $executor = new Executor();
             $executor->setCommandObject($commandObject);
             $executor->prepare();
@@ -102,7 +91,7 @@ class Heatbeat {
         self::notifyStdErr();
     }
 
-    public static function handleExceptions(Exception $exc) {
+    public static function handleExceptions(\Exception $exc) {
         Logger::getInstance()->log(sprintf('[%s] %s', get_class($exc), $exc->getMessage()));
         self::notifyStdErr();
     }
@@ -112,6 +101,15 @@ class Heatbeat {
          * @todo Configuration file logging check
          */
         return fwrite(STDERR, sprintf("\r %s \r\n", 'An error occured, please check your log files'));
+    }
+
+    public static function getPluginInstance($plugin) {
+        $namespaced = str_replace('_', "\\", $plugin);
+        $class_name = '\\Heatbeat\\Source\\Plugin\\' . $namespaced;
+        if (!class_exists($class_name)) {
+            throw new HeatbeatException(sprintf('Unable to find source plugin %s', $plugin));
+        }
+        return new $class_name;
     }
 
 }
