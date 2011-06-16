@@ -5,6 +5,7 @@ configuration :
 
 templates :
     - name : random
+      filename : random
       enabled : true
       arguments :
           min : 5
