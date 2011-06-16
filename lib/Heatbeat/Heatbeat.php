@@ -28,9 +28,12 @@ namespace Heatbeat;
 use Heatbeat\Autoloader,
     Heatbeat\Parser\Config\ConfigParser as Config,
     Heatbeat\Parser\Template\TemplateParser as TemplateLoader,
-    Heatbeat\Util\Command\RRDTool\CreateCommand as RRDToolCreate,
+    Heatbeat\Util\Command\RRDTool\CreateCommand as RRDCreate,
+    Heatbeat\Util\Command\RRDTool\UpdateCommand as RRDUpdate,
     Heatbeat\Util\CommandExecutor as Executor,
-    Heatbeat\Log\BaseLogger as Logger;
+    Heatbeat\Log\BaseLogger as Logger,
+    Heatbeat\Source\SourceInput as Input,
+    Heatbeat\Source\SourceOutput as Output;
 
 /**
  * Heatbeat runner
@@ -54,15 +57,40 @@ class Heatbeat {
         $config = $this->getConfig();
         foreach ($config->offsetGet('templates') as $item) {
             $template = $this->getTemplate($item['name']);
-            $commandObject = new RRDToolCreate();
-            $commandObject->setFilename($template->offsetGet('filename'));
+            $commandObject = new RRDCreate();
+            $commandObject->setFilename($item['filename']);
             $rrdDefinition = new \ArrayObject($template->offsetGet('rrd'));
             $commandObject->setDatastores($rrdDefinition->offsetGet('datastores'));
             $commandObject->setRras($rrdDefinition->offsetGet('rras'));
             $executor = new Executor();
             $executor->setCommandObject($commandObject);
             $executor->prepare();
-            return $executor->execute();
+            $executor->execute();
+        }
+    }
+
+    public function performUpdate() {
+        $config = $this->getConfig();
+        foreach ($config->offsetGet('templates') as $item) {
+            $template = $this->getTemplate($item['name']);
+            $commandObject = new RRDUpdate();
+            $commandObject->setFilename($item['filename']);
+            $namespaced = str_replace('_', "\\", $template->offsetGet('source-name'));
+            $class_name = 'Heatbeat\\Source\\Plugin\\' . $namespaced;
+            if (!class_exists($class_name)) {
+                $output->write(sprintf('Failed : Unable to find source plugin %s', $namespaced), true);
+            }
+            $instance = new $class_name;
+            $instance->setInput(new Input($item['arguments']));
+            $instance->perform();
+            if (!$instance->getIsSuccessful()) {
+                return false;
+            };
+            $commandObject->setValues(time(), iterator_to_array($instance->getOutput()));
+            $executor = new Executor();
+            $executor->setCommandObject($commandObject);
+            $executor->prepare();
+            $executor->execute();
         }
     }
 
