@@ -1,7 +1,6 @@
 name : Random
 version : 0.0.1
 source-name : Foo_Random
-filename : random
 rrd:
     # 5 minute is minimum there
     step: 300
