@@ -34,7 +34,7 @@ namespace Heatbeat\Util\Command\RRDTool;
  */
 class UpdateCommand extends RRDToolCommand {
 
-    protected $subCommand = 'update';
+    protected $subCommand = 'updatev';
 
     public function setValues($time, array $values) {
         if (!is_int($time)) {
