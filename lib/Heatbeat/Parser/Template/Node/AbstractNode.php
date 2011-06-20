@@ -95,6 +95,14 @@ abstract class AbstractNode extends \ArrayObject {
         }
     }
 
+    protected function isValidSource($key) {
+        $namespaced = str_replace('_', "\\", $this->offsetGet($key));
+        $class_name = '\\Heatbeat\\Source\\Plugin\\' . $namespaced;
+        if (!class_exists($class_name)) {
+            throw new NodeValidationException(sprintf("source-name %s is not valid.", $key));
+        }
+    }
+
     private function getClassName() {
         $name = get_class($this);
         $len = strlen(__NAMESPACE__) + 1;
