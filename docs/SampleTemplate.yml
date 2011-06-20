@@ -1,12 +1,15 @@
-# Name of template
-name :
-# Version of template
-version :
-# Name of the source for gathering data
-source-name :
+template :
+    options :
+        # Name of template
+        name :
+        # Version of template
+        version :
+        # Name of the source for gathering data
+        source-name :
 rrd:
-    # Specifies the base interval in seconds with which data will be fed into the RRD, defaults to 300
-    step:
+    options :
+        # Specifies the base interval in seconds with which data will be fed into the RRD, defaults to 300
+        step :
     datastores:
         # Name you will use to reference this particular data source from an RRD. Must be 1 to 19 and [a-zA-Z0-9_]. 
         - name:   
@@ -27,15 +30,16 @@ rrd:
           # how many generations of data values are kept in an RRA.
           rows: 
 graphs :
-    # Name of graph, it will be show in top of graph
-    - name :
-      # Vertical label of graph
-      label :
-      # Base multiplier for values. For graphing memory this should be set to 1024, for other common things it can be 1000
-      base :
-      # Lower an upper limit for graphs, allowed values auto or [0-9]
-      lower : 
-      upper : 
+      items :
+        # Name of graph, it will be show in top of graph
+        name :
+        # Vertical label of graph
+        label :
+        # Base multiplier for values. For graphing memory this should be set to 1024, for other common things it can be 1000
+        base :
+        # Lower an upper limit for graphs, allowed values auto or [0-9]
+        lower : 
+        upper : 
       # Graph elements
       items :
           # Type of element, allowed values are AREA and LINE[width]
