@@ -28,9 +28,13 @@ namespace Heatbeat;
 use Heatbeat\Autoloader,
     Heatbeat\Parser\Config\ConfigParser as Config,
     Heatbeat\Parser\Template\TemplateParser as TemplateLoader,
-    Heatbeat\Util\Command\RRDTool\CreateCommand as RRDToolCreate,
+    Heatbeat\Util\Command\RRDTool\CreateCommand as RRDCreate,
+    Heatbeat\Util\Command\RRDTool\UpdateCommand as RRDUpdate,
     Heatbeat\Util\CommandExecutor as Executor,
-    Heatbeat\Log\BaseLogger as Logger;
+    Heatbeat\Log\BaseLogger as Logger,
+    Heatbeat\Source\SourceInput as Input,
+    Heatbeat\Exception\HeatbeatException,
+    Heatbeat\Exception\ExecutionException;
 
 /**
  * Heatbeat runner
@@ -41,28 +45,41 @@ use Heatbeat\Autoloader,
  */
 class Heatbeat {
 
-    private function getConfig() {
-        return Autoloader::getConfig();
-    }
-
     private function getTemplate($filename) {
         $template = new TemplateLoader($filename);
         return $template->getValues();
     }
 
     public function performCreate() {
-        $config = $this->getConfig();
+        $config = Autoloader::getInstance()->getConfig();
         foreach ($config->offsetGet('templates') as $item) {
-            $template = $this->getTemplate($item['name']);
-            $commandObject = new RRDToolCreate();
-            $commandObject->setFilename($template->offsetGet('filename'));
+            $template = $this->getTemplate($item['plugin']);
+            $commandObject = new RRDCreate();
+            $commandObject->setFilename($item['filename']);
             $rrdDefinition = new \ArrayObject($template->offsetGet('rrd'));
             $commandObject->setDatastores($rrdDefinition->offsetGet('datastores'));
             $commandObject->setRras($rrdDefinition->offsetGet('rras'));
             $executor = new Executor();
             $executor->setCommandObject($commandObject);
             $executor->prepare();
-            return $executor->execute();
+            $executor->execute();
+        }
+    }
+
+    public function performUpdate() {
+        $config = Autoloader::getInstance()->getConfig();
+        foreach ($config->offsetGet('templates') as $item) {
+            $template = $this->getTemplate($item['plugin']);
+            $commandObject = new RRDUpdate();
+            $commandObject->setFilename($item['filename']);
+            $pluginInstance = self::getPluginInstance($template->offsetGet('source-name'));
+            $pluginInstance->setInput(new Input($item['arguments']));
+            $pluginInstance->perform();
+            $commandObject->setValues(time(), $pluginInstance->getOutput());
+            $executor = new Executor();
+            $executor->setCommandObject($commandObject);
+            $executor->prepare();
+            $executor->execute();
         }
     }
 
@@ -70,11 +87,22 @@ class Heatbeat {
         if (!(error_reporting() & $errno)) {
             return false;
         }
-        // Logging
+        $message = sprintf('[%s] %s', 'Error', $errstr);
+        Logger::getInstance()->log($message);
     }
 
-    public static function handleExceptions(Exception $exc) {
-        // Logging
+    public static function handleExceptions(\Exception $exc) {
+        $message = sprintf('[%s] %s', get_class($exc), $exc->getMessage());
+        Logger::getInstance()->log($message);
+    }
+
+    public static function getPluginInstance($plugin) {
+        $namespaced = str_replace('_', "\\", $plugin);
+        $class_name = '\\Heatbeat\\Source\\Plugin\\' . $namespaced;
+        if (!class_exists($class_name)) {
+            throw new HeatbeatException(sprintf('Unable to find source plugin %s', $plugin));
+        }
+        return new $class_name;
     }
 
 }

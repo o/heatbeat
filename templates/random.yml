@@ -1,23 +1,23 @@
-name : Random
-version : 0.0.1
-source-name : Foo_Random
-filename : random
+template :
+    options :
+        name : Random
+        version : 0.0.1
+        source-name : Foo_Random
 rrd:
-    # 5 minute is minimum there
-    step: 300
+    options :
+        # 5 minute is minimum there
+        step : 300
     datastores:
-        - name: rand1  
+        - name: rand1   
           type: GAUGE
           heartbeat: 600
           min: 0
           max: 100
-          
-        - name: rand2  
+        - name: rand2   
           type: GAUGE
           heartbeat: 600
           min: 0
           max: 100
-
     rras:
         # I'm only adding AVERAGE data archives now.
         # Daily (300*1*288 = 1 Day)
@@ -25,56 +25,47 @@ rrd:
           xff: 0.5
           steps: 1
           rows: 288
-
         # Weekly (300*6*336 = 1 Week)
         - cf: AVERAGE
           xff: 0.5
           steps: 6
           rows: 336
-
         # Monthly (300*24*372 = 1 Month)
         - cf: AVERAGE
           xff: 0.5
           steps: 24
           rows: 372
-
         # Yearly (300*380*288 = 1 Year)
         - cf: AVERAGE
           xff: 0.5
           steps: 288
           rows: 380
-         
 graphs :
-    - name : Random
-      label : Values
-      base : 1000
-      lower : 0
-      upper : 100
-      items :
-          - type : AREA
-            definition-name: rand1
-            input : rand1
-            color : EB4528
-            legend : Random1
-            
-          - type : LINE
-            definition-name: rand2
-            input : rand2
-            color : BDD6AC
-            legend : Random2           
-      gprints :
-          - definition-name : rand1
-            format: %6.1lf%s
-            
-          - definition-name : rand2
-            format: %6.1lf%s
-
-      definitions:
-        defs:
-            - name: rand1
-              datastore-name: rand1
-              cf: AVERAGE
-              
-            - name: rand2
-              datastore-name: rand1
-              cf: AVERAGE
+        - options :
+            name : Random
+            label : Values
+            base : 1000
+            lower : 0
+            upper : 0
+          items :
+              - type : AREA
+                definition-name: rand1
+                color : EB4528
+                legend : Random 1  
+              - type : LINE
+                definition-name: rand2
+                color : BDD6AC
+                legend : Random 2  
+          gprints :
+              - definition-name : rand1
+                format: Number %6.1lf%s
+              - definition-name : rand1
+                format: Number %6.1lf%s
+          definitions:
+            defs:
+                - name: r1
+                  datastore-name: rand1
+                  cf: AVERAGE
+                - name: r2
+                  datastore-name: rand2
+                  cf: AVERAGE

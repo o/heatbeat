@@ -34,13 +34,13 @@ namespace Heatbeat\Util\Command\RRDTool;
  */
 class UpdateCommand extends RRDToolCommand {
 
-    protected $subCommand = 'update';
+    protected $subCommand = 'updatev';
 
     public function setValues($time, array $values) {
         if (!is_int($time)) {
             $time = strtotime($time);
         }
-        $this->addArgument($this->getRoundedTime($time) . self::SEPERATOR . \implode(self::SEPERATOR, $values));
+        $this->addArgument($this->getRoundedTime($time) . self::SEPERATOR . iterator_to_array(implode(self::SEPERATOR, $values)));
         return true;
     }
 

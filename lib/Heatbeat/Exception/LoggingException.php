@@ -16,37 +16,22 @@
  * limitations under the License. 
  *
  * @category    Heatbeat
- * @package     Heatbeat\Parser\Template\Node
+ * @package     Heatbeat\Exception
  * @author      Osman Ungur <osmanungur@gmail.com>
  * @copyright   2011 Osman Ungur
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  * @link        http://github.com/import/heatbeat
  */
 
-namespace Heatbeat\Parser\Template\Node;
+namespace Heatbeat\Exception;
 
 /**
- * Gprint node of template
+ * Logging exception class
  *
  * @category    Heatbeat
- * @package     Heatbeat\Parser\Template\Node
+ * @package     Heatbeat\Exception
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class GPrintNode extends AbstractNode implements NodeInterface {
-    const PREFIX = 'GPRINT';
-
-    public function getAsString() {
-        return implode(self::SEPERATOR, array(
-            self::PREFIX,
-            $this->offsetGet('definition-name'),
-            sprintf('"%s"', $this->offsetGet('format')),
-        ));
-    }
-
-    public function validate() {
-        $this->isDefined('definition-name');
-        $this->isDefined('format');
-        return true;
-    }
-
+class LoggingException extends HeatbeatException {
+    
 }

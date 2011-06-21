@@ -36,14 +36,12 @@ class VDefNode extends AbstractNode implements NodeInterface {
     const PREFIX = 'VDEF';
 
     public function getAsString() {
-        return implode(self::SEPERATOR, array(
-            self::PREFIX,
-            $this->offsetGet('name'),
-            $this->offsetGet('rpn')
-        ));
+        return self::PREFIX . self::SEPERATOR . $this->offsetGet('name') . self::EQUAL . $this->offsetGet('rpn');
     }
 
     public function validate() {
+        $this->isDefined('name');
+        $this->isDefined('rpn');
         return true;
     }
 

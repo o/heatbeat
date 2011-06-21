@@ -34,12 +34,6 @@ namespace Heatbeat\Parser\Template\Node;
  */
 class RraNode extends AbstractNode implements NodeInterface {
     const PREFIX = 'RRA';
-    private $validCfs = array(
-        'AVERAGE',
-        'MIN',
-        'MAX',
-        'LAST'
-    );
 
     public function getAsString() {
         return implode(self::SEPERATOR, array(
@@ -52,9 +46,14 @@ class RraNode extends AbstractNode implements NodeInterface {
     }
 
     public function validate() {
-        if (!in_array(strtoupper($this->offsetGet('cf')), $this->validCfs)) {
-            return false;
-        };
+        $this->isDefined('cf');
+        $this->isValidCf('cf');
+        $this->isDefined('xff');
+        $this->isValidXff('xff');
+        $this->isDefined('steps');
+        $this->isValidInt('steps');
+        $this->isDefined('rows');
+        $this->isValidInt('rows');
         return true;
     }
 

@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<phpunit colors="true">
+    <filter>
+        <blacklist>
+            <directory suffix=".php">../vendor/</directory>
+            <file suffix=".php">../lib/Heatbeat/Autoloader.php</file>
+        </blacklist>      
+    </filter>
+</phpunit>

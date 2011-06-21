@@ -57,7 +57,7 @@ class TestSource extends Console\Command\Command {
         if (!class_exists($class_name)) {
             $output->write(sprintf('Failed : Unable to find source plugin %s', $namespaced), true);
         }
-        $instance = new $class;
+        $instance = new $class_name;
         $arguments = $input->getArgument('args');
         if ($arguments) {
             $sourceArray = array();

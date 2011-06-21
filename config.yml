@@ -4,7 +4,8 @@ configuration :
         handler : RotatingFile
 
 templates :
-    - name : random
+    - plugin  : random
+      filename : random
       enabled : true
       arguments :
           min : 5

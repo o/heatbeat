@@ -26,36 +26,19 @@
 namespace Heatbeat\Parser\Template\Node;
 
 /**
- * Datastore node of template
+ * General options node of template
  *
  * @category    Heatbeat
  * @package     Heatbeat\Parser\Template\Node
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class DatastoreNode extends AbstractNode implements NodeInterface {
-    const PREFIX = 'DS';
-
-    public function getAsString() {
-        return implode(self::SEPERATOR, array(
-            self::PREFIX,
-            $this->offsetGet('name'),
-            strtoupper($this->offsetGet('type')),
-            $this->offsetGet('heartbeat'),
-            $this->offsetGet('min'),
-            $this->offsetGet('max')
-        ));
-    }
+class TemplateOptionNode extends AbstractNode implements OptionNodeInterface {
 
     public function validate() {
         $this->isDefined('name');
-        $this->isDefined('type');
-        $this->isValidType('type');
-        $this->isDefined('min');
-        $this->isValidInt('min');
-        $this->isDefined('max');
-        $this->isValidInt('max');
-        $this->isDefined('heartbeat');
-        $this->isValidInt('heartbeat');
+        $this->isDefined('version');
+        $this->isDefined('source-name');
+        $this->isValidSource('source-name');
         return true;
     }
 

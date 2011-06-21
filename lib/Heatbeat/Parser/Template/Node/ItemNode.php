@@ -37,12 +37,18 @@ class ItemNode extends AbstractNode implements NodeInterface {
     public function getAsString() {
         return implode(self::SEPERATOR, array(
             $this->offsetGet('type'),
-            $this->offsetGet('definition-name') . $this->offsetGet('color'),
-            $this->offsetGet('legend')
+            $this->offsetGet('definition-name') . '#' . $this->offsetGet('color'),
+            sprintf('"%s"', $this->offsetGet('legend'))
         ));
     }
 
     public function validate() {
+        $this->isDefined('type');
+        $this->isValidGraphType('type');
+        $this->isDefined('definition-name');
+        $this->isDefined('color');
+        $this->isHex('color');
+        $this->isDefined('legend');
         return true;
     }
 
