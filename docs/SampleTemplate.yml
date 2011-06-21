@@ -30,7 +30,7 @@ rrd:
           # how many generations of data values are kept in an RRA.
           rows: 
 graphs :
-      items :
+      options :
         # Name of graph, it will be show in top of graph
         name :
         # Vertical label of graph
