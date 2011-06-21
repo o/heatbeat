@@ -72,7 +72,8 @@ class Heatbeat {
             $template = $this->getTemplate($item['plugin']);
             $commandObject = new RRDUpdate();
             $commandObject->setFilename($item['filename']);
-            $pluginInstance = self::getPluginInstance($template->offsetGet('source-name'));
+            $templateOptions = new \ArrayObject($template['template']['options']);
+            $pluginInstance = self::getPluginInstance($templateOptions->offsetGet('source-name'));
             $pluginInstance->setInput(new Input($item['arguments']));
             $pluginInstance->perform();
             $commandObject->setValues(time(), $pluginInstance->getOutput());

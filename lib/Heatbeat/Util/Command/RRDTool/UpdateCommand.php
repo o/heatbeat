@@ -36,11 +36,11 @@ class UpdateCommand extends RRDToolCommand {
 
     protected $subCommand = 'updatev';
 
-    public function setValues($time, array $values) {
+    public function setValues($time, $values) {
         if (!is_int($time)) {
             $time = strtotime($time);
         }
-        $this->addArgument($this->getRoundedTime($time) . self::SEPERATOR . iterator_to_array(implode(self::SEPERATOR, $values)));
+        $this->addArgument($this->getRoundedTime($time) . self::SEPERATOR . implode(self::SEPERATOR, iterator_to_array($values)));
         return true;
     }
 
