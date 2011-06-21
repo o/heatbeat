@@ -25,6 +25,8 @@
 
 namespace Heatbeat\Util\Command\RRDTool;
 
+use Heatbeat\Source\SourceOutput;
+
 /**
  * Implementation for RRDTool update command
  *
@@ -36,7 +38,7 @@ class UpdateCommand extends RRDToolCommand {
 
     protected $subCommand = 'updatev';
 
-    public function setValues($time, $values) {
+    public function setValues($time, SourceOutput $values) {
         if (!is_int($time)) {
             $time = strtotime($time);
         }
