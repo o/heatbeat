@@ -87,20 +87,13 @@ class Heatbeat {
         if (!(error_reporting() & $errno)) {
             return false;
         }
-        Logger::getInstance()->log(sprintf('[%s] %s', 'Error', $errstr));
-        self::notifyStdErr();
+        $message = sprintf('[%s] %s', 'Error', $errstr);
+        Logger::getInstance()->log($message);
     }
 
     public static function handleExceptions(\Exception $exc) {
-        Logger::getInstance()->log(sprintf('[%s] %s', get_class($exc), $exc->getMessage()));
-        self::notifyStdErr();
-    }
-
-    public static function notifyStdErr() {
-        /**
-         * @todo Configuration file logging check
-         */
-        return fwrite(STDERR, sprintf("\r %s \r\n", 'An error occured, please check your log files'));
+        $message = sprintf('[%s] %s', get_class($exc), $exc->getMessage());
+        Logger::getInstance()->log($message);
     }
 
     public static function getPluginInstance($plugin) {
