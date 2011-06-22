@@ -25,7 +25,8 @@
 
 namespace Heatbeat\Util;
 
-use Symfony\Component\Process\Process;
+use Symfony\Component\Process\Process,
+    Heatbeat\Exception\ExecutionException;
 
 /**
  * Class for executing shell commands.
@@ -84,6 +85,9 @@ class CommandExecutor {
         $process = new Process($this->getCommandString());
         $process->setEnv(explode(PATH_SEPARATOR, \getenv('PATH')));
         $process->run();
+        if (!$process->isSuccessful()) {
+            throw new ExecutionException($process->getErrorOutput());
+        }
         return $process;
     }
 
@@ -91,6 +95,9 @@ class CommandExecutor {
         $process = new Process($command);
         $process->setEnv(explode(PATH_SEPARATOR, \getenv('PATH')));
         $process->run();
+        if (!$process->isSuccessful()) {
+            throw new ExecutionException($process->getErrorOutput());
+        }
         return $process;
     }
 
