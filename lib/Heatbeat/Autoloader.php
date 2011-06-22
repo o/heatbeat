@@ -116,12 +116,12 @@ class Autoloader {
             return false;
         }
         $message = sprintf('[%s] %s', 'Error', $errstr);
-        Logger::getInstance()->log($message);
+        \Heatbeat\Log\BaseLogger::getInstance()->log($message);
     }
 
     public static function handleExceptions(\Exception $exc) {
         $message = sprintf('[%s] %s', get_class($exc), $exc->getMessage());
-        Logger::getInstance()->log($message);
+        \Heatbeat\Log\BaseLogger::getInstance()->log($message);
     }    
 
 }
