@@ -39,8 +39,6 @@ abstract class AbstractSource {
 
     private $input;
     private $output;
-    private $isSuccessful = false;
-    private $errorMessage;
 
     public function getInput() {
         return $this->input;
@@ -54,28 +52,12 @@ abstract class AbstractSource {
         return $this->output;
     }
 
-    protected function setOutput($output) {
+    public function setOutput($output) {
         $this->output = new SourceOutput($output);
     }
 
     public function getExternalFolderPath() {
         return Autoloader::getInstance()->getPath(Autoloader::FOLDER_EXTERNAL);
-    }
-
-    public function getIsSuccessful() {
-        return $this->isSuccessful;
-    }
-
-    public function setIsSuccessful($isSuccessful) {
-        $this->isSuccessful = $isSuccessful;
-    }
-
-    public function getErrorMessage() {
-        return $this->errorMessage;
-    }
-
-    public function setErrorMessage($errorMessage) {
-        $this->errorMessage = $errorMessage;
     }
 
 }
