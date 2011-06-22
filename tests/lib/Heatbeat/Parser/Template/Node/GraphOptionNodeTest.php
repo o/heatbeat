@@ -9,13 +9,15 @@ class GraphOptionNodeTest extends \PHPUnit_Framework_TestCase {
 
     private $validationData = array(
         'name' => 'test',
-        'version' => '1.0',
-        'source-name' => 'Foo_Random'
+        'label' => 'Test',
+        'base' => 1000,
+        'lower' => 10,
+        'upper' => 50
     );
 
     public function testValidate() {
         $array = $this->validationData;
-        $object = new TemplateOptionNode($array);
+        $object = new GraphOptionNode($array);
         $object->validate();
     }
 
