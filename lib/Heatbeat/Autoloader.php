@@ -90,8 +90,8 @@ class Autoloader {
 
     private function setErrorExceptionHandling() {
         error_reporting(E_ALL | E_STRICT);
-        set_error_handler(array('\\Heatbeat\\Heatbeat', 'handleErrors'));
-        set_exception_handler(array('\\Heatbeat\\Heatbeat', 'handleExceptions'));
+        set_error_handler(array($this, 'handleErrors'));
+        set_exception_handler(array($this, 'handleExceptions'));
     }
 
     private function setLoader($loader) {
@@ -110,6 +110,19 @@ class Autoloader {
         $config = new \Heatbeat\Parser\Config\ConfigParser($this->getPath(Autoloader::FOLDER_ROOT));
         $this->config = $config->getValues();
     }
+    
+    public static function handleErrors($errno, $errstr = '', $errfile = '', $errline = '') {
+        if (!(error_reporting() & $errno)) {
+            return false;
+        }
+        $message = sprintf('[%s] %s', 'Error', $errstr);
+        Logger::getInstance()->log($message);
+    }
+
+    public static function handleExceptions(\Exception $exc) {
+        $message = sprintf('[%s] %s', get_class($exc), $exc->getMessage());
+        Logger::getInstance()->log($message);
+    }    
 
 }
 
