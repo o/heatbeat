@@ -53,7 +53,12 @@ class TestSource extends Console\Command\Command {
     }
 
     protected function execute(InputInterface $input, OutputInterface $output) {
-        $instance = $this->getPluginInstance($input->getArgument('source'));
+        try {
+            $instance = $this->getPluginInstance($input->getArgument('source'));
+        } catch (SourceException $e) {
+            $output->writeln($e->getMessage());
+            return false;
+        }
         $arguments = $input->getArgument('args');
         if ($arguments) {
             $instance->setInput($this->prepareArgs($arguments));
