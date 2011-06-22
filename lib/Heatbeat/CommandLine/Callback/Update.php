@@ -29,7 +29,15 @@ use Symfony\Component\Console\Input\InputArgument,
     Symfony\Component\Console\Input\InputOption,
     Symfony\Component\Console,
     Symfony\Component\Console\Input\InputInterface,
-    Symfony\Component\Console\Output\OutputInterface;
+    Symfony\Component\Console\Output\OutputInterface,
+    Heatbeat\Autoloader,
+    Heatbeat\Parser\Template\TemplateParser as TemplateLoader,
+    Heatbeat\Util\Command\RRDTool\RRDToolCommand as RRDTool,
+    Heatbeat\Util\Command\RRDTool\UpdateCommand as RRDUpdate,
+    Heatbeat\Util\CommandExecutor as Executor,
+    Heatbeat\Log\BaseLogger as Logger,
+    Heatbeat\Source\SourceInput as Input,
+    Heatbeat\Exception\SourceException;
 
 /**
  * Callback for CLI Tool update command
@@ -47,8 +55,47 @@ class Update extends Console\Command\Command {
     }
 
     protected function execute(InputInterface $input, OutputInterface $output) {
-        // dummy
-        $output->write('All of RRDs updated');
+        $config = Autoloader::getInstance()->getConfig();
+        foreach ($config->offsetGet('templates') as $item) {
+            try {
+                $template = $this->getTemplate($item['plugin']);
+                $templateOptions = new \ArrayObject($template['template']['options']);
+                $pluginInstance = $this->getPluginInstance($templateOptions->offsetGet('source-name'));
+                $pluginInstance->setInput(new Input($item['arguments']));
+                $pluginInstance->perform();
+                $commandObject = new RRDUpdate();
+                $commandObject->setFilename($item['filename']);
+                $commandObject->setValues(time(), $pluginInstance->getOutput());
+                $executor = new Executor();
+                $executor->setCommandObject($commandObject);
+                $executor->prepare();
+                if ($input->getOption('verbose')) {
+                    $output->writeln($executor->getCommandString());
+                }
+                $process = $executor->execute();
+                if ($process->isSuccessful()) {
+                    $output->writeln(sprintf("'%s%s' updated successfully.", $item['filename'], RRDTool::RRD_EXT));
+                }
+            } catch (\Exception $e) {
+                Logger::getInstance()->log($e->getMessage());
+                $output->writeln($e->getMessage());
+                continue;
+            }
+        }
+    }
+
+    private function getTemplate($filename) {
+        $template = new TemplateLoader($filename);
+        return $template->getValues();
+    }
+
+    private function getPluginInstance($plugin) {
+        $namespaced = str_replace('_', "\\", $plugin);
+        $class_name = '\\Heatbeat\\Source\\Plugin\\' . $namespaced;
+        if (!class_exists($class_name)) {
+            throw new SourceException(sprintf('Unable to find source plugin %s', $plugin));
+        }
+        return new $class_name;
     }
 
 }
