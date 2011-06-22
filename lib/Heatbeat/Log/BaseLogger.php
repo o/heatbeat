@@ -56,7 +56,6 @@ class BaseLogger {
     }
 
     public function log($message) {
-        $this->writetoConsole($message);
         if ($this->getIsEnabled()) {
             if ($this->getHandler()->isHandling()) {
                 $this->getHandler()->handle($message);
@@ -65,10 +64,6 @@ class BaseLogger {
             throw new LoggingException("A logging problem occured, please check your logs is writable.");
         }
         return false;
-    }
-
-    private function writetoConsole($message, $handler = STDERR) {
-        return fwrite($handler, sprintf("\r %s \r\n", $message));
     }
 
     private function getIsEnabled() {
@@ -89,6 +84,7 @@ class BaseLogger {
             $instance = new $class_name;
             $instance->init();
             $this->handler = $instance;
+            return true;
         } else {
             throw new LoggingException(sprintf("Unable to load log handler class %s", $handler));
         }
