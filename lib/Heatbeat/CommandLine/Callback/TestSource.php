@@ -30,7 +30,8 @@ use Symfony\Component\Console\Input\InputArgument,
     Symfony\Component\Console,
     Symfony\Component\Console\Input\InputInterface,
     Symfony\Component\Console\Output\OutputInterface,
-    Heatbeat\Source\SourceInput;
+    Heatbeat\Source\SourceInput as Input,
+    Heatbeat\Exception\SourceException;
 
 /**
  * Callback for CLI Tool test command
@@ -47,43 +48,50 @@ class TestSource extends Console\Command\Command {
                 ->setDescription('Makes tests for source plugin with given arguments')
                 ->setDefinition(array(
                     new InputArgument('source', InputArgument::REQUIRED, 'Source plugin name'),
-                    new InputArgument('args', InputArgument::OPTIONAL, 'Arguments as key:value')
+                    new InputArgument('args', InputArgument::OPTIONAL, 'Arguments as key:value like "foo:bar|bar:baz"')
                 ));
     }
 
     protected function execute(InputInterface $input, OutputInterface $output) {
-        $namespaced = str_replace('_', "\\", $input->getArgument('source'));
-        $class_name = 'Heatbeat\\Source\\Plugin\\' . $namespaced;
-        if (!class_exists($class_name)) {
-            $output->write(sprintf('Failed : Unable to find source plugin %s', $namespaced), true);
-        }
-        $instance = new $class_name;
+        $instance = $this->getPluginInstance($input->getArgument('source'));
         $arguments = $input->getArgument('args');
         if ($arguments) {
-            $sourceArray = array();
-            $argumentsArray = explode("|", $arguments);
-            foreach ($argumentsArray as $argument) {
-                $kv = explode(":", $argument);
-                $sourceArray[$kv[0]] = $kv[1];
-            }
-            $inputArguments = new SourceInput($sourceArray);
-            $instance->setInput($inputArguments);
+            $instance->setInput($this->prepareArgs($arguments));
         }
-        $instance->perform();
-        if ($instance->getIsSuccessful()) {
-            $output->write('Status : Success', true);
-            $output->write('Results :', true);
+        try {
+            $instance->perform();
+            $output->writeLn('Status : Success');
+            $output->writeLn('Results :');
             foreach ($instance->getOutput() as $key => $value) {
-                $output->write(sprintf("Key : %s, Value : %s", $key, $value), true);
+                $output->writeLn(sprintf("Key : %s, Value : %s", $key, $value));
             }
-        } else {
-            $output->write('Status : Failed', true);
-            $output->write(sprintf('Error message : %s', $instance->getErrorMessage()), true);
-            $output->write('Input values :', true);
+        } catch (SourceException $e) {
+            $output->writeLn('Status : Failed');
+            $output->writeLn(sprintf('Error message : %s', $e->getMessage()));
+            $output->writeLn('Input values :');
             foreach ($instance->getInput() as $key => $value) {
-                $output->write(sprintf("Key : %s, Value : %s", $key, $value), true);
+                $output->writeLn(sprintf("Key : %s, Value : %s", $key, $value));
             }
         }
+    }
+
+    private function getPluginInstance($plugin) {
+        $namespaced = str_replace('_', "\\", $plugin);
+        $class_name = '\\Heatbeat\\Source\\Plugin\\' . $namespaced;
+        if (!class_exists($class_name)) {
+            throw new SourceException(sprintf('Unable to find source plugin %s', $plugin));
+        }
+        return new $class_name;
+    }
+
+    private function prepareArgs($arguments) {
+        $sourceArray = array();
+        $argumentsArray = explode("|", $arguments);
+        foreach ($argumentsArray as $argument) {
+            $kv = explode(":", $argument);
+            $sourceArray[$kv[0]] = $kv[1];
+        }
+        return new Input($sourceArray);
     }
 
 }
