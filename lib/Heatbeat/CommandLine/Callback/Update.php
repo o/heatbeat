@@ -37,6 +37,7 @@ use Symfony\Component\Console\Input\InputArgument,
     Heatbeat\Util\CommandExecutor as Executor,
     Heatbeat\Log\BaseLogger as Logger,
     Heatbeat\Source\SourceInput as Input,
+    Heatbeat\Parser\Template\Node\TemplateOptionNode as TemplateOptions,
     Heatbeat\Exception\SourceException;
 
 /**
@@ -59,7 +60,8 @@ class Update extends Console\Command\Command {
         foreach ($config->offsetGet('templates') as $item) {
             try {
                 $template = $this->getTemplate($item['plugin']);
-                $templateOptions = new \ArrayObject($template['template']['options']);
+                $templateOptions = new TemplateOptions($template['template']['options']);
+                $templateOptions->validate();
                 $pluginInstance = $this->getPluginInstance($templateOptions->offsetGet('source-name'));
                 $pluginInstance->setInput(new Input($item['arguments']));
                 $pluginInstance->perform();
