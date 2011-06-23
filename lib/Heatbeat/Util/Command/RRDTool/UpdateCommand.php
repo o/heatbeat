@@ -42,14 +42,11 @@ class UpdateCommand extends RRDToolCommand {
     /**
      * Prepares time and data arguments for updating RRD 
      * 
-     * @param int|string $time
+     * @param int $time
      * @param SourceOutput $values
      * @return bool 
      */
     public function setValues($time, SourceOutput $values) {
-        if (!is_int($time)) {
-            $time = strtotime($time);
-        }
         $this->addArgument($this->getRoundedTime($time) . self::SEPERATOR . implode(self::SEPERATOR, iterator_to_array($values)));
         $this->setDatastoreTemplate($values);
     }
