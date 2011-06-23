@@ -36,7 +36,18 @@ interface NodeInterface {
     const SEPERATOR = ':';
     const EQUAL = '=';
 
+    /**
+     * Returns node object as string for passing cli
+     * 
+     * @return string
+     */
     public function getAsString();
 
+    /**
+     * Validates node arguments
+     * 
+     * @return bool
+     * @throws NodeValidationException
+     */
     public function validate();
 }

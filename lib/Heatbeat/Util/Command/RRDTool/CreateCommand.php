@@ -82,13 +82,23 @@ class CreateCommand extends RRDToolCommand {
         return true;
     }
 
+    /**
+     * Sets overwriting behaviour for existing RRD file
+     * 
+     * @param bool $value
+     * @return bool 
+     */
     public function setOverwrite($value) {
         $this->setOption(self::PARAMETER_NO_OVERWRITE, ($value ? false : true));
         return true;
     }
 
+    /**
+     * Prepares start option of create command
+     */
     private function setStart() {
-        $this->setOption(self::PARAMETER_START, time() - (60 * 60));
+        $this->setOption(self::PARAMETER_START, time() - (30 * 60));
+        return true;
     }
 
     public function init() {

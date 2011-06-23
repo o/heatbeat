@@ -39,6 +39,13 @@ class UpdateCommand extends RRDToolCommand {
     protected $subCommand = 'updatev';
     const PARAMETER_TEMPLATE = 'template';
 
+    /**
+     * Prepares time and data arguments for updating RRD 
+     * 
+     * @param int|string $time
+     * @param SourceOutput $values
+     * @return bool 
+     */
     public function setValues($time, SourceOutput $values) {
         if (!is_int($time)) {
             $time = strtotime($time);
@@ -58,6 +65,11 @@ class UpdateCommand extends RRDToolCommand {
         return $time - ($time % 60);
     }
 
+    /**
+     * Prepares template option for update command
+     * 
+     * @param SourceOutput $values 
+     */
     private function setDatastoreTemplate(SourceOutput $values) {
         $this->setOption(self::PARAMETER_TEMPLATE, implode(self::SEPERATOR, array_keys(iterator_to_array($values))));
     }

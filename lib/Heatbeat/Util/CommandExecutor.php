@@ -45,7 +45,7 @@ class CommandExecutor {
         return $this->commandObject;
     }
 
-    public function setCommandObject($commandObject) {
+    public function setCommandObject(AbstractCommand $commandObject) {
         $this->commandObject = $commandObject;
     }
 

@@ -46,12 +46,20 @@ abstract class RRDToolCommand extends Command {
         $this->init();
     }
 
+    /**
+     * Sets filename of rrd file based on RRD folder
+     * 
+     * @param string $filename 
+     */
     public function setFilename($filename) {
         $this->addArgument(Autoloader::getInstance()->getPath(Autoloader::FOLDER_RRD) . \DIRECTORY_SEPARATOR . $filename . self::RRD_EXT);
     }
-    
-    public function init() {
 
+    /**
+     * Method for initializing command, works when constructing object
+     */
+    public function init() {
+        
     }
 
 }
