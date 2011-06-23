@@ -12,6 +12,16 @@ rrd:
           heartbeat: 600
           min: 0
           max: 100
+        - name: 5min
+          type: GAUGE
+          heartbeat: 600
+          min: 0
+          max: 100
+        - name: 15min
+          type: GAUGE
+          heartbeat: 600
+          min: 0
+          max: 100                    
     rras:
         - cf: AVERAGE
           xff: 0.5
