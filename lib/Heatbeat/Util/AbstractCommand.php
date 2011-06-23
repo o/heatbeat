@@ -34,9 +34,32 @@ namespace Heatbeat\Util;
  */
 abstract class AbstractCommand {
 
+    /**
+     * Command name
+     * 
+     * @var string 
+     */
     private $command;
+    
+    /**
+     * Subcommand name of command
+     * 
+     * @var string 
+     */
     private $subCommand;
+    
+    /**
+     * Arguments of command
+     * 
+     * @var array 
+     */
     private $arguments = array();
+    
+    /**
+     * Options of command
+     * 
+     * @var array 
+     */
     private $options = array();
 
     /**

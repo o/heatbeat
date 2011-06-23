@@ -37,7 +37,15 @@ use Heatbeat\Util\AbstractCommand as Command,
  */
 abstract class RRDToolCommand extends Command {
     const SEPERATOR = ':';
+
+    /**
+     * Executable / command name of rrdtool
+     */
     const EXECUTABLE = 'rrdtool';
+
+    /**
+     * Extension of rrd files
+     */
     const RRD_EXT = '.rrd';
 
     public function __construct() {
