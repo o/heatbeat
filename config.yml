@@ -10,3 +10,7 @@ templates :
       arguments :
           min : 5
           max : 10
+          
+    - plugin  : system_load
+      filename : system_load
+      enabled : true
