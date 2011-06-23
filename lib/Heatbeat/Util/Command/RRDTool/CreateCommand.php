@@ -47,11 +47,7 @@ class CreateCommand extends RRDToolCommand {
      * @return bool 
      */
     public function setStep($step) {
-        if (is_int($step)) {
-            $this->setOption(self::PARAMETER_STEP, $step);
-            return true;
-        }
-        return false;
+        $this->setOption(self::PARAMETER_STEP, $step);
     }
 
     /**
@@ -65,7 +61,6 @@ class CreateCommand extends RRDToolCommand {
             $object->validate();
             $this->addArgument($object->getAsString());
         }
-        return true;
     }
 
     /**
@@ -79,7 +74,6 @@ class CreateCommand extends RRDToolCommand {
             $object->validate();
             $this->addArgument($object->getAsString());
         }
-        return true;
     }
 
     /**
@@ -90,7 +84,6 @@ class CreateCommand extends RRDToolCommand {
      */
     public function setOverwrite($value) {
         $this->setOption(self::PARAMETER_NO_OVERWRITE, ($value ? false : true));
-        return true;
     }
 
     /**
@@ -98,7 +91,6 @@ class CreateCommand extends RRDToolCommand {
      */
     private function setStart() {
         $this->setOption(self::PARAMETER_START, time() - (30 * 60));
-        return true;
     }
 
     public function init() {
