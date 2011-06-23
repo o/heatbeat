@@ -65,7 +65,7 @@ class CreateCommand extends RRDToolCommand {
 
     /**
      *
-     * @param array  $rras
+     * @param array $rras
      * @return bool 
      */
     public function setRras(array $rras) {
@@ -87,15 +87,17 @@ class CreateCommand extends RRDToolCommand {
     }
 
     /**
-     * Prepares start option of create command
+     * Sets start time of RRD file
+     * 
+     * @param int $time 
      */
-    private function setStart() {
-        $this->setOption(self::PARAMETER_START, time() - (30 * 60));
+    public function setStart($time) {
+        $this->setOption(self::PARAMETER_START, $time);
     }
 
     public function init() {
-        $this->setOverwrite(true);
-        $this->setStart();
+        $this->setOverwrite(false);
+        $this->setStart(time() - (60 * 60));
     }
 
 }
