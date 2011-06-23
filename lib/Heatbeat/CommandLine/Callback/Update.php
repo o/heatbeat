@@ -63,7 +63,9 @@ class Update extends Console\Command\Command {
                 $templateOptions = new TemplateOptions($template['template']['options']);
                 $templateOptions->validate();
                 $pluginInstance = $this->getPluginInstance($templateOptions->offsetGet('source-name'));
-                $pluginInstance->setInput(new Input($item['arguments']));
+                if (array_key_exists('arguments', $item) AND is_array($item['arguments'])) {
+                    $pluginInstance->setInput(new Input($item['arguments']));
+                }
                 $pluginInstance->perform();
                 $commandObject = new RRDUpdate();
                 $commandObject->setFilename($item['filename']);
