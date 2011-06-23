@@ -30,11 +30,10 @@ use Heatbeat\Source\AbstractSource,
     Heatbeat\Source\AbstractInputOutput,
     Heatbeat\Source\SourceInput,
     Heatbeat\Source\SourceOutput,
-    Heatbeat\Util\CommandExecutor,
     Heatbeat\Exception\SourceException;
 
 /**
- * Abstract source class for data fetching
+ * Example source class for fetching random values
  *
  * @category    Heatbeat
  * @package     Heatbeat\Source\Plugin\Foo
