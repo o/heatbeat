@@ -36,6 +36,7 @@ use Symfony\Component\Console\Input\InputArgument,
     Heatbeat\Util\Command\RRDTool\CreateCommand as RRDCreate,
     Heatbeat\Util\CommandExecutor as Executor,
     Heatbeat\Log\BaseLogger as Logger,
+    Heatbeat\Parser\Template\Node\RrdOptionNode as RrdOptions,
     Heatbeat\Exception\SourceException;
 
 /**
@@ -62,6 +63,8 @@ class Create extends Console\Command\Command {
             try {
                 $template = $this->getTemplate($item['plugin']);
                 $rrdDefinition = new \ArrayObject($template->offsetGet('rrd'));
+                $rrdOptions = new RrdOptions($rrdDefinition->offsetGet('options'));
+                $rrdOptions->validate();
                 $commandObject = new RRDCreate();
                 $commandObject->setFilename($item['filename']);
                 $commandObject->setOverwrite($input->getOption('overwrite'));

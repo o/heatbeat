@@ -51,6 +51,7 @@ class CreateCommand extends RRDToolCommand {
             $this->setOption(self::PARAMETER_STEP, $step);
             return true;
         }
+        return false;
     }
 
     /**
@@ -61,6 +62,7 @@ class CreateCommand extends RRDToolCommand {
     public function setDatastores(array $datastores) {
         foreach ($datastores as $datastore) {
             $object = new Datastore($datastore);
+            $object->validate();
             $this->addArgument($object->getAsString());
         }
         return true;
@@ -74,6 +76,7 @@ class CreateCommand extends RRDToolCommand {
     public function setRras(array $rras) {
         foreach ($rras as $rra) {
             $object = new RRA($rra);
+            $object->validate();
             $this->addArgument($object->getAsString());
         }
         return true;
