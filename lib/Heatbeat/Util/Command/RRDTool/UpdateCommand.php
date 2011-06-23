@@ -52,7 +52,6 @@ class UpdateCommand extends RRDToolCommand {
         }
         $this->addArgument($this->getRoundedTime($time) . self::SEPERATOR . implode(self::SEPERATOR, iterator_to_array($values)));
         $this->setDatastoreTemplate($values);
-        return true;
     }
 
     /**
