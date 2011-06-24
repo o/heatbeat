@@ -23,19 +23,19 @@ rrd:
           min: 0
           max: 100                    
     rras:
-        - cf: AVERAGE
+        - cf: ['AVERAGE', 'MIN', 'MAX', 'LAST']
           xff: 0.5
           steps: 1
           rows: 51840
-        - cf: AVERAGE
+        - cf: ['AVERAGE', 'MIN', 'MAX', 'LAST']
           xff: 0.5
           steps: 6
           rows: 8736
-        - cf: AVERAGE
+        - cf: ['AVERAGE', 'MIN', 'MAX', 'LAST']
           xff: 0.5
           steps: 24
           rows: 2160
-        - cf: AVERAGE
+        - cf: ['AVERAGE', 'MIN', 'MAX', 'LAST']
           xff: 0.5
           steps: 288
           rows: 797
