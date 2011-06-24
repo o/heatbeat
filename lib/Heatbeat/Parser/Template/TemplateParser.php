@@ -43,4 +43,25 @@ class TemplateParser extends AbstractParser {
         $this->setValues($this->parse());
     }
 
+    protected function setValues($values) {
+        $newValues = array();
+        foreach ($values['rrd']['rras'] as $rra) {
+            $consolidationFunctions = $rra['cf'];
+            if (is_array($consolidationFunctions)) {
+                foreach ($consolidationFunctions as $consolidationFunction) {
+                    $newRra = array();
+                    $newRra['cf'] = $consolidationFunction;
+                    $newRra['xff'] = $rra['xff'];
+                    $newRra['steps'] = $rra['steps'];
+                    $newRra['rows'] = $rra['rows'];
+                    array_push($newValues, $newRra);
+                }
+            } else {
+                array_push($newValues, $rra);
+            }
+        }
+        $values['rrd']['rras'] = $newValues;
+        parent::setValues($values);
+    }
+
 }
