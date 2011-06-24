@@ -42,7 +42,7 @@ abstract class AbstractParser {
 
     CONST YAML_EXT = '.yml';
 
-    private function getFilename() {
+    protected function getFilename() {
         return $this->filename;
     }
 

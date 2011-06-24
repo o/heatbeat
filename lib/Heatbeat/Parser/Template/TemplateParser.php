@@ -26,7 +26,11 @@
 namespace Heatbeat\Parser\Template;
 
 use Heatbeat\Parser\AbstractParser,
-    Heatbeat\Autoloader;
+    Heatbeat\Autoloader,
+    Heatbeat\Parser\Template\Node\TemplateOptionNode as TemplateOptions,
+    Heatbeat\Parser\Template\Node\RrdOptionNode as RrdOptions,
+    Heatbeat\Parser\Template\Node\DatastoreNode as Datastore,
+    Heatbeat\Exception\TemplateException;
 
 /**
  * Template file parser
@@ -64,4 +68,40 @@ class TemplateParser extends AbstractParser {
         parent::setValues($values);
     }
 
+    public function getTemplateOptions() {
+        $values = $this->getValues();
+        if ($values->offsetExists('template') AND array_key_exists('options', $values['template'])) {
+            $templateOptions = new TemplateOptions($values['template']['options']);
+            $templateOptions->validate();
+            return $templateOptions;
+        } else {
+            new TemplateException(sprintf('Template options is not defined in template %s', $this->getFilename()));
+        }
+    }
+
+    public function getRrdOptions() {
+        $values = $this->getValues();
+        if ($values->offsetExists('rrd') AND array_key_exists('options', $values['rrd'])) {
+            $rrdOptions = new RrdOptions($values['rrd']['options']);
+            $rrdOptions->validate();
+            return $rrdOptions;
+        } else {
+            new TemplateException(sprintf('RRD options is not defined in template %s', $this->getFilename()));
+        }
+    }
+
+    public function getRrdDatastores() {
+        $values = $this->getValues();
+        if ($values->offsetExists('rrd') AND array_key_exists('datastores', $values['rrd']) AND count($values['rrd']['datastores'])) {
+            return array_map(function($datastore) {
+                        $object = new Datastore($datastore);
+                        $object->validate();
+                        return $object;
+                    }, $values['rrd']['datastores']);
+        } else {
+            new TemplateException(sprintf('RRD datastores is not defined in template %s', $this->getFilename()));
+        }
+    }
+
 }
+
