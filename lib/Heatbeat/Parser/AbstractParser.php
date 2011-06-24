@@ -58,7 +58,7 @@ abstract class AbstractParser {
         return $this->filepath;
     }
 
-    private function getFullPath() {
+    protected function getFullPath() {
         return $this->getFilepath() . \DIRECTORY_SEPARATOR . $this->getFilename() . self::YAML_EXT;
     }
 
