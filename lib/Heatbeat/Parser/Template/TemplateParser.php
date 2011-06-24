@@ -75,7 +75,7 @@ class TemplateParser extends AbstractParser {
             $templateOptions->validate();
             return $templateOptions;
         } else {
-            new TemplateException(sprintf('Template options is not defined in template %s', $this->getFilename()));
+            throw new TemplateException(sprintf('Template options is not defined in template %s', $this->getFullPath()));
         }
     }
 
@@ -86,7 +86,7 @@ class TemplateParser extends AbstractParser {
             $rrdOptions->validate();
             return $rrdOptions;
         } else {
-            new TemplateException(sprintf('RRD options is not defined in template %s', $this->getFilename()));
+            throw new TemplateException(sprintf('RRD options is not defined in template %s', $this->getFullPath()));
         }
     }
 
@@ -99,9 +99,9 @@ class TemplateParser extends AbstractParser {
                         return $object;
                     }, $values['rrd']['datastores']);
         } else {
-            new TemplateException(sprintf('RRD datastores is not defined in template %s', $this->getFilename()));
+            throw new TemplateException(sprintf('RRD datastores is not defined in template %s', $this->getFullPath()));
         }
     }
-
+    
 }
 
