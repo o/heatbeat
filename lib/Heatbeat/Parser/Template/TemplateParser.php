@@ -30,6 +30,7 @@ use Heatbeat\Parser\AbstractParser,
     Heatbeat\Parser\Template\Node\TemplateOptionNode as TemplateOptions,
     Heatbeat\Parser\Template\Node\RrdOptionNode as RrdOptions,
     Heatbeat\Parser\Template\Node\DatastoreNode as Datastore,
+    Heatbeat\Parser\Template\Node\RraNode as Rra,
     Heatbeat\Exception\TemplateException;
 
 /**
@@ -45,27 +46,6 @@ class TemplateParser extends AbstractParser {
         $this->setFilePath(Autoloader::getInstance()->getPath(Autoloader::FOLDER_TEMPLATE));
         $this->setFilename($filename);
         $this->setValues($this->parse());
-    }
-
-    protected function setValues($values) {
-        $newValues = array();
-        foreach ($values['rrd']['rras'] as $rra) {
-            $consolidationFunctions = $rra['cf'];
-            if (is_array($consolidationFunctions)) {
-                foreach ($consolidationFunctions as $consolidationFunction) {
-                    $newRra = array();
-                    $newRra['cf'] = $consolidationFunction;
-                    $newRra['xff'] = $rra['xff'];
-                    $newRra['steps'] = $rra['steps'];
-                    $newRra['rows'] = $rra['rows'];
-                    array_push($newValues, $newRra);
-                }
-            } else {
-                array_push($newValues, $rra);
-            }
-        }
-        $values['rrd']['rras'] = $newValues;
-        parent::setValues($values);
     }
 
     public function getTemplateOptions() {
@@ -99,9 +79,38 @@ class TemplateParser extends AbstractParser {
                         return $object;
                     }, $values['rrd']['datastores']);
         } else {
-            throw new TemplateException(sprintf('RRD datastores is not defined in template %s', $this->getFullPath()));
+            throw new TemplateException(sprintf('You must define at least one datastore in template %s', $this->getFullPath()));
         }
     }
-    
+
+    public function getRrdRras() {
+        $values = $this->getValues();
+        if ($values->offsetExists('rrd') AND array_key_exists('rras', $values['rrd']) AND count($values['rrd']['rras'])) {
+            $newValues = array();
+            foreach ($values['rrd']['rras'] as $rra) {
+                $consolidationFunctions = $rra['cf'];
+                if (is_array($consolidationFunctions)) {
+                    foreach ($consolidationFunctions as $consolidationFunction) {
+                        $newRra = array();
+                        $newRra['cf'] = $consolidationFunction;
+                        $newRra['xff'] = $rra['xff'];
+                        $newRra['steps'] = $rra['steps'];
+                        $newRra['rows'] = $rra['rows'];
+                        $object = new Rra($newRra);
+                        $object->validate();
+                        array_push($newValues, $object);
+                    }
+                } else {
+                    $object = new Rra($rra);
+                    $object->validate();
+                    array_push($newValues, $object);
+                }
+            }
+            return $newValues;
+        } else {
+            throw new TemplateException(sprintf('You must define at least one Round Robin Archive in template %s', $this->getFullPath()));
+        }
+    }
+
 }
 
