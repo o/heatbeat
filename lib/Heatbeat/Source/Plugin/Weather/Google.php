@@ -16,14 +16,14 @@
  * limitations under the License. 
  *
  * @category    Heatbeat
- * @package     Heatbeat\Source\Plugin\System
+ * @package     Heatbeat\Source\Plugin\Weather
  * @author      Osman Ungur <osmanungur@gmail.com>
  * @copyright   2011 Osman Ungur
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  * @link        http://github.com/import/heatbeat
  */
 
-namespace Heatbeat\Source\Plugin\System;
+namespace Heatbeat\Source\Plugin\Weather;
 
 use Heatbeat\Source\AbstractSource,
     Heatbeat\Source\SourceInterface,
@@ -35,23 +35,36 @@ use Heatbeat\Source\AbstractSource,
  * Abstract source class for data fetching
  *
  * @category    Heatbeat
- * @package     Heatbeat\Source\Plugin\System
+ * @package     Heatbeat\Source\Plugin\Weather
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class Load extends AbstractSource implements SourceInterface {
+class Google extends AbstractSource implements SourceInterface {
 
     public function perform() {
-        $loads = false;
-        if (function_exists('sys_getloadavg')) {
-            $loads = sys_getloadavg();
-        } else {
-            throw new SourceException('Unable to fetch system load averages');
+        $xml = simplexml_load_file('http://www.google.com/ig/api?hl=en&weather=' . $this->getInput()->getValue('location'));
+        if (!$xml) {
+            throw new SourceException('Unable to fetch data from Google API');
+        }
+        $current = $xml->xpath("/xml_api_reply/weather/current_conditions");
+        switch ($this->getInput()->getValue('type')) {
+            case 'c':
+                $degree = (int) $current[0]->temp_c['data'];
+
+                break;
+            case 'f':
+                $degree = (int) $current[0]->temp_f['data'];
+
+                break;
+
+
+            default:
+                throw new SourceException('Wrong type provided, must be c or f');
+                break;
         }
         $output = new SourceOutput();
-        $output->setValue('1min', $loads[0]);
-        $output->setValue('5min', $loads[1]);
-        $output->setValue('15min', $loads[2]);
+        $output->setValue('current', $degree);
         $this->setOutput($output);
+        return true;
     }
 
 }
