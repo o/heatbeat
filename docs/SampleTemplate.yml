@@ -40,6 +40,8 @@ graphs :
             # Lower an upper limit for graphs, allowed values auto or [0-9]
             lower : 
             upper : 
+            # Start time of graph. You can use "at-style" time specification (Unix command at(1), look at the "man at"). Examples : -1month, -3weeks, -6hours.
+            start :             
           # Graph elements
           items :
               # Type of element, allowed values are AREA and LINE[width]
