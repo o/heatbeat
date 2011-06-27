@@ -49,6 +49,10 @@ class GraphCommand extends RRDToolCommand {
     const PARAMETER_UPPER_LIMIT = 'upper-limit';
     const PARAMETER_BASE = 'base';
 
+    const TEMPLATE_PARAMETER_AUTO = 'auto';
+    const PARAMETER_AUTOSCALE_MIN = 'alt-autoscale-min';
+    const PARAMETER_AUTOSCALE_MAX = 'alt-autoscale-max';
+
     public function setGraphFilename($graphFilename) {
         $this->addArgument($graphFilename);
     }
@@ -66,10 +70,16 @@ class GraphCommand extends RRDToolCommand {
     }
 
     public function setLowerlimit($lowerlimit) {
+        if ($lowerlimit == self::TEMPLATE_PARAMETER_AUTO) {
+            $this->setOption(self::PARAMETER_AUTOSCALE_MIN, true);
+        }
         $this->setOption(self::PARAMETER_LOWER_LIMIT, $lowerlimit);
     }
 
     public function setUpperlimit($upperlimit) {
+        if ($upperlimit == self::TEMPLATE_PARAMETER_AUTO) {
+            $this->setOption(self::PARAMETER_AUTOSCALE_MAX, true);
+        }
         $this->setOption(self::PARAMETER_UPPER_LIMIT, $upperlimit);
     }
 
@@ -110,6 +120,10 @@ class GraphCommand extends RRDToolCommand {
             $object = new Item($item);
             $this->addArgument($object->getAsString());
         }
+    }
+
+    public function init() {
+        $this->setOption('slope-mode', true);
     }
 
 }
