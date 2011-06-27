@@ -59,10 +59,8 @@ class Update extends Console\Command\Command {
         $config = Autoloader::getInstance()->getConfig();
         foreach ($config->offsetGet('templates') as $item) {
             try {
-                $template = $this->getTemplate($item['plugin']);
-                $templateOptions = new TemplateOptions($template['template']['options']);
-                $templateOptions->validate();
-                $pluginInstance = $this->getPluginInstance($templateOptions->offsetGet('source-name'));
+                $template = new TemplateLoader($item['plugin']);
+                $pluginInstance = $this->getPluginInstance($template->getTemplateOptions()->offsetGet('source-name'));
                 if (array_key_exists('arguments', $item) AND is_array($item['arguments'])) {
                     $pluginInstance->setInput(new Input($item['arguments']));
                 }
@@ -86,11 +84,6 @@ class Update extends Console\Command\Command {
                 continue;
             }
         }
-    }
-
-    private function getTemplate($filename) {
-        $template = new TemplateLoader($filename);
-        return $template->getValues();
     }
 
     private function getPluginInstance($plugin) {
