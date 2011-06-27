@@ -32,7 +32,7 @@ use Heatbeat\Source\AbstractSource,
     Heatbeat\Exception\SourceException;
 
 /**
- * Class for fetching Unix system load values
+ * Abstract source class for data fetching
  *
  * @category    Heatbeat
  * @package     Heatbeat\Source\Plugin\System
