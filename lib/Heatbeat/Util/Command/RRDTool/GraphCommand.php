@@ -123,7 +123,13 @@ class GraphCommand extends RRDToolCommand {
     }
 
     public function init() {
-        $this->setOption('slope-mode', true);
+        $this->setOptions(
+                array(
+                    'slope-mode' => true,
+                    'width' => 800,
+                    'height' => 200,
+                )
+        );
     }
 
 }
