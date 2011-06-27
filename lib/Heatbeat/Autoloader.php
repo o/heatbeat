@@ -110,19 +110,15 @@ class Autoloader {
         $config = new \Heatbeat\Parser\Config\ConfigParser($this->getPath(Autoloader::FOLDER_ROOT));
         $this->config = $config->getValues();
     }
-    
+
     public static function handleErrors($errno, $errstr = '', $errfile = '', $errline = '') {
-        if (!(error_reporting() & $errno)) {
-            return false;
-        }
-        $message = sprintf('[%s] %s', 'Error', $errstr);
-        \Heatbeat\Log\BaseLogger::getInstance()->log($message);
+        throw new \ErrorException($errstr, 0, $errno, $errfile, $errline);
     }
 
     public static function handleExceptions(\Exception $exc) {
         $message = sprintf('[%s] %s', get_class($exc), $exc->getMessage());
         \Heatbeat\Log\BaseLogger::getInstance()->log($message);
-    }    
+    }
 
 }
 
