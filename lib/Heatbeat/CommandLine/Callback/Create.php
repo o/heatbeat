@@ -36,7 +36,6 @@ use Symfony\Component\Console\Input\InputArgument,
     Heatbeat\Util\Command\RRDTool\CreateCommand as RRDCreate,
     Heatbeat\Util\CommandExecutor as Executor,
     Heatbeat\Log\BaseLogger as Logger,
-    Heatbeat\Parser\Template\Node\RrdOptionNode as RrdOptions,
     Heatbeat\Exception\SourceException;
 
 /**
@@ -61,15 +60,12 @@ class Create extends Console\Command\Command {
         $config = Autoloader::getInstance()->getConfig();
         foreach ($config->offsetGet('templates') as $item) {
             try {
-                $template = $this->getTemplate($item['plugin']);
-                $rrdDefinition = new \ArrayObject($template->offsetGet('rrd'));
-                $rrdOptions = new RrdOptions($rrdDefinition->offsetGet('options'));
-                $rrdOptions->validate();
+                $template = new TemplateLoader($item['plugin']);
                 $commandObject = new RRDCreate();
                 $commandObject->setFilename($item['filename']);
                 $commandObject->setOverwrite($input->getOption('overwrite'));
-                $commandObject->setDatastores($rrdDefinition->offsetGet('datastores'));
-                $commandObject->setRras($rrdDefinition->offsetGet('rras'));
+                $commandObject->setDatastores($template->getRrdDatastores());
+                $commandObject->setRras($template->getRrdRras());
                 $executor = new Executor();
                 $executor->setCommandObject($commandObject);
                 $executor->prepare();
@@ -86,11 +82,6 @@ class Create extends Console\Command\Command {
                 continue;
             }
         }
-    }
-
-    private function getTemplate($filename) {
-        $template = new TemplateLoader($filename);
-        return $template->getValues();
     }
 
 }
