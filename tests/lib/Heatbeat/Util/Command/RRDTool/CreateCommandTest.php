@@ -32,20 +32,22 @@ class CreateCommandTest extends \PHPUnit_Framework_TestCase {
                 1308830883,
                 true,
                 array(
-                    array(
+                    new \Heatbeat\Parser\Template\Node\DatastoreNode(array(
                         'name' => 'test',
                         'type' => 'GAUGE',
                         'heartbeat' => 600,
                         'min' => 0,
                         'max' => 100
+                            )
                     )
                 ),
                 array(
-                    array(
+                    new \Heatbeat\Parser\Template\Node\RraNode(array(
                         'cf' => 'AVERAGE',
                         'xff' => 0.5,
                         'steps' => 1,
                         'rows' => 273
+                            )
                     )
                 ),
                 "rrdtool create --start '1308830883' --step '600' 'DS:test:GAUGE:600:0:100' 'RRA:AVERAGE:0.5:1:273'"
@@ -55,26 +57,29 @@ class CreateCommandTest extends \PHPUnit_Framework_TestCase {
                 1308830882,
                 false,
                 array(
-                    array(
+                    new \Heatbeat\Parser\Template\Node\DatastoreNode(array(
                         'name' => 'foo',
                         'type' => 'COUNTER',
                         'heartbeat' => 1200,
                         'min' => 0,
                         'max' => 500
+                            )
                     )
                 ),
                 array(
-                    array(
+                    new \Heatbeat\Parser\Template\Node\RraNode(array(
                         'cf' => 'LAST',
                         'xff' => 0.5,
                         'steps' => 1,
                         'rows' => 100
+                            )
                     ),
-                    array(
+                    new \Heatbeat\Parser\Template\Node\RraNode(array(
                         'cf' => 'MAX',
                         'xff' => 1,
                         'steps' => 2,
                         'rows' => 576
+                            )
                     )
                 ),
                 "rrdtool create --no-overwrite --start '1308830882' --step '300' 'DS:foo:COUNTER:1200:0:500' 'RRA:LAST:0.5:1:100' 'RRA:MAX:1:2:576'"
@@ -84,27 +89,30 @@ class CreateCommandTest extends \PHPUnit_Framework_TestCase {
                 1308830881,
                 false,
                 array(
-                    array(
+                    new \Heatbeat\Parser\Template\Node\DatastoreNode(array(
                         'name' => 'bar',
                         'type' => 'DERIVE',
                         'heartbeat' => 1800,
                         'min' => 100,
                         'max' => 300
+                            )
                     ),
-                    array(
+                    new \Heatbeat\Parser\Template\Node\DatastoreNode(array(
                         'name' => 'baz',
                         'type' => 'GAUGE',
                         'heartbeat' => 800,
                         'min' => 10,
                         'max' => 20
+                            )
                     )
                 ),
                 array(
-                    array(
+                    new \Heatbeat\Parser\Template\Node\RraNode(array(
                         'cf' => 'MIN',
                         'xff' => 0.1,
                         'steps' => 8,
                         'rows' => 300
+                            )
                     )
                 ),
                 "rrdtool create --no-overwrite --start '1308830881' --step '1200' 'DS:bar:DERIVE:1800:100:300' 'DS:baz:GAUGE:800:10:20' 'RRA:MIN:0.1:8:300'"
