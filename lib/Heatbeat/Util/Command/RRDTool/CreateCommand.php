@@ -57,9 +57,7 @@ class CreateCommand extends RRDToolCommand {
      */
     public function setDatastores(array $datastores) {
         foreach ($datastores as $datastore) {
-            $object = new Datastore($datastore);
-            $object->validate();
-            $this->addArgument($object->getAsString());
+            $this->addArgument($datastore->getAsString());
         }
     }
 
@@ -70,9 +68,7 @@ class CreateCommand extends RRDToolCommand {
      */
     public function setRras(array $rras) {
         foreach ($rras as $rra) {
-            $object = new RRA($rra);
-            $object->validate();
-            $this->addArgument($object->getAsString());
+            $this->addArgument($rra->getAsString());
         }
     }
 
