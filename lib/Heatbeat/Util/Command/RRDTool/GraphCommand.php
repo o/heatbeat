@@ -43,8 +43,6 @@ class GraphCommand extends RRDToolCommand {
 
     protected $subCommand = 'graph';
 
-    const PNG_EXT = 'png';
-
     const PARAMETER_START = 'start';
     const PARAMETER_TITLE = 'title';
     const PARAMETER_VERTICAL_LABEL = 'vertical-label';
@@ -56,7 +54,7 @@ class GraphCommand extends RRDToolCommand {
     const TEMPLATE_PARAMETER_AUTO = 'auto';
 
     public function setGraphFilename($graphFilename) {
-        $this->addArgument(Autoloader::getInstance()->getPath(Autoloader::FOLDER_GRAPH) . \DIRECTORY_SEPARATOR . $graphFilename . self::PNG_EXT);
+        $this->addArgument(self::getGraphFilePath($graphFilename));
     }
 
     public function setStart($start) {
@@ -91,39 +89,33 @@ class GraphCommand extends RRDToolCommand {
         $this->setOption(self::PARAMETER_BASE, $base);
     }
 
-    public function setDefs(array $defs, $filename) {
+    public function setDefs(array $defs) {
         foreach ($defs as $def) {
-            $object = new DEF($def);
-            $object->offsetSet('filename', $filename);
-            $this->addArgument($object->getAsString());
+            $this->addArgument($def->getAsString());
         }
     }
 
     public function setCdefs(array $cdefs) {
         foreach ($cdefs as $cdef) {
-            $object = new CDEF($cdef);
-            $this->addArgument($object->getAsString());
+            $this->addArgument($cdef->getAsString());
         }
     }
 
     public function setVdefs(array $vdefs) {
         foreach ($vdefs as $vdef) {
-            $object = new VDEF($vdef);
-            $this->addArgument($object->getAsString());
+            $this->addArgument($vdef->getAsString());
         }
     }
 
     public function setGprints(array $gprints) {
         foreach ($gprints as $gprint) {
-            $object = new GPrint($gprint);
-            $this->addArgument($object->getAsString());
+            $this->addArgument($gprint->getAsString());
         }
     }
 
     public function setItems(array $items) {
         foreach ($items as $item) {
-            $object = new Item($item);
-            $this->addArgument($object->getAsString());
+            $this->addArgument($item->getAsString());
         }
     }
 
