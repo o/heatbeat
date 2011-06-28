@@ -70,15 +70,17 @@ class GraphCommand extends RRDToolCommand {
     }
 
     public function setLowerlimit($lowerlimit) {
-        if ($lowerlimit == self::TEMPLATE_PARAMETER_AUTO) {
+        if ($lowerlimit === self::TEMPLATE_PARAMETER_AUTO) {
             $this->setOption(self::PARAMETER_AUTOSCALE_MIN, true);
+            return;
         }
         $this->setOption(self::PARAMETER_LOWER_LIMIT, $lowerlimit);
     }
 
     public function setUpperlimit($upperlimit) {
-        if ($upperlimit == self::TEMPLATE_PARAMETER_AUTO) {
+        if ($upperlimit === self::TEMPLATE_PARAMETER_AUTO) {
             $this->setOption(self::PARAMETER_AUTOSCALE_MAX, true);
+            return;
         }
         $this->setOption(self::PARAMETER_UPPER_LIMIT, $upperlimit);
     }
