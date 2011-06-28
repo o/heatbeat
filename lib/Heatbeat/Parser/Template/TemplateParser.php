@@ -37,6 +37,7 @@ use Heatbeat\Parser\AbstractParser,
     Heatbeat\Parser\Template\Node\CDefNode as VDef,
     Heatbeat\Parser\Template\Node\GPrintNode as GPrint,
     Heatbeat\Parser\Template\Node\RraNode as Rra,
+    Heatbeat\Util\Command\RRDTool\RRDToolCommand as RRDTool,
     Heatbeat\Exception\TemplateException;
 
 /**
@@ -164,14 +165,15 @@ class TemplateParser extends AbstractParser {
         }
     }
 
-    public function getGraphDefs($index) {
+    public function getGraphDefs($index, $filename) {
         $values = $this->getGraphIndex($index);
         if ($values->offsetExists('defs') AND count($values->offsetGet('defs'))) {
-            return array_map(function($def) {
+            return array_map(function($def, $filename) {
                         $object = new Def($def);
+                        $object->offsetSet('filename', RRDTool::getRRDFilePath($filename));
                         $object->validate();
                         return $object;
-                    }, $values->offsetGet('defs'));
+                    }, $values->offsetGet('defs'), array($filename));
         } else {
             throw new TemplateException(sprintf('Graph definitions is not defined in template %s', $this->getFullPath()));
         }
