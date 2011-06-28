@@ -25,7 +25,8 @@
 
 namespace Heatbeat\Util\Command\RRDTool;
 
-use Heatbeat\Parser\Template\Node\DefNode as DEF,
+use Heatbeat\Autoloader,
+    Heatbeat\Parser\Template\Node\DefNode as DEF,
     Heatbeat\Parser\Template\Node\CDefNode as CDEF,
     Heatbeat\Parser\Template\Node\VDefNode as VDEF,
     Heatbeat\Parser\Template\Node\GPrintNode as GPrint,
@@ -43,7 +44,7 @@ class GraphCommand extends RRDToolCommand {
     protected $subCommand = 'graph';
 
     const PNG_EXT = 'png';
-    
+
     const PARAMETER_START = 'start';
     const PARAMETER_TITLE = 'title';
     const PARAMETER_VERTICAL_LABEL = 'vertical-label';
