@@ -42,6 +42,7 @@ class Autoloader {
     const FOLDER_RRD = 'rrd';
     const FOLDER_VENDOR = 'vendor';
     const FOLDER_LOG = 'logs';
+    const FOLDER_GRAPH = 'graphs';
 
     private static $instance;
     private $loader;
@@ -71,7 +72,8 @@ class Autoloader {
             'external' => $rootPath . \DIRECTORY_SEPARATOR . self::FOLDER_EXTERNAL,
             'rrd' => $rootPath . \DIRECTORY_SEPARATOR . self::FOLDER_RRD,
             'vendor' => $rootPath . \DIRECTORY_SEPARATOR . self::FOLDER_VENDOR,
-            'logs' => $rootPath . \DIRECTORY_SEPARATOR . self::FOLDER_LOG
+            'logs' => $rootPath . \DIRECTORY_SEPARATOR . self::FOLDER_LOG,
+            'graphs' => $rootPath . \DIRECTORY_SEPARATOR . self::FOLDER_GRAPH
         );
     }
 
