@@ -57,21 +57,20 @@ graphs :
               - definition-name :
                 # Format of string
                 format:
-          definitions:
-            defs:
+          defs:
                 # Name of definition 
-                - name:
-                  # Base data store name
-                  datastore-name:
-                  # Consolidation function for RRA archives, allowed values : AVERAGE, MIN, MAX, LAST    
-                  cf:
-            cdefs:
+              - name:
+                # Base data store name
+                datastore-name:
+                # Consolidation function for RRA archives, allowed values : AVERAGE, MIN, MAX, LAST    
+                cf:
+          cdefs:
                 # Name of defitinition
-                - name:
-                  # RPN expression for calculating result value
-                  rpn:
-            vdefs:
+              - name:
+                # RPN expression for calculating result value
+                rpn:
+          vdefs:
                 # Name of definition
-                - name:
-                  # RPN expression for calculating result value  
-                  rpn:
+              - name:
+                # RPN expression for calculating result value  
+                rpn:
