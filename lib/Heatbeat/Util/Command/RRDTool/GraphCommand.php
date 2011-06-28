@@ -42,19 +42,20 @@ class GraphCommand extends RRDToolCommand {
 
     protected $subCommand = 'graph';
 
+    const PNG_EXT = 'png';
+    
     const PARAMETER_START = 'start';
     const PARAMETER_TITLE = 'title';
     const PARAMETER_VERTICAL_LABEL = 'vertical-label';
     const PARAMETER_LOWER_LIMIT = 'lower-limit';
     const PARAMETER_UPPER_LIMIT = 'upper-limit';
     const PARAMETER_BASE = 'base';
-
-    const TEMPLATE_PARAMETER_AUTO = 'auto';
     const PARAMETER_AUTOSCALE_MIN = 'alt-autoscale-min';
     const PARAMETER_AUTOSCALE_MAX = 'alt-autoscale-max';
+    const TEMPLATE_PARAMETER_AUTO = 'auto';
 
     public function setGraphFilename($graphFilename) {
-        $this->addArgument($graphFilename);
+        $this->addArgument(Autoloader::getInstance()->getPath(Autoloader::FOLDER_GRAPH) . \DIRECTORY_SEPARATOR . $graphFilename . self::PNG_EXT);
     }
 
     public function setStart($start) {
@@ -89,9 +90,10 @@ class GraphCommand extends RRDToolCommand {
         $this->setOption(self::PARAMETER_BASE, $base);
     }
 
-    public function setDefs(array $defs) {
+    public function setDefs(array $defs, $filename) {
         foreach ($defs as $def) {
             $object = new DEF($def);
+            $object->offsetSet('filename', $filename);
             $this->addArgument($object->getAsString());
         }
     }
