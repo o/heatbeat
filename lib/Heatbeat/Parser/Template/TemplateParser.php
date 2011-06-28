@@ -30,6 +30,12 @@ use Heatbeat\Parser\AbstractParser,
     Heatbeat\Parser\Template\Node\TemplateOptionNode as TemplateOptions,
     Heatbeat\Parser\Template\Node\RrdOptionNode as RrdOptions,
     Heatbeat\Parser\Template\Node\DatastoreNode as Datastore,
+    Heatbeat\Parser\Template\Node\GraphOptionNode as GraphOptions,
+    Heatbeat\Parser\Template\Node\ItemNode as Item,
+    Heatbeat\Parser\Template\Node\DefNode as Def,
+    Heatbeat\Parser\Template\Node\CDefNode as CDef,
+    Heatbeat\Parser\Template\Node\CDefNode as VDef,
+    Heatbeat\Parser\Template\Node\GPrintNode as GPrint,
     Heatbeat\Parser\Template\Node\RraNode as Rra,
     Heatbeat\Exception\TemplateException;
 
@@ -109,6 +115,91 @@ class TemplateParser extends AbstractParser {
             return $newValues;
         } else {
             throw new TemplateException(sprintf('You must define at least one Round Robin Archive in template %s', $this->getFullPath()));
+        }
+    }
+
+    private function getGraphIndex($index) {
+        $values = $this->getValues();
+        if ($values->offsetExists('graphs') AND array_key_exists($index, $values['graphs'])) {
+            return new \ArrayObject($values['graphs'][$index]);
+        } else {
+            throw new TemplateException(sprintf('Graphs not defined in template %s', $this->getFullPath()));
+        }
+    }
+
+    public function getGraphOptions($index) {
+        $values = $this->getGraphIndex($index);
+        if ($values->offsetExists('options') AND count($values->offsetGet('options'))) {
+            $graphOptions = new GraphOptions($values->offsetGet('options'));
+            $graphOptions->validate();
+            return $graphOptions;
+        } else {
+            throw new TemplateException(sprintf('Graph options is not defined in template %s', $this->getFullPath()));
+        }
+    }
+
+    public function getGraphItems($index) {
+        $values = $this->getGraphIndex($index);
+        if ($values->offsetExists('items') AND count($values->offsetGet('items'))) {
+            return array_map(function($item) {
+                        $object = new Item($item);
+                        $object->validate();
+                        return $object;
+                    }, $values->offsetGet('items'));
+        } else {
+            throw new TemplateException(sprintf('Graph items is not defined in template %s', $this->getFullPath()));
+        }
+    }
+
+    public function getGraphGprints($index) {
+        $values = $this->getGraphIndex($index);
+        if ($values->offsetExists('gprints') AND count($values->offsetGet('gprints'))) {
+            return array_map(function($gprint) {
+                        $object = new GPrint($gprint);
+                        $object->validate();
+                        return $object;
+                    }, $values->offsetGet('gprints'));
+        } else {
+            return false;
+        }
+    }
+
+    public function getGraphDefs($index) {
+        $values = $this->getGraphIndex($index);
+        if ($values->offsetExists('defs') AND count($values->offsetGet('defs'))) {
+            return array_map(function($def) {
+                        $object = new Def($def);
+                        $object->validate();
+                        return $object;
+                    }, $values->offsetGet('defs'));
+        } else {
+            throw new TemplateException(sprintf('Graph definitions is not defined in template %s', $this->getFullPath()));
+        }
+    }
+
+    public function getGraphCdefs($index) {
+        $values = $this->getGraphIndex($index);
+        if ($values->offsetExists('cdefs') AND count($values->offsetGet('cdefs'))) {
+            return array_map(function($cdef) {
+                        $object = new CDef($cdef);
+                        $object->validate();
+                        return $object;
+                    }, $values->offsetGet('cdefs'));
+        } else {
+            return false;
+        }
+    }
+
+    public function getGraphVdefs($index) {
+        $values = $this->getGraphIndex($index);
+        if ($values->offsetExists('vdefs') AND count($values->offsetGet('vdefs'))) {
+            return array_map(function($vdef) {
+                        $object = new VDef($vdef);
+                        $object->validate();
+                        return $object;
+                    }, $values->offsetGet('vdefs'));
+        } else {
+            return false;
         }
     }
 
