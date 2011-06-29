@@ -40,9 +40,9 @@ class GraphOptionNode extends AbstractNode implements OptionNodeInterface {
         $this->isDefined('base');
         $this->isValidInt('base');
         $this->isDefined('lower');
-        $this->isValidInt('lower');
+        $this->isValidLimit('lower');
         $this->isDefined('upper');
-        $this->isValidInt('upper');
+        $this->isValidLimit('upper');
         return true;
     }
 
