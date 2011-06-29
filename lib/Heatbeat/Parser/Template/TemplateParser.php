@@ -182,7 +182,7 @@ class TemplateParser extends AbstractParser {
                         $object->offsetSet('filename', RRDTool::getRRDFilePath($filename));
                         $object->validate();
                         return $object;
-                    }, $values->offsetGet('defs'), array_fill(0, count($values->offsetGet('defs')), $values->offsetGet('defs')));
+                    }, $values->offsetGet('defs'), array_fill(0, count($values->offsetGet('defs')), $filename));
         } else {
             throw new TemplateException(sprintf('Graph definitions is not defined in template %s', $this->getFullPath()));
         }
