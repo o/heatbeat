@@ -55,20 +55,26 @@ class Graph extends Console\Command\Command {
 
     protected function execute(InputInterface $input, OutputInterface $output) {
         $config = Autoloader::getInstance()->getConfig();
-        foreach ($config->getGraphDefinitions() as $definition) {
+        foreach ($config->getGraphEntities() as $entity) {
             try {
-                $template = new TemplateLoader($definition->offsetGet('plugin'));
-                for ($index = 0; $index < $template->getGraphDefinitionCount(); $index++) {
+                $template = new TemplateLoader($entity->offsetGet('plugin'));
+                for ($index = 0; $index < $template->getGraphEntityCount(); $index++) {
                     $commandObject = new RRDGraph();
-                    $commandObject->setGraphFilename($definition->getRRDFilename() . $index);
+                    $commandObject->setGraphFilename($entity->getRRDFilename() . $index);
                     $commandObject->setTitle($template->getGraphOptions($index)->offsetGet('name'));
                     $commandObject->setVerticalLabel($template->getGraphOptions($index)->offsetGet('label'));
                     $commandObject->setBase($template->getGraphOptions($index)->offsetGet('base'));
                     $commandObject->setUpperlimit($template->getGraphOptions($index)->offsetGet('upper'));
                     $commandObject->setLowerlimit($template->getGraphOptions($index)->offsetGet('lower'));
                     $commandObject->setStart($template->getGraphOptions($index)->offsetGet('start'));
-                    $commandObject->setDefs($template->getGraphDefs($index, $definition->getRRDFilename()));
+                    $commandObject->setDefs($template->getGraphDefs($index, $entity->getRRDFilename()));
                     $commandObject->setItems($template->getGraphItems($index));
+                    if ($template->getGraphGprints($index))
+                        $commandObject->setGprints($template->getGraphGprints($index));
+                    if ($template->getGraphCdefs($index))
+                        $commandObject->setCdefs($template->getGraphCdefs($index));
+                    if ($template->getGraphVdefs($index))
+                        $commandObject->setVdefs($template->getGraphVdefs($index));
                     $executor = new Executor();
                     $executor->setCommandObject($commandObject);
                     $executor->prepare();
@@ -77,7 +83,7 @@ class Graph extends Console\Command\Command {
                     }
                     $process = $executor->execute();
                     if ($process->isSuccessful()) {
-                        $output->writeln(sprintf("Graph created with filename '%s%s' successfully.", $definition->getRRDFilename() . $index, RRDTool::PNG_EXT));
+                        $output->writeln(sprintf("Graph created with filename '%s%s' successfully.", $entity->getRRDFilename() . $index, RRDTool::PNG_EXT));
                     }
                 }
             } catch (\Exception $e) {

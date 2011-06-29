@@ -58,11 +58,11 @@ class Create extends Console\Command\Command {
 
     protected function execute(InputInterface $input, OutputInterface $output) {
         $config = Autoloader::getInstance()->getConfig();
-        foreach ($config->getGraphDefinitions() as $definition) {
+        foreach ($config->getGraphEntities() as $entity) {
             try {
-                $template = new TemplateLoader($definition->offsetGet('plugin'));
+                $template = new TemplateLoader($entity->offsetGet('plugin'));
                 $commandObject = new RRDCreate();
-                $commandObject->setFilename($definition->getRRDFilename());
+                $commandObject->setFilename($entity->getRRDFilename());
                 $commandObject->setOverwrite($input->getOption('overwrite'));
                 $commandObject->setDatastores($template->getRrdDatastores());
                 $commandObject->setRras($template->getRrdRras());
@@ -74,7 +74,7 @@ class Create extends Console\Command\Command {
                 }
                 $process = $executor->execute();
                 if ($process->isSuccessful()) {
-                    $output->writeln(sprintf("RRD created with filename '%s%s' successfully.", $definition->getRRDFilename(), RRDTool::RRD_EXT));
+                    $output->writeln(sprintf("RRD created with filename '%s%s' successfully.", $entity->getRRDFilename(), RRDTool::RRD_EXT));
                 }
             } catch (\Exception $e) {
                 Logger::getInstance()->log($e->getMessage());

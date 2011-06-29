@@ -58,7 +58,7 @@ class ConfigParser extends AbstractParser {
         }
     }
 
-    public function getGraphDefinitions() {
+    public function getGraphEntities() {
         $values = $this->getValues();
         if ($values->offsetExists('graphs') AND count($values->offsetGet('graphs'))) {
             return array_map(function($definition) {

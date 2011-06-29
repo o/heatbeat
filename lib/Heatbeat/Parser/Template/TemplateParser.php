@@ -119,7 +119,7 @@ class TemplateParser extends AbstractParser {
         }
     }
 
-    public function getGraphDefinitionCount() {
+    public function getGraphEntityCount() {
         $values = $this->getValues();
         if ($values->offsetExists('graphs') AND $values->offsetGet('graphs')) {
             return count($values->offsetGet('graphs'));
