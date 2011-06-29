@@ -42,6 +42,7 @@ class Autoloader {
     const FOLDER_RRD = 'rrd';
     const FOLDER_VENDOR = 'vendor';
     const FOLDER_LOG = 'logs';
+    const FOLDER_GRAPH = 'graphs';
 
     private static $instance;
     private $loader;
@@ -71,7 +72,8 @@ class Autoloader {
             'external' => $rootPath . \DIRECTORY_SEPARATOR . self::FOLDER_EXTERNAL,
             'rrd' => $rootPath . \DIRECTORY_SEPARATOR . self::FOLDER_RRD,
             'vendor' => $rootPath . \DIRECTORY_SEPARATOR . self::FOLDER_VENDOR,
-            'logs' => $rootPath . \DIRECTORY_SEPARATOR . self::FOLDER_LOG
+            'logs' => $rootPath . \DIRECTORY_SEPARATOR . self::FOLDER_LOG,
+            'graphs' => $rootPath . \DIRECTORY_SEPARATOR . self::FOLDER_GRAPH
         );
     }
 
@@ -90,8 +92,8 @@ class Autoloader {
 
     private function setErrorExceptionHandling() {
         error_reporting(E_ALL | E_STRICT);
-        set_error_handler(array('\\Heatbeat\\Heatbeat', 'handleErrors'));
-        set_exception_handler(array('\\Heatbeat\\Heatbeat', 'handleExceptions'));
+        set_error_handler(array($this, 'handleErrors'));
+        set_exception_handler(array($this, 'handleExceptions'));
     }
 
     private function setLoader($loader) {
@@ -107,8 +109,19 @@ class Autoloader {
     }
 
     private function setConfig() {
-        $config = new \Heatbeat\Parser\Config\ConfigParser($this->getPath(Autoloader::FOLDER_ROOT));
-        $this->config = $config->getValues();
+        $this->config = new \Heatbeat\Parser\Config\ConfigParser($this->getPath(Autoloader::FOLDER_ROOT));
+    }
+
+    public static function handleErrors($errno, $errstr = '', $errfile = '', $errline = '') {
+        if (0 == error_reporting()) {
+            return false;
+        }
+        throw new \ErrorException($errstr, 0, $errno, $errfile, $errline);
+    }
+
+    public static function handleExceptions(\Exception $exc) {
+        $message = sprintf('[%s] %s', get_class($exc), $exc->getMessage());
+        \Heatbeat\Log\BaseLogger::getInstance()->log($message);
     }
 
 }

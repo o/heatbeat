@@ -3,10 +3,22 @@ configuration :
         enabled : true
         handler : RotatingFile
 
-templates :
+graphs :
     - plugin  : random
       filename : random
       enabled : true
       arguments :
           min : 5
           max : 10
+          
+    - plugin  : system_load
+      filename : system_load
+      enabled : true
+      
+    - plugin  : weather_google
+      filename : weather_istanbul
+      enabled : true
+      arguments :
+          location : Istanbul,Turkey
+          type : c
+      

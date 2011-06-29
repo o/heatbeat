@@ -42,30 +42,25 @@ rrd:
           rows: 380
 graphs :
         - options :
-            name : Random
+            name : Random Values
             label : Values
             base : 1000
             lower : 0
-            upper : 0
+            upper : auto
+            start : -1d
           items :
-              - type : AREA
+              - type : LINE
                 definition-name: rand1
-                color : EB4528
-                legend : Random 1  
+                color : C70B45
+                legend : Random 1
               - type : LINE
                 definition-name: rand2
-                color : BDD6AC
-                legend : Random 2  
-          gprints :
-              - definition-name : rand1
-                format: Number %6.1lf%s
-              - definition-name : rand1
-                format: Number %6.1lf%s
-          definitions:
-            defs:
-                - name: r1
-                  datastore-name: rand1
-                  cf: AVERAGE
-                - name: r2
-                  datastore-name: rand2
-                  cf: AVERAGE
+                color : C70B45
+                legend : Random 2 
+          defs:
+              - name: rand1
+                datastore-name: rand1
+                cf: AVERAGE
+              - name: rand2
+                datastore-name: rand2
+                cf: AVERAGE                

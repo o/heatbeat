@@ -37,8 +37,21 @@ use Heatbeat\Util\AbstractCommand as Command,
  */
 abstract class RRDToolCommand extends Command {
     const SEPERATOR = ':';
+
+    /**
+     * Executable / command name of rrdtool
+     */
     const EXECUTABLE = 'rrdtool';
+
+    /**
+     * Extension of rrd files
+     */
     const RRD_EXT = '.rrd';
+    
+    /**
+     * Extension of png files
+     */
+    const PNG_EXT = '.png';    
 
     public function __construct() {
         $this->setCommand(self::EXECUTABLE);
@@ -46,12 +59,29 @@ abstract class RRDToolCommand extends Command {
         $this->init();
     }
 
+    /**
+     * Sets filename of rrd file based on RRD folder
+     * 
+     * @param string $filename 
+     */
     public function setFilename($filename) {
-        $this->addArgument(Autoloader::getInstance()->getPath(Autoloader::FOLDER_RRD) . \DIRECTORY_SEPARATOR . $filename . self::RRD_EXT);
+        $this->addArgument(self::getRRDFilePath($filename));
+    }
+
+    /**
+     * Method for initializing command, works when constructing object
+     */
+    public function init() {
+        
+    }
+
+    public static function getRRDFilePath($filename) {
+        return Autoloader::getInstance()->getPath(Autoloader::FOLDER_RRD) . \DIRECTORY_SEPARATOR . $filename . self::RRD_EXT;
     }
     
-    public function init() {
-
-    }
-
+    public static function getGraphFilePath($filename) {
+        return Autoloader::getInstance()->getPath(Autoloader::FOLDER_GRAPH) . \DIRECTORY_SEPARATOR . $filename . self::PNG_EXT;
+    }    
+    
+    
 }

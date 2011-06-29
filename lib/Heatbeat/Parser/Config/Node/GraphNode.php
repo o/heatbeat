@@ -16,39 +16,38 @@
  * limitations under the License. 
  *
  * @category    Heatbeat
- * @package     Heatbeat\CommandLine
+ * @package     Heatbeat\Parser\Config\Node
  * @author      Osman Ungur <osmanungur@gmail.com>
  * @copyright   2011 Osman Ungur
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  * @link        http://github.com/import/heatbeat
  */
 
-namespace Heatbeat\CommandLine;
-
-use Symfony\Component\Console\Application,
-    Heatbeat\Commandline\Callback\Create,
-    Heatbeat\Commandline\Callback\Update,
-    Heatbeat\CommandLine\Callback\TestSource,
-    Heatbeat\CommandLine\Callback\Graph;
+namespace Heatbeat\Parser\Config\Node;
 
 /**
- * Application class for Heatbeat CLI interface.
+ * Graph node of config
  *
  * @category    Heatbeat
- * @package     Heatbeat\CommandLine
+ * @package     Heatbeat\Parser\Config\Node
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class Runner extends Application {
+class GraphNode extends AbstractNode implements NodeInterface {
 
-    public function __construct() {
-        parent::__construct('Welcome to Heatbeat Graphing Tool', '1.0');
+    const FILENAME_SEPERATOR = '-';
+    
+    public function validate() {
+        $this->isDefined('plugin');
+        $this->isDefined('enabled');
+        return true;
+    }
 
-        $this->addCommands(array(
-            new Create,
-            new Update(),
-            new TestSource(),
-            new Graph()
-        ));
+    private function getHash() {
+        return substr(sha1(serialize($this)), 0, 8);
+    }
+    
+    public function getRRDFilename() {
+        return $this->offsetGet('plugin') . self::FILENAME_SEPERATOR . $this->getHash();
     }
 
 }

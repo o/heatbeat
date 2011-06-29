@@ -47,10 +47,7 @@ class CreateCommand extends RRDToolCommand {
      * @return bool 
      */
     public function setStep($step) {
-        if (is_int($step)) {
-            $this->setOption(self::PARAMETER_STEP, $step);
-            return true;
-        }
+        $this->setOption(self::PARAMETER_STEP, $step);
     }
 
     /**
@@ -60,37 +57,43 @@ class CreateCommand extends RRDToolCommand {
      */
     public function setDatastores(array $datastores) {
         foreach ($datastores as $datastore) {
-            $object = new Datastore($datastore);
-            $this->addArgument($object->getAsString());
+            $this->addArgument($datastore->getAsString());
         }
-        return true;
     }
 
     /**
      *
-     * @param array  $rras
+     * @param array $rras
      * @return bool 
      */
     public function setRras(array $rras) {
         foreach ($rras as $rra) {
-            $object = new RRA($rra);
-            $this->addArgument($object->getAsString());
+            $this->addArgument($rra->getAsString());
         }
-        return true;
     }
 
+    /**
+     * Sets overwriting behaviour for existing RRD file
+     * 
+     * @param bool $value
+     * @return bool 
+     */
     public function setOverwrite($value) {
         $this->setOption(self::PARAMETER_NO_OVERWRITE, ($value ? false : true));
-        return true;
     }
 
-    private function setStart() {
-        $this->setOption(self::PARAMETER_START, time() - (60 * 60));
+    /**
+     * Sets start time of RRD file
+     * 
+     * @param int $time 
+     */
+    public function setStart($time) {
+        $this->setOption(self::PARAMETER_START, $time);
     }
 
     public function init() {
-        $this->setOverwrite(true);
-        $this->setStart();
+        $this->setOverwrite(false);
+        $this->setStart(time() - (60 * 60));
     }
 
 }

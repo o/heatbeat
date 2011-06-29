@@ -1,0 +1,31 @@
+template :
+    options :
+        name : Google Weather Api
+        version : 1.0
+        source-name : Weather_Google
+rrd:
+    options :
+        step : 300
+    datastores:
+        - name: current
+          type: GAUGE
+          heartbeat: 600
+          min: 0
+          max: 273
+    rras:
+        - cf: ['AVERAGE', 'MIN', 'MAX', 'LAST']
+          xff: 0.5
+          steps: 1
+          rows: 51840
+        - cf: ['AVERAGE', 'MIN', 'MAX', 'LAST']
+          xff: 0.5
+          steps: 6
+          rows: 8736
+        - cf: ['AVERAGE', 'MIN', 'MAX', 'LAST']
+          xff: 0.5
+          steps: 24
+          rows: 2160
+        - cf: ['AVERAGE', 'MIN', 'MAX', 'LAST']
+          xff: 0.5
+          steps: 288
+          rows: 797

@@ -30,10 +30,10 @@ use Heatbeat\Source\AbstractSource,
     Heatbeat\Source\AbstractInputOutput,
     Heatbeat\Source\SourceInput,
     Heatbeat\Source\SourceOutput,
-    Heatbeat\Util\CommandExecutor;
+    Heatbeat\Exception\SourceException;
 
 /**
- * Abstract source class for data fetching
+ * Example source class for fetching random values
  *
  * @category    Heatbeat
  * @package     Heatbeat\Source\Plugin\Foo
@@ -52,24 +52,20 @@ class Random extends AbstractSource implements SourceInterface {
          * Input argument validation
          */
         if (!is_numeric($min) OR !is_numeric($max)) {
-            $this->setIsSuccessful(false);
-            $this->setErrorMessage("Min and max arguments must be an integer");
-            return;
+            throw new SourceException("Min and max input arguments must be an integer");
         }
 
         /**
          * Getting / fetching data
          */
         $rand1 = mt_rand($min, $max);
-        $rand2 = mt_rand(10, 99);
+        $rand2 = mt_rand($min, $max);
 
         /**
          * Output argument validation
          */
         if (!is_int($rand1) OR !is_int($rand2)) {
-            $this->setIsSuccessful(false);
-            $this->setErrorMessage("Output values not valid!");
-            return;
+            throw new SourceException("Output values not valid!");
         }
 
         /**
@@ -89,11 +85,7 @@ class Random extends AbstractSource implements SourceInterface {
          *
          */
         $this->setOutput($output);
-
-        /**
-         * Mark as successful
-         */
-        $this->setIsSuccessful(true);
+        return true;
     }
 
 }

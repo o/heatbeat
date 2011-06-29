@@ -34,13 +34,37 @@ namespace Heatbeat\Util;
  */
 abstract class AbstractCommand {
 
+    /**
+     * Command name
+     * 
+     * @var string 
+     */
     private $command;
+    
+    /**
+     * Subcommand name of command
+     * 
+     * @var string 
+     */
     private $subCommand;
+    
+    /**
+     * Arguments of command
+     * 
+     * @var array 
+     */
     private $arguments = array();
+    
+    /**
+     * Options of command
+     * 
+     * @var array 
+     */
     private $options = array();
 
     /**
-     *
+     * Sets base command name
+     * 
      * @param string $command
      * @return AbstractCommand
      */
@@ -50,7 +74,8 @@ abstract class AbstractCommand {
     }
 
     /**
-     *
+     * Sets subcommand of command
+     * 
      * @param string $subCommand
      * @return AbstractCommand
      */
@@ -60,7 +85,8 @@ abstract class AbstractCommand {
     }
 
     /**
-     *
+     * Sets and overrides given arguments as command args
+     * 
      * @param array $arguments
      * @return AbstractCommand
      */
@@ -70,7 +96,8 @@ abstract class AbstractCommand {
     }
 
     /**
-     *
+     * Pushes an argument to command args
+     * 
      * @param string $value
      * @return AbstractCommand
      */
@@ -80,7 +107,8 @@ abstract class AbstractCommand {
     }
 
     /**
-     *
+     * Sets and overrides command options
+     * 
      * @param array $options
      * @return AbstractCommand
      */
@@ -90,9 +118,10 @@ abstract class AbstractCommand {
     }
 
     /**
-     *
+     * Pushes an option to command options
+     * 
      * @param string $name
-     * @param string $value
+     * @param bool|string $value
      * @return AbstractCommand
      */
     public function setOption($name, $value = true) {
@@ -101,7 +130,8 @@ abstract class AbstractCommand {
     }
 
     /**
-     *
+     * Returns base command name
+     * 
      * @return string
      */
     public function getCommand() {
@@ -109,7 +139,8 @@ abstract class AbstractCommand {
     }
 
     /**
-     *
+     * Returns subcommand of command
+     * 
      * @return string
      */
     public function getSubCommand() {
@@ -117,7 +148,8 @@ abstract class AbstractCommand {
     }
 
     /**
-     *
+     * Returns all command arguments as array
+     * 
      * @return array
      */
     public function getArguments() {
@@ -125,7 +157,8 @@ abstract class AbstractCommand {
     }
 
     /**
-     *
+     * Returns all options as array
+     * 
      * @return array
      */
     public function getOptions() {

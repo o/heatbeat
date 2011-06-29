@@ -16,39 +16,48 @@
  * limitations under the License. 
  *
  * @category    Heatbeat
- * @package     Heatbeat\CommandLine
+ * @package     Heatbeat\Parser\Config\Node
  * @author      Osman Ungur <osmanungur@gmail.com>
  * @copyright   2011 Osman Ungur
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  * @link        http://github.com/import/heatbeat
  */
 
-namespace Heatbeat\CommandLine;
+namespace Heatbeat\Parser\Config\Node;
 
-use Symfony\Component\Console\Application,
-    Heatbeat\Commandline\Callback\Create,
-    Heatbeat\Commandline\Callback\Update,
-    Heatbeat\CommandLine\Callback\TestSource,
-    Heatbeat\CommandLine\Callback\Graph;
+use Heatbeat\Exception\NodeValidationException;
 
 /**
- * Application class for Heatbeat CLI interface.
+ * Abstract class for config nodes
  *
  * @category    Heatbeat
- * @package     Heatbeat\CommandLine
+ * @package     Heatbeat\Parser\Config\Node
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class Runner extends Application {
+abstract class AbstractNode extends \ArrayObject {
 
-    public function __construct() {
-        parent::__construct('Welcome to Heatbeat Graphing Tool', '1.0');
+    /**
+     * Checks is given parameter was defined
+     * 
+     * @param string $key
+     * @return bool 
+     * @throws NodeValidationException
+     */
+    protected function isDefined($key) {
+        if (!$this->offsetExists($key)) {
+            throw new NodeValidationException(sprintf('%s, %s argument is not defined.', $this->getClassName(), $key));
+        }
+        return true;
+    }
 
-        $this->addCommands(array(
-            new Create,
-            new Update(),
-            new TestSource(),
-            new Graph()
-        ));
+    /**
+     * Returns class name without namespace
+     * @return string
+     */
+    private function getClassName() {
+        $name = get_class($this);
+        $len = strlen(__NAMESPACE__) + 1;
+        return substr($name, $len);
     }
 
 }

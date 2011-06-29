@@ -25,7 +25,8 @@
 
 namespace Heatbeat\Util\Command\RRDTool;
 
-use Heatbeat\Parser\Template\Node\DefNode as DEF,
+use Heatbeat\Autoloader,
+    Heatbeat\Parser\Template\Node\DefNode as DEF,
     Heatbeat\Parser\Template\Node\CDefNode as CDEF,
     Heatbeat\Parser\Template\Node\VDefNode as VDEF,
     Heatbeat\Parser\Template\Node\GPrintNode as GPrint,
@@ -48,9 +49,12 @@ class GraphCommand extends RRDToolCommand {
     const PARAMETER_LOWER_LIMIT = 'lower-limit';
     const PARAMETER_UPPER_LIMIT = 'upper-limit';
     const PARAMETER_BASE = 'base';
+    const PARAMETER_AUTOSCALE_MIN = 'alt-autoscale-min';
+    const PARAMETER_AUTOSCALE_MAX = 'alt-autoscale-max';
+    const TEMPLATE_PARAMETER_AUTO = 'auto';
 
     public function setGraphFilename($graphFilename) {
-        $this->addArgument($graphFilename);
+        $this->addArgument(self::getGraphFilePath($graphFilename));
     }
 
     public function setStart($start) {
@@ -66,10 +70,18 @@ class GraphCommand extends RRDToolCommand {
     }
 
     public function setLowerlimit($lowerlimit) {
+        if ($lowerlimit === self::TEMPLATE_PARAMETER_AUTO) {
+            $this->setOption(self::PARAMETER_AUTOSCALE_MIN, true);
+            return;
+        }
         $this->setOption(self::PARAMETER_LOWER_LIMIT, $lowerlimit);
     }
 
     public function setUpperlimit($upperlimit) {
+        if ($upperlimit === self::TEMPLATE_PARAMETER_AUTO) {
+            $this->setOption(self::PARAMETER_AUTOSCALE_MAX, true);
+            return;
+        }
         $this->setOption(self::PARAMETER_UPPER_LIMIT, $upperlimit);
     }
 
@@ -79,37 +91,42 @@ class GraphCommand extends RRDToolCommand {
 
     public function setDefs(array $defs) {
         foreach ($defs as $def) {
-            $object = new DEF($def);
-            $this->addArgument($object->getAsString());
+            $this->addArgument($def->getAsString());
         }
     }
 
     public function setCdefs(array $cdefs) {
         foreach ($cdefs as $cdef) {
-            $object = new CDEF($cdef);
-            $this->addArgument($object->getAsString());
+            $this->addArgument($cdef->getAsString());
         }
     }
 
     public function setVdefs(array $vdefs) {
         foreach ($vdefs as $vdef) {
-            $object = new VDEF($vdef);
-            $this->addArgument($object->getAsString());
+            $this->addArgument($vdef->getAsString());
         }
     }
 
     public function setGprints(array $gprints) {
         foreach ($gprints as $gprint) {
-            $object = new GPrint($gprint);
-            $this->addArgument($object->getAsString());
+            $this->addArgument($gprint->getAsString());
         }
     }
 
     public function setItems(array $items) {
         foreach ($items as $item) {
-            $object = new Item($item);
-            $this->addArgument($object->getAsString());
+            $this->addArgument($item->getAsString());
         }
+    }
+
+    public function init() {
+        $this->setOptions(
+                array(
+                    'slope-mode' => true,
+                    'width' => 800,
+                    'height' => 200,
+                )
+        );
     }
 
 }

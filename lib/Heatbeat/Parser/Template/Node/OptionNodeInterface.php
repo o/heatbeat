@@ -34,5 +34,11 @@ namespace Heatbeat\Parser\Template\Node;
  */
 interface OptionNodeInterface {
 
+    /**
+     * Validates node arguments
+     * 
+     * @return bool
+     * @throws NodeValidationException
+     */
     public function validate();
 }

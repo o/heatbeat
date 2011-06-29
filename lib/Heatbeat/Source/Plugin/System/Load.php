@@ -16,39 +16,42 @@
  * limitations under the License. 
  *
  * @category    Heatbeat
- * @package     Heatbeat\CommandLine
+ * @package     Heatbeat\Source\Plugin\System
  * @author      Osman Ungur <osmanungur@gmail.com>
  * @copyright   2011 Osman Ungur
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  * @link        http://github.com/import/heatbeat
  */
 
-namespace Heatbeat\CommandLine;
+namespace Heatbeat\Source\Plugin\System;
 
-use Symfony\Component\Console\Application,
-    Heatbeat\Commandline\Callback\Create,
-    Heatbeat\Commandline\Callback\Update,
-    Heatbeat\CommandLine\Callback\TestSource,
-    Heatbeat\CommandLine\Callback\Graph;
+use Heatbeat\Source\AbstractSource,
+    Heatbeat\Source\SourceInterface,
+    Heatbeat\Source\AbstractInputOutput,
+    Heatbeat\Source\SourceOutput,
+    Heatbeat\Exception\SourceException;
 
 /**
- * Application class for Heatbeat CLI interface.
+ * Class for fetching Unix system load values
  *
  * @category    Heatbeat
- * @package     Heatbeat\CommandLine
+ * @package     Heatbeat\Source\Plugin\System
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class Runner extends Application {
+class Load extends AbstractSource implements SourceInterface {
 
-    public function __construct() {
-        parent::__construct('Welcome to Heatbeat Graphing Tool', '1.0');
-
-        $this->addCommands(array(
-            new Create,
-            new Update(),
-            new TestSource(),
-            new Graph()
-        ));
+    public function perform() {
+        $loads = false;
+        if (function_exists('sys_getloadavg')) {
+            $loads = sys_getloadavg();
+        } else {
+            throw new SourceException('Unable to fetch system load averages');
+        }
+        $output = new SourceOutput();
+        $output->setValue('1min', $loads[0]);
+        $output->setValue('5min', $loads[1]);
+        $output->setValue('15min', $loads[2]);
+        $this->setOutput($output);
     }
 
 }

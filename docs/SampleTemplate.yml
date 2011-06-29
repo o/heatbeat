@@ -40,9 +40,11 @@ graphs :
             # Lower an upper limit for graphs, allowed values auto or [0-9]
             lower : 
             upper : 
+            # Start time of graph. You can use "at-style" time specification (Unix command at(1), look at the "man at"). Examples : -1month, -3weeks, -6hours.
+            start :             
           # Graph elements
           items :
-              # Type of element, allowed values are AREA and LINE[width]
+              # Type of element, allowed values are AREA, LINE and STACK
               - type :
                 # Name of definition for use as value
                 definition-name:
@@ -55,21 +57,20 @@ graphs :
               - definition-name :
                 # Format of string
                 format:
-          definitions:
-            defs:
+          defs:
                 # Name of definition 
-                - name:
-                  # Base data store name
-                  datastore-name:
-                  # Consolidation function for RRA archives, allowed values : AVERAGE, MIN, MAX, LAST    
-                  cf:
-            cdefs:
+              - name:
+                # Base data store name
+                datastore-name:
+                # Consolidation function for RRA archives, allowed values : AVERAGE, MIN, MAX, LAST    
+                cf:
+          cdefs:
                 # Name of defitinition
-                - name:
-                  # RPN expression for calculating result value
-                  rpn:
-            vdefs:
+              - name:
+                # RPN expression for calculating result value
+                rpn:
+          vdefs:
                 # Name of definition
-                - name:
-                  # RPN expression for calculating result value  
-                  rpn:
+              - name:
+                # RPN expression for calculating result value  
+                rpn:

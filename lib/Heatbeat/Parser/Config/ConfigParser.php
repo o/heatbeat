@@ -26,7 +26,10 @@
 namespace Heatbeat\Parser\Config;
 
 use Heatbeat\Parser\AbstractParser,
-    Heatbeat\Autoloader;
+    Heatbeat\Autoloader,
+    Heatbeat\Parser\Config\Node\ConfigurationNode as ConfigurationOptions,
+    Heatbeat\Exception\ConfigException,
+    Heatbeat\Parser\Config\Node\GraphNode as GraphDefinition;
 
 /**
  * Config file parser
@@ -42,6 +45,30 @@ class ConfigParser extends AbstractParser {
         $this->setFilePath($folder);
         $this->setFilename(self::FILENAME);
         $this->setValues($this->parse());
+    }
+
+    public function getConfigurationOptions() {
+        $values = $this->getValues();
+        if ($values->offsetExists('configuration') AND count($values->offsetGet('configuration'))) {
+            $configurationOptions = new ConfigurationOptions($values->offsetGet('configuration'));
+            $configurationOptions->validate();
+            return $configurationOptions;
+        } else {
+            throw new ConfigException('Configuration options is not defined in config.yml');
+        }
+    }
+
+    public function getGraphEntities() {
+        $values = $this->getValues();
+        if ($values->offsetExists('graphs') AND count($values->offsetGet('graphs'))) {
+            return array_map(function($definition) {
+                        $object = new GraphDefinition($definition);
+                        $object->validate();
+                        return $object;
+                    }, $values->offsetGet('graphs'));
+        } else {
+            throw new ConfigException('You must define at least one graph definition in config.yml');
+        }
     }
 
 }

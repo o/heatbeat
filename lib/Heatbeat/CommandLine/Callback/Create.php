@@ -33,26 +33,27 @@ use Symfony\Component\Console\Input\InputArgument,
     Heatbeat\Autoloader,
     Heatbeat\Parser\Template\TemplateParser as TemplateLoader,
     Heatbeat\Util\Command\RRDTool\RRDToolCommand as RRDTool,
-    Heatbeat\Util\Command\RRDTool\UpdateCommand as RRDUpdate,
+    Heatbeat\Util\Command\RRDTool\CreateCommand as RRDCreate,
     Heatbeat\Util\CommandExecutor as Executor,
     Heatbeat\Log\BaseLogger as Logger,
-    Heatbeat\Source\SourceInput as Input,
-    Heatbeat\Parser\Template\Node\TemplateOptionNode as TemplateOptions,
     Heatbeat\Exception\SourceException;
 
 /**
- * Callback for CLI Tool update command
+ * Callback for CLI Tool create command
  *
  * @category    Heatbeat
  * @package     Heatbeat\CommandLine\Callback
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class Update extends Console\Command\Command {
+class Create extends Console\Command\Command {
 
     public function configure() {
         $this
-                ->setName('update')
-                ->setDescription('Updates all RRD files');
+                ->setName('create')
+                ->setDescription('Creates RRD files')
+                ->setDefinition(array(
+                    new InputOption('overwrite', 'o', InputArgument::OPTIONAL, "This option overwrites all RRD's", false)
+                ));
     }
 
     protected function execute(InputInterface $input, OutputInterface $output) {
@@ -60,14 +61,11 @@ class Update extends Console\Command\Command {
         foreach ($config->getGraphEntities() as $entity) {
             try {
                 $template = new TemplateLoader($entity->offsetGet('plugin'));
-                $pluginInstance = $this->getPluginInstance($template->getTemplateOptions()->offsetGet('source-name'));
-                if ($entity->offsetExists('arguments') AND count($entity->offsetGet('arguments'))) {
-                    $pluginInstance->setInput(new Input($entity->offsetGet('arguments')));
-                }
-                $pluginInstance->perform();
-                $commandObject = new RRDUpdate();
+                $commandObject = new RRDCreate();
                 $commandObject->setFilename($entity->getRRDFilename());
-                $commandObject->setValues(time(), $pluginInstance->getOutput());
+                $commandObject->setOverwrite($input->getOption('overwrite'));
+                $commandObject->setDatastores($template->getRrdDatastores());
+                $commandObject->setRras($template->getRrdRras());
                 $executor = new Executor();
                 $executor->setCommandObject($commandObject);
                 $executor->prepare();
@@ -76,7 +74,7 @@ class Update extends Console\Command\Command {
                 }
                 $process = $executor->execute();
                 if ($process->isSuccessful()) {
-                    $output->writeln(sprintf("'%s%s' updated successfully.", $entity->getRRDFilename(), RRDTool::RRD_EXT));
+                    $output->writeln(sprintf("RRD created with filename '%s%s' successfully.", $entity->getRRDFilename(), RRDTool::RRD_EXT));
                 }
             } catch (\Exception $e) {
                 Logger::getInstance()->log($e->getMessage());
@@ -84,15 +82,6 @@ class Update extends Console\Command\Command {
                 continue;
             }
         }
-    }
-
-    private function getPluginInstance($plugin) {
-        $namespaced = str_replace('_', "\\", $plugin);
-        $class_name = '\\Heatbeat\\Source\\Plugin\\' . $namespaced;
-        if (!class_exists($class_name)) {
-            throw new SourceException(sprintf('Unable to find source plugin %s', $plugin));
-        }
-        return new $class_name;
     }
 
 }

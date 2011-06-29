@@ -16,39 +16,22 @@
  * limitations under the License. 
  *
  * @category    Heatbeat
- * @package     Heatbeat\CommandLine
+ * @package     Heatbeat\Exception
  * @author      Osman Ungur <osmanungur@gmail.com>
  * @copyright   2011 Osman Ungur
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  * @link        http://github.com/import/heatbeat
  */
 
-namespace Heatbeat\CommandLine;
-
-use Symfony\Component\Console\Application,
-    Heatbeat\Commandline\Callback\Create,
-    Heatbeat\Commandline\Callback\Update,
-    Heatbeat\CommandLine\Callback\TestSource,
-    Heatbeat\CommandLine\Callback\Graph;
+namespace Heatbeat\Exception;
 
 /**
- * Application class for Heatbeat CLI interface.
+ * Source exception class
  *
  * @category    Heatbeat
- * @package     Heatbeat\CommandLine
+ * @package     Heatbeat\Exception
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class Runner extends Application {
-
-    public function __construct() {
-        parent::__construct('Welcome to Heatbeat Graphing Tool', '1.0');
-
-        $this->addCommands(array(
-            new Create,
-            new Update(),
-            new TestSource(),
-            new Graph()
-        ));
-    }
-
+class SourceException extends HeatbeatException {
+    
 }

@@ -25,7 +25,8 @@
 
 namespace Heatbeat\Util;
 
-use Symfony\Component\Process\Process;
+use Symfony\Component\Process\Process,
+    Heatbeat\Exception\ExecutionException;
 
 /**
  * Class for executing shell commands.
@@ -37,21 +38,49 @@ use Symfony\Component\Process\Process;
 class CommandExecutor {
     const LONG_OPTION = '--';
 
+    /**
+     *
+     * @var AbstractCommand 
+     */
     private $commandObject;
+    /**
+     *
+     * @var string 
+     */
     private $commandString;
 
+    /**
+     * Returns command object
+     * 
+     * @return type 
+     */
     public function getCommandObject() {
         return $this->commandObject;
     }
 
-    public function setCommandObject($commandObject) {
+    /**
+     * Sets command object
+     * 
+     * @param AbstractCommand $commandObject 
+     */
+    public function setCommandObject(AbstractCommand $commandObject) {
         $this->commandObject = $commandObject;
     }
 
+    /**
+     * Returns prepared command string
+     * 
+     * @return string 
+     */
     public function getCommandString() {
         return $this->commandString;
     }
 
+    /**
+     * Sets prepared command string
+     * 
+     * @param string $commandString 
+     */
     public function setCommandString($commandString) {
         $this->commandString = $commandString;
     }
@@ -80,17 +109,36 @@ class CommandExecutor {
         $this->setCommandString(\implode(\chr(32), \iterator_to_array($result)));
     }
 
+    /**
+     * Executes prepared command string
+     * 
+     * @return Process 
+     * @throws ExecutionException
+     */
     public function execute() {
         $process = new Process($this->getCommandString());
         $process->setEnv(explode(PATH_SEPARATOR, \getenv('PATH')));
         $process->run();
+        if (!$process->isSuccessful()) {
+            throw new ExecutionException($process->getErrorOutput());
+        }
         return $process;
     }
 
+    /**
+     * Executes given command string
+     * 
+     * @param string $command
+     * @return Process
+     * @throws ExecutionException
+     */
     public function dirtyExecute($command) {
         $process = new Process($command);
         $process->setEnv(explode(PATH_SEPARATOR, \getenv('PATH')));
         $process->run();
+        if (!$process->isSuccessful()) {
+            throw new ExecutionException($process->getErrorOutput());
+        }
         return $process;
     }
 

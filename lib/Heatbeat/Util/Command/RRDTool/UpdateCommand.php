@@ -25,6 +25,8 @@
 
 namespace Heatbeat\Util\Command\RRDTool;
 
+use Heatbeat\Source\SourceOutput;
+
 /**
  * Implementation for RRDTool update command
  *
@@ -35,13 +37,18 @@ namespace Heatbeat\Util\Command\RRDTool;
 class UpdateCommand extends RRDToolCommand {
 
     protected $subCommand = 'updatev';
+    const PARAMETER_TEMPLATE = 'template';
 
-    public function setValues($time, array $values) {
-        if (!is_int($time)) {
-            $time = strtotime($time);
-        }
-        $this->addArgument($this->getRoundedTime($time) . self::SEPERATOR . iterator_to_array(implode(self::SEPERATOR, $values)));
-        return true;
+    /**
+     * Prepares time and data arguments for updating RRD 
+     * 
+     * @param int $time
+     * @param SourceOutput $values
+     * @return bool 
+     */
+    public function setValues($time, SourceOutput $values) {
+        $this->addArgument($this->getRoundedTime($time) . self::SEPERATOR . implode(self::SEPERATOR, iterator_to_array($values)));
+        $this->setDatastoreTemplate($values);
     }
 
     /**
@@ -52,6 +59,15 @@ class UpdateCommand extends RRDToolCommand {
      */
     private function getRoundedTime($time) {
         return $time - ($time % 60);
+    }
+
+    /**
+     * Prepares template option for update command
+     * 
+     * @param SourceOutput $values 
+     */
+    private function setDatastoreTemplate(SourceOutput $values) {
+        $this->setOption(self::PARAMETER_TEMPLATE, implode(self::SEPERATOR, array_keys(iterator_to_array($values))));
     }
 
 }
