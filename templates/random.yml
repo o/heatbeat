@@ -46,7 +46,7 @@ graphs :
             label : Values
             base : 1000
             lower : 0
-            upper : 100
+            upper : auto
             start : -1d
           items :
               - type : LINE
