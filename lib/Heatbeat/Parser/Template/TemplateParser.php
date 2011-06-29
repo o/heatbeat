@@ -119,12 +119,21 @@ class TemplateParser extends AbstractParser {
         }
     }
 
+    public function getGraphDefinitionCount() {
+        $values = $this->getValues();
+        if ($values->offsetExists('graphs') AND $values->offsetGet('graphs')) {
+            return count($values->offsetGet('graphs'));
+        } else {
+            throw new TemplateException(sprintf('No graphs defined in template %s', $this->getFullPath()));
+        }
+    }
+
     private function getGraphIndex($index) {
         $values = $this->getValues();
-        if ($values->offsetExists('graphs') AND array_key_exists($index, $values['graphs'])) {
+        if (array_key_exists($index, $values['graphs'])) {
             return new \ArrayObject($values['graphs'][$index]);
         } else {
-            throw new TemplateException(sprintf('Graphs not defined in template %s', $this->getFullPath()));
+            throw new TemplateException(sprintf('No graph definition found in template %s with index %s', $this->getFullPath(), $index));
         }
     }
 
