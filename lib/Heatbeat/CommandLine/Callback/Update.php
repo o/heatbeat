@@ -57,16 +57,16 @@ class Update extends Console\Command\Command {
 
     protected function execute(InputInterface $input, OutputInterface $output) {
         $config = Autoloader::getInstance()->getConfig();
-        foreach ($config->offsetGet('templates') as $item) {
+        foreach ($config->getGraphDefinitions() as $definition) {
             try {
-                $template = new TemplateLoader($item['plugin']);
+                $template = new TemplateLoader($definition->offsetGet('plugin'));
                 $pluginInstance = $this->getPluginInstance($template->getTemplateOptions()->offsetGet('source-name'));
-                if (array_key_exists('arguments', $item) AND is_array($item['arguments'])) {
-                    $pluginInstance->setInput(new Input($item['arguments']));
+                if ($definition->offsetExists('arguments') AND count($definition->offsetGet('arguments'))) {
+                    $pluginInstance->setInput(new Input($definition->offsetGet('arguments')));
                 }
                 $pluginInstance->perform();
                 $commandObject = new RRDUpdate();
-                $commandObject->setFilename($item['filename']);
+                $commandObject->setFilename($definition->getRRDFilename());
                 $commandObject->setValues(time(), $pluginInstance->getOutput());
                 $executor = new Executor();
                 $executor->setCommandObject($commandObject);
@@ -76,7 +76,7 @@ class Update extends Console\Command\Command {
                 }
                 $process = $executor->execute();
                 if ($process->isSuccessful()) {
-                    $output->writeln(sprintf("'%s%s' updated successfully.", $item['filename'], RRDTool::RRD_EXT));
+                    $output->writeln(sprintf("'%s%s' updated successfully.", $definition->getRRDFilename(), RRDTool::RRD_EXT));
                 }
             } catch (\Exception $e) {
                 Logger::getInstance()->log($e->getMessage());
