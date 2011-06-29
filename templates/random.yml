@@ -53,7 +53,14 @@ graphs :
                 definition-name: rand1
                 color : C70B45
                 legend : Random 1
+              - type : LINE
+                definition-name: rand2
+                color : C70B45
+                legend : Random 2 
           defs:
               - name: rand1
                 datastore-name: rand1
                 cf: AVERAGE
+              - name: rand2
+                datastore-name: rand2
+                cf: AVERAGE                
