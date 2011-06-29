@@ -3,7 +3,7 @@ configuration :
         enabled : true
         handler : RotatingFile
 
-templates :
+graphs :
     - plugin  : random
       filename : random
       enabled : true
