@@ -89,8 +89,9 @@ class GraphCommand extends RRDToolCommand {
         $this->setOption(self::PARAMETER_BASE, $base);
     }
 
-    public function setDefs(array $defs) {
+    public function setDefs(array $defs, $filename) {
         foreach ($defs as $def) {
+            $def->offsetSet('filename', RRDToolCommand::getRRDFilePath($filename));
             $this->addArgument($def->getAsString());
         }
     }

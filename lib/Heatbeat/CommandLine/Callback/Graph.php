@@ -67,7 +67,7 @@ class Graph extends Console\Command\Command {
                     $commandObject->setUpperlimit($template->getGraphOptions($index)->offsetGet('upper'));
                     $commandObject->setLowerlimit($template->getGraphOptions($index)->offsetGet('lower'));
                     $commandObject->setStart($template->getGraphOptions($index)->offsetGet('start'));
-                    $commandObject->setDefs($template->getGraphDefs($index, $entity->getRRDFilename()));
+                    $commandObject->setDefs($template->getGraphDefs($index), $entity->getRRDFilename());
                     $commandObject->setItems($template->getGraphItems($index));
                     if ($template->getGraphGprints($index))
                         $commandObject->setGprints($template->getGraphGprints($index));
