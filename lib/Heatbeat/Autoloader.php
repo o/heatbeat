@@ -109,8 +109,7 @@ class Autoloader {
     }
 
     private function setConfig() {
-        $config = new \Heatbeat\Parser\Config\ConfigParser($this->getPath(Autoloader::FOLDER_ROOT));
-        $this->config = $config->getValues();
+        $this->config = new \Heatbeat\Parser\Config\ConfigParser($this->getPath(Autoloader::FOLDER_ROOT));
     }
 
     public static function handleErrors($errno, $errstr = '', $errfile = '', $errline = '') {
