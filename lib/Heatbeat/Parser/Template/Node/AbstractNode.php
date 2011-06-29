@@ -168,6 +168,10 @@ abstract class AbstractNode extends \ArrayObject {
         return true;
     }
 
+    /**
+     * Returns class name without namespace
+     * @return string
+     */
     private function getClassName() {
         $name = get_class($this);
         $len = strlen(__NAMESPACE__) + 1;
