@@ -50,9 +50,9 @@ class BaseLogger {
     }
 
     public function __construct() {
-        $config = Autoloader::getInstance()->getConfig();
-        $this->setHandler($config['configuration']['log']['handler']);
-        $this->setIsEnabled($config['configuration']['log']['enabled']);
+        $config = Autoloader::getInstance()->getConfig()->getConfigurationOptions()->offsetGet('log');
+        $this->setHandler($config['handler']);
+        $this->setIsEnabled($config['enabled']);
     }
 
     public function log($message) {
