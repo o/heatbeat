@@ -14,7 +14,7 @@ class RrdOptionNodeTest extends \PHPUnit_Framework_TestCase {
     public function testValidate() {
         $array = $this->validationData;
         $object = new RrdOptionNode($array);
-        $object->validate();
+        $this->assertTrue($object->validate());
     }
 
     /**

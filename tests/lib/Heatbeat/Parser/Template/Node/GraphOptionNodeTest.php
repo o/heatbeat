@@ -18,7 +18,7 @@ class GraphOptionNodeTest extends \PHPUnit_Framework_TestCase {
     public function testValidate() {
         $array = $this->validationData;
         $object = new GraphOptionNode($array);
-        $object->validate();
+        $this->assertTrue($object->validate());
     }
 
     /**

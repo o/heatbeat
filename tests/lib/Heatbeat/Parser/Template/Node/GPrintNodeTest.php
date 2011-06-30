@@ -26,8 +26,8 @@ class GPrintNodeTest extends \PHPUnit_Framework_TestCase {
 
     public function gprintDataProvider() {
         return array(
-            array('ds0avg', '%6.2lf %Sbps', 'GPRINT:ds0avg:"%6.2lf %Sbps"'),
-            array('ds1min', '%6.2lf %Sbps', 'GPRINT:ds1min:"%6.2lf %Sbps"')
+            array('ds0avg', '%6.2lf %Sbps', 'GPRINT:ds0avg:%6.2lf %Sbps'),
+            array('ds1min', '%6.2lf %Sbps', 'GPRINT:ds1min:%6.2lf %Sbps')
         );
     }
 

@@ -16,7 +16,7 @@ class TemplateOptionNodeTest extends \PHPUnit_Framework_TestCase {
     public function testValidate() {
         $array = $this->validationData;
         $object = new TemplateOptionNode($array);
-        $object->validate();
+        $this->assertTrue($object->validate());
     }
 
     /**
