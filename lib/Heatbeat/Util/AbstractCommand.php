@@ -66,55 +66,55 @@ abstract class AbstractCommand {
      * Sets base command name
      * 
      * @param string $command
-     * @return AbstractCommand
+     * @return bool
      */
     public function setCommand($command) {
         $this->command = $command;
-        return $this;
+        return true;
     }
 
     /**
      * Sets subcommand of command
      * 
      * @param string $subCommand
-     * @return AbstractCommand
+     * @return bool
      */
     public function setSubCommand($subCommand) {
         $this->subCommand = $subCommand;
-        return $this;
+        return true;
     }
 
     /**
      * Sets and overrides given arguments as command args
      * 
      * @param array $arguments
-     * @return AbstractCommand
+     * @return bool
      */
     public function setArguments(array $arguments) {
         $this->arguments = $arguments;
-        return $this;
+        return true;
     }
 
     /**
      * Pushes an argument to command args
      * 
      * @param string $value
-     * @return AbstractCommand
+     * @return bool
      */
     public function addArgument($value) {
         $this->arguments[] = $value;
-        return $this;
+        return true;
     }
 
     /**
      * Sets and overrides command options
      * 
      * @param array $options
-     * @return AbstractCommand
+     * @return bool
      */
     public function setOptions(array $options) {
         $this->options = $options;
-        return $this;
+        return true;
     }
 
     /**
@@ -122,11 +122,11 @@ abstract class AbstractCommand {
      * 
      * @param string $name
      * @param bool|string $value
-     * @return AbstractCommand
+     * @return bool
      */
     public function setOption($name, $value = true) {
         $this->options[$name] = $value;
-        return $this;
+        return true;
     }
 
     /**
