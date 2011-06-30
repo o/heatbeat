@@ -44,7 +44,9 @@ class LoggedUsers extends AbstractSource implements SourceInterface {
     public function perform() {
         $command = 'who | grep -c :';
         try {
-            $result = CommandExecutor::dirtyExecute($command);
+            $object = new CommandExecutor();
+            $object->setCommandString($command);
+            $result = $object->execute();
         } catch (\Exception $exc) {
             throw new SourceException($exc->getMessage());
         }
