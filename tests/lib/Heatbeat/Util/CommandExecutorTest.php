@@ -25,7 +25,7 @@ class CommandExecutorTest extends \PHPUnit_Framework_TestCase {
         );
     }
 
-    public function testPrepareDataProvider() {
+    public function prepareDataProvider() {
         $object1 = new Command\RRDTool\TestCommand;
         $object2 = new Command\RRDTool\TestCommand;
         $object2->addArgument('baz');
@@ -43,7 +43,7 @@ class CommandExecutorTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @dataProvider testPrepareDataProvider
+     * @dataProvider prepareDataProvider
      */
     public function testPrepare($commandObject, $result) {
         $object = new CommandExecutor();
