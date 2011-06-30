@@ -49,7 +49,7 @@ class LoggedUsers extends AbstractSource implements SourceInterface {
             throw new SourceException($exc->getMessage());
         }
         $output = new SourceOutput();
-        $output->setValue('users', $result->getOutput());
+        $output->setValue('users', (int) $result->getOutput());
         $this->setOutput($output);
         return true;
     }
