@@ -132,7 +132,7 @@ class CommandExecutor {
      * @return Process
      * @throws ExecutionException
      */
-    public function dirtyExecute($command) {
+    static public function dirtyExecute($command) {
         $process = new Process($command);
         $process->setEnv(explode(PATH_SEPARATOR, \getenv('PATH')));
         $process->run();
