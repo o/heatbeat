@@ -36,32 +36,4 @@ class TestCommand extends RRDToolCommand {
 
     protected $subCommand = 'test';
 
-    public function setFooOption() {
-        $this->setOption('foo');
-    }
-
-    public function setBarOptionWithValue($bar) {
-        $this->setOption('bar', $bar);
-    }
-
-    public function overrideOptions(array $options) {
-        $this->setOptions($options);
-    }
-    
-    public function overrideArguments(array $arguments) {
-        $this->setArguments($arguments);
-    }
-
-    public function addAnArgument($value) {
-        $this->addArgument($value);
-    }
-
-    public function overrideCommand($command) {
-        $this->setCommand($command);
-    }
-
-    public function overrideSubcommand($subCommand) {
-        $this->setSubCommand($subCommand);
-    }
-
 }

@@ -31,7 +31,10 @@ class ItemNodeTest extends \PHPUnit_Framework_TestCase {
     public function itemDataProvider() {
         return array(
             array('LINE', 'ds1', 'FFFFFF', 'Test Legend', 'LINE:ds1#FFFFFF:Test Legend'),
-            array('AREA', 'ds0c', 'FF00FF', 'resolution 7200 seconds per interval', 'AREA:ds0c#FF00FF:resolution 7200 seconds per interval')
+            array('AREA', 'ds0c', 'FF00FF', 'resolution 7200 seconds per interval', 'AREA:ds0c#FF00FF:resolution 7200 seconds per interval'),
+            array('STACK', 'ds2', 'FF00FA', 'moo', 'STACK:ds2#FF00FA:moo'),
+            array('LINE2', 'meh', 'FF00FC', 'bars', 'LINE2:meh#FF00FC:bars')
+            
         );
     }
 
