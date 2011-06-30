@@ -1,17 +1,17 @@
 template :
     options :
-        name : Google Weather Api
+        name : Unix logged in user count
         version : 1.0
-        source-name : Weather_Google
+        source-name : System_LoggedUsers
 rrd:
     options :
         step : 300
     datastores:
-        - name: current
+        - name: users
           type: GAUGE
           heartbeat: 600
           min: 0
-          max: 273
+          max: 100
     rras:
         - cf: ['AVERAGE', 'MAX']
           xff: 0.5
@@ -29,20 +29,20 @@ rrd:
           xff: 0.5
           steps: 288
           rows: 797
-graphs :          
+graphs :
         - options :
-            name : Current Temperature - 1 day
-            label : Temperature
+            name : Logged in users - 1 day
+            label : users
             base : 1000
             lower : 0
             upper : auto
             start : -1day
           items :
               - type : AREA
-                definition-name: current
-                color : FA6900
-                legend : 1 Minute
+                definition-name: users
+                color : 69D2E7
+                legend : Users
           defs:
-              - name: current
-                datastore-name: current
+              - name: users
+                datastore-name: users
                 cf: AVERAGE

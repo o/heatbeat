@@ -60,7 +60,7 @@ class Create extends Console\Command\Command {
         $config = Autoloader::getInstance()->getConfig();
         foreach ($config->getGraphEntities() as $entity) {
             try {
-                $template = new TemplateLoader($entity->offsetGet('plugin'));
+                $template = new TemplateLoader($entity->offsetGet('template'));
                 $commandObject = new RRDCreate();
                 $commandObject->setFilename($entity->getRRDFilename());
                 $commandObject->setOverwrite($input->getOption('overwrite'));

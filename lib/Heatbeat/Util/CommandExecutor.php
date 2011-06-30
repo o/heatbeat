@@ -125,21 +125,4 @@ class CommandExecutor {
         return $process;
     }
 
-    /**
-     * Executes given command string
-     * 
-     * @param string $command
-     * @return Process
-     * @throws ExecutionException
-     */
-    public function dirtyExecute($command) {
-        $process = new Process($command);
-        $process->setEnv(explode(PATH_SEPARATOR, \getenv('PATH')));
-        $process->run();
-        if (!$process->isSuccessful()) {
-            throw new ExecutionException($process->getErrorOutput());
-        }
-        return $process;
-    }
-
 }

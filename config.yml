@@ -4,21 +4,20 @@ configuration :
         handler : RotatingFile
 
 graphs :
-    - plugin  : random
-      filename : random
+    - template : random
       enabled : true
       arguments :
           min : 5
           max : 10
           
-    - plugin  : system_load
-      filename : system_load
+    - template : system_load
       enabled : true
       
-    - plugin  : weather_google
-      filename : weather_istanbul
+    - template : weather_google
       enabled : true
       arguments :
           location : Istanbul,Turkey
           type : c
-      
+
+    - template : system_loggedusers
+      enabled : true

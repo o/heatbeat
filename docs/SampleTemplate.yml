@@ -44,7 +44,7 @@ graphs :
             start :             
           # Graph elements
           items :
-              # Type of element, allowed values are AREA, LINE and STACK
+              # Type of element, allowed values are AREA, LINE[1,2,3] and STACK
               - type :
                 # Name of definition for use as value
                 definition-name:

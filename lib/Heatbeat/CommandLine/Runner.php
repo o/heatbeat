@@ -41,7 +41,7 @@ use Symfony\Component\Console\Application,
 class Runner extends Application {
 
     public function __construct() {
-        parent::__construct('Welcome to Heatbeat Graphing Tool', '1.0');
+        parent::__construct('Heatbeat (c) 2011, Osman Ungur', '1.0');
 
         $this->addCommands(array(
             new Create,

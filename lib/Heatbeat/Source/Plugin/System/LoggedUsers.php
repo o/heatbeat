@@ -16,36 +16,43 @@
  * limitations under the License. 
  *
  * @category    Heatbeat
- * @package     Heatbeat\Parser\Template\Node
+ * @package     Heatbeat\Source\Plugin\System
  * @author      Osman Ungur <osmanungur@gmail.com>
  * @copyright   2011 Osman Ungur
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  * @link        http://github.com/import/heatbeat
  */
 
-namespace Heatbeat\Parser\Template\Node;
+namespace Heatbeat\Source\Plugin\System;
+
+use Heatbeat\Source\AbstractSource,
+    Heatbeat\Source\SourceInterface,
+    Heatbeat\Source\AbstractInputOutput,
+    Heatbeat\Source\SourceOutput,
+    Heatbeat\Exception\SourceException,
+    Heatbeat\Util\CommandExecutor;
 
 /**
- * Gprint node of template
+ * Class for fetching currently logged user count
  *
  * @category    Heatbeat
- * @package     Heatbeat\Parser\Template\Node
+ * @package     Heatbeat\Source\Plugin\System
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class GPrintNode extends AbstractNode implements NodeInterface {
-    const PREFIX = 'GPRINT';
+class LoggedUsers extends AbstractSource implements SourceInterface {
 
-    public function getAsString() {
-        return implode(self::SEPERATOR, array(
-            self::PREFIX,
-            $this->offsetGet('definition-name'),
-            $this->offsetGet('format'),
-        ));
-    }
-
-    public function validate() {
-        $this->isDefined('definition-name');
-        $this->isDefined('format');
+    public function perform() {
+        $command = 'who | grep -c :';
+        try {
+            $object = new CommandExecutor();
+            $object->setCommandString($command);
+            $result = $object->execute();
+        } catch (\Exception $exc) {
+            throw new SourceException($exc->getMessage());
+        }
+        $output = new SourceOutput();
+        $output->setValue('users', (int) $result->getOutput());
+        $this->setOutput($output);
         return true;
     }
 
