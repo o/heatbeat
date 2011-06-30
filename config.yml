@@ -5,20 +5,19 @@ configuration :
 
 graphs :
     - template : random
-      filename : random
       enabled : true
       arguments :
           min : 5
           max : 10
           
     - template : system_load
-      filename : system_load
       enabled : true
       
     - template : weather_google
-      filename : weather_istanbul
       enabled : true
       arguments :
           location : Istanbul,Turkey
           type : c
-      
+
+    - template : system_loggedusers
+      enabled : true
