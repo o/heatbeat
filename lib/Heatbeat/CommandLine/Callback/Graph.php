@@ -57,7 +57,7 @@ class Graph extends Console\Command\Command {
         $config = Autoloader::getInstance()->getConfig();
         foreach ($config->getGraphEntities() as $entity) {
             try {
-                $template = new TemplateLoader($entity->offsetGet('plugin'));
+                $template = new TemplateLoader($entity->offsetGet('template'));
                 for ($index = 0; $index < $template->getGraphEntityCount(); $index++) {
                     $commandObject = new RRDGraph();
                     $commandObject->setGraphFilename($entity->getRRDFilename() . $index);

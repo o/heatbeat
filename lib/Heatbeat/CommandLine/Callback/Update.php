@@ -59,7 +59,7 @@ class Update extends Console\Command\Command {
         $config = Autoloader::getInstance()->getConfig();
         foreach ($config->getGraphEntities() as $entity) {
             try {
-                $template = new TemplateLoader($entity->offsetGet('plugin'));
+                $template = new TemplateLoader($entity->offsetGet('template'));
                 $pluginInstance = $this->getPluginInstance($template->getTemplateOptions()->offsetGet('source-name'));
                 if ($entity->offsetExists('arguments') AND count($entity->offsetGet('arguments'))) {
                     $pluginInstance->setInput(new Input($entity->offsetGet('arguments')));

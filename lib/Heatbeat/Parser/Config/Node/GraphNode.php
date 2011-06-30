@@ -37,7 +37,7 @@ class GraphNode extends AbstractNode implements NodeInterface {
     const FILENAME_SEPERATOR = '-';
     
     public function validate() {
-        $this->isDefined('plugin');
+        $this->isDefined('template');
         $this->isDefined('enabled');
         return true;
     }
@@ -47,7 +47,7 @@ class GraphNode extends AbstractNode implements NodeInterface {
     }
     
     public function getRRDFilename() {
-        return $this->offsetGet('plugin') . self::FILENAME_SEPERATOR . $this->getHash();
+        return $this->offsetGet('template') . self::FILENAME_SEPERATOR . $this->getHash();
     }
 
 }
