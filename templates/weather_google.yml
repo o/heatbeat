@@ -13,19 +13,36 @@ rrd:
           min: 0
           max: 273
     rras:
-        - cf: ['AVERAGE', 'MIN', 'MAX', 'LAST']
+        - cf: ['AVERAGE', 'MAX']
           xff: 0.5
           steps: 1
           rows: 51840
-        - cf: ['AVERAGE', 'MIN', 'MAX', 'LAST']
+        - cf: ['AVERAGE', 'MAX']
           xff: 0.5
           steps: 6
           rows: 8736
-        - cf: ['AVERAGE', 'MIN', 'MAX', 'LAST']
+        - cf: ['AVERAGE', 'MAX']
           xff: 0.5
           steps: 24
           rows: 2160
-        - cf: ['AVERAGE', 'MIN', 'MAX', 'LAST']
+        - cf: ['AVERAGE', 'MAX']
           xff: 0.5
           steps: 288
           rows: 797
+graphs :          
+        - options :
+            name : Current Temperature - 1 day
+            label : Temperature
+            base : 1000
+            lower : 0
+            upper : auto
+            start : -1day
+          items :
+              - type : AREA
+                definition-name: current
+                color : CFF09E
+                legend : 1 Minute
+          defs:
+              - name: current
+                datastore-name: current
+                cf: AVERAGE

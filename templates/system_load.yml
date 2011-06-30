@@ -23,19 +23,50 @@ rrd:
           min: 0
           max: 100                    
     rras:
-        - cf: ['AVERAGE', 'MIN', 'MAX', 'LAST']
+        - cf: ['AVERAGE', 'MAX']
           xff: 0.5
           steps: 1
           rows: 51840
-        - cf: ['AVERAGE', 'MIN', 'MAX', 'LAST']
+        - cf: ['AVERAGE', 'MAX']
           xff: 0.5
           steps: 6
           rows: 8736
-        - cf: ['AVERAGE', 'MIN', 'MAX', 'LAST']
+        - cf: ['AVERAGE', 'MAX']
           xff: 0.5
           steps: 24
           rows: 2160
-        - cf: ['AVERAGE', 'MIN', 'MAX', 'LAST']
+        - cf: ['AVERAGE', 'MAX']
           xff: 0.5
           steps: 288
           rows: 797
+graphs :
+        - options :
+            name : Load Averages - 1 day
+            label : processes in the run queue
+            base : 1000
+            lower : 0
+            upper : auto
+            start : -1day
+          items :
+              - type : AREA
+                definition-name: 1min
+                color : CFF09E
+                legend : 1 Minute
+              - type : STACK
+                definition-name: 5min
+                color : A8DBA8
+                legend : 5 Minute
+              - type : STACK
+                definition-name: 15min
+                color : 79BD9A
+                legend : 15 Minute
+          defs:
+              - name: 1min
+                datastore-name: 1min
+                cf: AVERAGE
+              - name: 5min
+                datastore-name: 1min
+                cf: AVERAGE
+              - name: 15min
+                datastore-name: 1min
+                cf: AVERAGE
