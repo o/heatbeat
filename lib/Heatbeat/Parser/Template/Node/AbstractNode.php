@@ -52,6 +52,9 @@ abstract class AbstractNode extends \ArrayObject {
     private $validGraphTypes = array(
         'AREA',
         'LINE',
+        'LINE1',
+        'LINE2',
+        'LINE3',
         'STACK'
     );
 
