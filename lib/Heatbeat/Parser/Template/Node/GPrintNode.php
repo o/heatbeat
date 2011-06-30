@@ -39,7 +39,7 @@ class GPrintNode extends AbstractNode implements NodeInterface {
         return implode(self::SEPERATOR, array(
             self::PREFIX,
             $this->offsetGet('definition-name'),
-            sprintf('"%s"', $this->offsetGet('format')),
+            $this->offsetGet('format'),
         ));
     }
 
