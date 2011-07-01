@@ -29,8 +29,7 @@ use Heatbeat\Source\AbstractSource,
     Heatbeat\Source\SourceInterface,
     Heatbeat\Source\AbstractInputOutput,
     Heatbeat\Source\SourceOutput,
-    Heatbeat\Exception\SourceException,
-    Heatbeat\Util\CommandExecutor;
+    Heatbeat\Exception\SourceException;
 
 /**
  * Class for fetching active tcp connection count
@@ -43,15 +42,13 @@ class TcpConnections extends AbstractSource implements SourceInterface {
 
     public function perform() {
         $command = 'netstat -n | grep -c tcp';
-        $object = new CommandExecutor();
-        $object->setCommandString($command);
         try {
-            $result = $object->execute();
+            $result = shell_exec($command);
         } catch (\Exception $exc) {
             throw new SourceException($exc->getMessage());
         }
         $output = new SourceOutput();
-        $output->setValue('connections', (int) $result->getOutput());
+        $output->setValue('connections', (int) $result);
         $this->setOutput($output);
         return true;
     }
