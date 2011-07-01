@@ -44,7 +44,7 @@ class ConfigParser extends AbstractParser {
     public function __construct($folder) {
         $this->setFilePath($folder);
         $this->setFilename(self::FILENAME);
-        $this->setValues($this->parse());
+        $this->parse();
     }
 
     public function getConfigurationOptions() {
