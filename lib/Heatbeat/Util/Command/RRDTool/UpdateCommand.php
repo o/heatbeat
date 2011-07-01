@@ -47,18 +47,8 @@ class UpdateCommand extends RRDToolCommand {
      * @return bool 
      */
     public function setValues($time, SourceOutput $values) {
-        $this->addArgument($this->getRoundedTime($time) . self::SEPERATOR . implode(self::SEPERATOR, iterator_to_array($values)));
+        $this->addArgument(time() . self::SEPERATOR . implode(self::SEPERATOR, iterator_to_array($values)));
         $this->setDatastoreTemplate($values);
-    }
-
-    /**
-     * Rounds timestamp to the nearest minute 
-     *
-     * @param int $time
-     * @return int 
-     */
-    private function getRoundedTime($time) {
-        return $time - ($time % 60);
     }
 
     /**
