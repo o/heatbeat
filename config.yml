@@ -24,3 +24,6 @@ graphs :
       
     - template : network_tcpconnections
       enabled : true
+      
+    - template : system_processes
+      enabled : true

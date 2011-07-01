@@ -16,14 +16,14 @@
  * limitations under the License. 
  *
  * @category    Heatbeat
- * @package     Heatbeat\Source\Plugin\Network
+ * @package     Heatbeat\Source\Plugin\System
  * @author      Osman Ungur <osmanungur@gmail.com>
  * @copyright   2011 Osman Ungur
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  * @link        http://github.com/import/heatbeat
  */
 
-namespace Heatbeat\Source\Plugin\Network;
+namespace Heatbeat\Source\Plugin\System;
 
 use Heatbeat\Source\AbstractSource,
     Heatbeat\Source\SourceInterface,
@@ -32,19 +32,19 @@ use Heatbeat\Source\AbstractSource,
     Heatbeat\Exception\SourceException;
 
 /**
- * Class for fetching active tcp connection count
+ * Class for fetching current process count
  *
  * @category    Heatbeat
- * @package     Heatbeat\Source\Plugin\Network
+ * @package     Heatbeat\Source\Plugin\System
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class TcpConnections extends AbstractSource implements SourceInterface {
+class Processes extends AbstractSource implements SourceInterface {
 
     public function perform() {
-        $command = 'netstat -n | grep -c tcp';
+        $command = 'ps ax | grep -c : ';
         $result = shell_exec($command);
         $output = new SourceOutput();
-        $output->setValue('connections', (int) $result);
+        $output->setValue('processes', (int) $result);
         $this->setOutput($output);
         return true;
     }
