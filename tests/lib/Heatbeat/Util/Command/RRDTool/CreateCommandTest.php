@@ -42,7 +42,7 @@ class CreateCommandTest extends \PHPUnit_Framework_TestCase {
                     )
                 ),
                 array(
-                    new \Heatbeat\Parser\Template\Node\RraNode(array(
+                    new \Heatbeat\Parser\Template\Node\RRANode(array(
                         'cf' => 'AVERAGE',
                         'xff' => 0.5,
                         'steps' => 1,
@@ -67,14 +67,14 @@ class CreateCommandTest extends \PHPUnit_Framework_TestCase {
                     )
                 ),
                 array(
-                    new \Heatbeat\Parser\Template\Node\RraNode(array(
+                    new \Heatbeat\Parser\Template\Node\RRANode(array(
                         'cf' => 'LAST',
                         'xff' => 0.5,
                         'steps' => 1,
                         'rows' => 100
                             )
                     ),
-                    new \Heatbeat\Parser\Template\Node\RraNode(array(
+                    new \Heatbeat\Parser\Template\Node\RRANode(array(
                         'cf' => 'MAX',
                         'xff' => 1,
                         'steps' => 2,
@@ -107,7 +107,7 @@ class CreateCommandTest extends \PHPUnit_Framework_TestCase {
                     )
                 ),
                 array(
-                    new \Heatbeat\Parser\Template\Node\RraNode(array(
+                    new \Heatbeat\Parser\Template\Node\RRANode(array(
                         'cf' => 'MIN',
                         'xff' => 0.1,
                         'steps' => 8,

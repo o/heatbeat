@@ -2,8 +2,6 @@
 
 namespace Heatbeat\Parser\Template\Node;
 
-require_once '/Users/osman/devel/heatbeat/lib/Heatbeat/Parser/Template/Node/RraNode.php';
-
 /**
  * Test class for RraNode.
  */
