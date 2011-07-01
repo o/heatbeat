@@ -52,7 +52,7 @@ class TemplateParser extends AbstractParser {
     public function __construct($filename) {
         $this->setFilePath(Autoloader::getInstance()->getPath(Autoloader::FOLDER_TEMPLATE));
         $this->setFilename($filename);
-        $this->setValues($this->parse());
+        $this->parse();
     }
 
     public function getTemplateOptions() {

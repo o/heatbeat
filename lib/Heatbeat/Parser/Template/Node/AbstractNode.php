@@ -180,7 +180,7 @@ abstract class AbstractNode extends \ArrayObject {
         $namespaced = str_replace('_', "\\", $this->offsetGet($key));
         $class_name = '\\Heatbeat\\Source\\Plugin\\' . $namespaced;
         if (!class_exists($class_name)) {
-            throw new NodeValidationException(sprintf("source-name %s is not valid.", $key));
+            throw new NodeValidationException(sprintf("%s, %s is not valid.", $this->getClassName(), $key));
         }
         return true;
     }

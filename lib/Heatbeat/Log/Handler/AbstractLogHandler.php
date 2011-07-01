@@ -39,7 +39,7 @@ abstract class AbstractLogHandler {
     }
     
     protected function format($data) {
-        return sprintf("%s %s \r\n", date('c'), (string) $data);
+        return sprintf("%s %s \r\n", time(), (string) $data);
     }
 
 }

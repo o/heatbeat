@@ -21,3 +21,9 @@ graphs :
 
     - template : system_loggedusers
       enabled : true
+      
+    - template : network_tcpconnections
+      enabled : true
+      
+    - template : system_processes
+      enabled : true

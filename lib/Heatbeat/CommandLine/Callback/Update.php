@@ -67,7 +67,7 @@ class Update extends Console\Command\Command {
                 $pluginInstance->perform();
                 $commandObject = new RRDUpdate();
                 $commandObject->setFilename($entity->getRRDFilename());
-                $commandObject->setValues(time(), $pluginInstance->getOutput());
+                $commandObject->setValues($pluginInstance->getOutput());
                 $executor = new Executor();
                 $executor->setCommandObject($commandObject);
                 $executor->prepare();

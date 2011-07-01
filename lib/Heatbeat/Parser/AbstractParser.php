@@ -46,11 +46,11 @@ abstract class AbstractParser {
         return $this->filename;
     }
 
-    protected function setFilename($filename) {
+    public function setFilename($filename) {
         $this->filename = $filename;
     }
     
-    protected function setFilepath($filepath) {
+    public function setFilepath($filepath) {
         $this->filepath = $filepath;
     }
 
@@ -62,16 +62,15 @@ abstract class AbstractParser {
         return $this->getFilepath() . \DIRECTORY_SEPARATOR . $this->getFilename() . self::YAML_EXT;
     }
 
-    protected function parse() {
-        $yaml = new Yaml();
-        return $yaml->load($this->getFullPath());
+    public function parse() {
+        $this->setValues(Yaml::load($this->getFullPath()));
     }
 
     public function getValues() {
         return $this->values;
     }
 
-    protected function setValues($values) {
+    public function setValues($values) {
         $this->values = new \ArrayIterator($values);
     }
 

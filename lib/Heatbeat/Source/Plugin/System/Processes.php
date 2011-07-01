@@ -29,23 +29,22 @@ use Heatbeat\Source\AbstractSource,
     Heatbeat\Source\SourceInterface,
     Heatbeat\Source\AbstractInputOutput,
     Heatbeat\Source\SourceOutput,
-    Heatbeat\Exception\SourceException,
-    Heatbeat\Util\CommandExecutor;
+    Heatbeat\Exception\SourceException;
 
 /**
- * Class for fetching currently logged user count
+ * Class for fetching current process count
  *
  * @category    Heatbeat
  * @package     Heatbeat\Source\Plugin\System
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class LoggedUsers extends AbstractSource implements SourceInterface {
+class Processes extends AbstractSource implements SourceInterface {
 
     public function perform() {
-        $command = 'who | grep -c :';
+        $command = 'ps ax | grep -c : ';
         $result = shell_exec($command);
         $output = new SourceOutput();
-        $output->setValue('users', (int) $result);
+        $output->setValue('processes', (int) $result);
         $this->setOutput($output);
         return true;
     }
