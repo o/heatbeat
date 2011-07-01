@@ -1,0 +1,48 @@
+template :
+    options :
+        name : Unix active tcp connection count
+        version : 1.0
+        source-name : Network_TcpConnections 
+rrd:
+    options :
+        step : 300
+    datastores:
+        - name: connections
+          type: GAUGE
+          heartbeat: 600
+          min: 0
+          max: 10000
+    rras:
+        - cf: ['AVERAGE', 'MAX']
+          xff: 0.5
+          steps: 1
+          rows: 51840
+        - cf: ['AVERAGE', 'MAX']
+          xff: 0.5
+          steps: 6
+          rows: 8736
+        - cf: ['AVERAGE', 'MAX']
+          xff: 0.5
+          steps: 24
+          rows: 2160
+        - cf: ['AVERAGE', 'MAX']
+          xff: 0.5
+          steps: 288
+          rows: 797
+graphs :
+        - options :
+            name : Active TCP connections - 1 day
+            label : Connections
+            base : 1000
+            lower : 0
+            upper : auto
+            start : -1day
+          items :
+              - type : AREA
+                definition-name: connections
+                color : B49E79
+                legend : Connections
+          defs:
+              - name: connections
+                datastore-name: connections
+                cf: AVERAGE
