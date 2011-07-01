@@ -32,16 +32,16 @@ rrd:
 graphs :          
         - options :
             name : Current Temperature - 1 day
-            label : Temperature
+            label : Degree
             base : 1000
-            lower : 0
+            lower : auto
             upper : auto
             start : -1day
           items :
-              - type : AREA
+              - type : LINE2
                 definition-name: current
-                color : FA6900
-                legend : 1 Minute
+                color : E8515B
+                legend : Temperature
           defs:
               - name: current
                 datastore-name: current

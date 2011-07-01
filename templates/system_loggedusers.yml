@@ -38,7 +38,7 @@ graphs :
             upper : auto
             start : -1day
           items :
-              - type : AREA
+              - type : LINE3
                 definition-name: users
                 color : 69D2E7
                 legend : Users
