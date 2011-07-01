@@ -36,7 +36,7 @@ use Heatbeat\Parser\AbstractParser,
     Heatbeat\Parser\Template\Node\CDefNode as CDef,
     Heatbeat\Parser\Template\Node\CDefNode as VDef,
     Heatbeat\Parser\Template\Node\GPrintNode as GPrint,
-    Heatbeat\Parser\Template\Node\RraNode as Rra,
+    Heatbeat\Parser\Template\Node\RRANode as Rra,
     Heatbeat\Util\Command\RRDTool\RRDToolCommand as RRDTool,
     Heatbeat\Exception\TemplateException;
 
