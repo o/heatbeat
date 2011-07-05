@@ -8,7 +8,7 @@ namespace Heatbeat\Util;
 class CommandExecutorTest extends \PHPUnit_Framework_TestCase {
 
     public function testSetGetCommandObject() {
-        $commandObject = new Command\RRDTool\TestCommand();
+        $commandObject = $this->getMockForAbstractClass('Heatbeat\Util\AbstractCommand');
         $object = new CommandExecutor();
         $object->setCommandObject($commandObject);
         $this->assertEquals(
@@ -26,18 +26,23 @@ class CommandExecutorTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function prepareDataProvider() {
-        $object1 = new Command\RRDTool\TestCommand;
-        $object2 = new Command\RRDTool\TestCommand;
-        $object2->addArgument('baz');
+        $object1 = $this->getMockForAbstractClass('Heatbeat\Util\AbstractCommand');
+        $object1->setCommand('rrdtool');
+        $object1->setSubCommand('create');
+        $object1->setOption('foo', 'bar');
+        $object2 = $this->getMockForAbstractClass('Heatbeat\Util\AbstractCommand');
+        $object2->setCommand('svn');
+        $object2->setSubCommand('log');        
+        $object2->addArgument('path/to/file');
         $object2->setOption('meh', false);
-        $object3 = new Command\RRDTool\TestCommand;
+        $object3 = $this->getMockForAbstractClass('Heatbeat\Util\AbstractCommand');
         $object3->setCommand('git');
         $object3->setSubCommand('checkout');
         $object3->setOption('track');
         $object3->addArgument('origin/experimental');
         return array(
-            array($object1, 'rrdtool test'),
-            array($object2, "rrdtool test 'baz'"),
+            array($object1, "rrdtool create --foo 'bar'"),
+            array($object2, "svn log 'path/to/file'"),
             array($object3, "git checkout --track 'origin/experimental'")
         );
     }
