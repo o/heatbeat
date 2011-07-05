@@ -49,12 +49,6 @@ use Heatbeat\Parser\AbstractParser,
  */
 class TemplateParser extends AbstractParser {
 
-    public function __construct($filename) {
-        $this->setFilePath(Autoloader::getInstance()->getPath(Autoloader::FOLDER_TEMPLATE));
-        $this->setFilename($filename);
-        $this->parse();
-    }
-
     public function getTemplateOptions() {
         $values = $this->getValues();
         if ($values->offsetExists('template') AND array_key_exists('options', $values['template'])) {

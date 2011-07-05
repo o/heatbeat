@@ -47,7 +47,6 @@ class Autoloader {
     private static $instance;
     private $loader;
     private $paths;
-    private $config;
 
     public static function getInstance() {
         if (null === self::$instance) {
@@ -60,7 +59,6 @@ class Autoloader {
         $this->setPaths();
         $this->register();
         $this->setErrorExceptionHandling();
-        $this->setConfig();
     }
 
     private function setPaths() {
@@ -102,14 +100,6 @@ class Autoloader {
 
     public function getPath($path) {
         return $this->paths[$path];
-    }
-
-    public function getConfig() {
-        return $this->config;
-    }
-
-    private function setConfig() {
-        $this->config = new \Heatbeat\Parser\Config\ConfigParser($this->getPath(Autoloader::FOLDER_ROOT));
     }
 
     public static function handleErrors($errno, $errstr = '', $errfile = '', $errline = '') {
