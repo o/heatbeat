@@ -56,8 +56,6 @@ class Graph extends Console\Command\Command {
 
     protected function execute(InputInterface $input, OutputInterface $output) {
         $config = new Config();
-        $config->setFilepath(Autoloader::getInstance()->getPath(Autoloader::FOLDER_ROOT));
-        $config->setFilename(Config::FILENAME);
         $config->parse();
         $template = new Template();
         foreach ($config->getGraphEntities() as $entity) {

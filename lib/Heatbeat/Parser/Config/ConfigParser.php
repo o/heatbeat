@@ -42,7 +42,8 @@ class ConfigParser extends AbstractParser {
     const FILENAME = 'config';
 
     public function __construct() {
-        $this->setFilepath(Autoloader::getInstance()->getPath(Autoloader::FOLDER_TEMPLATE));
+        $this->setFilepath(Autoloader::getInstance()->getPath(Autoloader::FOLDER_ROOT));
+        $this->setFilename(self::FILENAME);
     }
 
     public function getConfigurationOptions() {
