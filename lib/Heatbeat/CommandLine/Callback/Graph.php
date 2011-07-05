@@ -60,7 +60,6 @@ class Graph extends Console\Command\Command {
         $config->setFilename(Config::FILENAME);
         $config->parse();
         $template = new Template();
-        $template->setFilepath(Autoloader::getInstance()->getPath(Autoloader::FOLDER_TEMPLATE));
         foreach ($config->getGraphEntities() as $entity) {
             try {
                 $template->setFilename($entity->offsetGet('template'));
