@@ -49,7 +49,7 @@ abstract class AbstractParser {
     public function setFilename($filename) {
         $this->filename = $filename;
     }
-    
+
     public function setFilepath($filepath) {
         $this->filepath = $filepath;
     }
@@ -70,7 +70,10 @@ abstract class AbstractParser {
         return $this->values;
     }
 
-    public function setValues($values) {
+    public function setValues(array $values) {
+        if (!is_array($values)) {
+            throw new \Heatbeat\Exception\HeatbeatException(sprintf('No values parsed in %s', $this->getFullPath()));
+        }
         $this->values = new \ArrayIterator($values);
     }
 
