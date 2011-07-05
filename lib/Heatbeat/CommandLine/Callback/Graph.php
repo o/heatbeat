@@ -31,7 +31,8 @@ use Symfony\Component\Console\Input\InputArgument,
     Symfony\Component\Console\Input\InputInterface,
     Symfony\Component\Console\Output\OutputInterface,
     Heatbeat\Autoloader,
-    Heatbeat\Parser\Template\TemplateParser as TemplateLoader,
+    Heatbeat\Parser\Config\ConfigParser as Config,
+    Heatbeat\Parser\Template\TemplateParser as Template,
     Heatbeat\Util\Command\RRDTool\RRDToolCommand as RRDTool,
     Heatbeat\Util\Command\RRDTool\GraphCommand as RRDGraph,
     Heatbeat\Util\CommandExecutor as Executor,
@@ -54,10 +55,16 @@ class Graph extends Console\Command\Command {
     }
 
     protected function execute(InputInterface $input, OutputInterface $output) {
-        $config = Autoloader::getInstance()->getConfig();
+        $config = new Config();
+        $config->setFilepath(Autoloader::getInstance()->getPath(Autoloader::FOLDER_ROOT));
+        $config->setFilename(Config::FILENAME);
+        $config->parse();
+        $template = new Template();
+        $template->setFilepath(Autoloader::getInstance()->getPath(Autoloader::FOLDER_TEMPLATE));
         foreach ($config->getGraphEntities() as $entity) {
             try {
-                $template = new TemplateLoader($entity->offsetGet('template'));
+                $template->setFilename($entity->offsetGet('template'));
+                $template->parse();
                 for ($index = 0; $index < $template->getGraphEntityCount(); $index++) {
                     $commandObject = new RRDGraph();
                     $commandObject->setGraphFilename($entity->getRRDFilename() . $index);

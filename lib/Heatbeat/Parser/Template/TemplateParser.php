@@ -36,7 +36,7 @@ use Heatbeat\Parser\AbstractParser,
     Heatbeat\Parser\Template\Node\CDefNode as CDef,
     Heatbeat\Parser\Template\Node\CDefNode as VDef,
     Heatbeat\Parser\Template\Node\GPrintNode as GPrint,
-    Heatbeat\Parser\Template\Node\RraNode as Rra,
+    Heatbeat\Parser\Template\Node\RRANode as Rra,
     Heatbeat\Util\Command\RRDTool\RRDToolCommand as RRDTool,
     Heatbeat\Exception\TemplateException;
 
@@ -48,12 +48,6 @@ use Heatbeat\Parser\AbstractParser,
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
 class TemplateParser extends AbstractParser {
-
-    public function __construct($filename) {
-        $this->setFilePath(Autoloader::getInstance()->getPath(Autoloader::FOLDER_TEMPLATE));
-        $this->setFilename($filename);
-        $this->parse();
-    }
 
     public function getTemplateOptions() {
         $values = $this->getValues();

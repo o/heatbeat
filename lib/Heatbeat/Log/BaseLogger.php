@@ -27,7 +27,8 @@ namespace Heatbeat\Log;
 
 use Heatbeat\Autoloader,
     Heatbeat\Log\Handler,
-    Heatbeat\Exception\LoggingException;
+    Heatbeat\Exception\LoggingException,
+    Heatbeat\Parser\Config\ConfigParser as Config;
 
 /**
  * Config file parser
@@ -50,9 +51,13 @@ class BaseLogger {
     }
 
     public function __construct() {
-        $config = Autoloader::getInstance()->getConfig()->getConfigurationOptions()->offsetGet('log');
-        $this->setHandler($config['handler']);
-        $this->setIsEnabled($config['enabled']);
+        $config = new Config();
+        $config->setFilepath(Autoloader::getInstance()->getPath(Autoloader::FOLDER_ROOT));
+        $config->setFilename(Config::FILENAME);
+        $config->parse();
+        $values = $config->getConfigurationOptions()->offsetGet('log');
+        $this->setHandler($values['handler']);
+        $this->setIsEnabled($values['enabled']);
     }
 
     public function log($message) {
