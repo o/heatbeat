@@ -7,10 +7,14 @@ namespace Heatbeat\Parser\Template\Node;
  */
 class CDefNodeTest extends \PHPUnit_Framework_TestCase {
 
-    private $validationData = array(
-        'name' => 'result',
-        'rpn' => '1,0,value,IF',
-    );
+    private $validationData;
+
+    protected function setUp() {
+        $this->validationData = array(
+            'name' => 'result',
+            'rpn' => '1,0,value,IF',
+        );
+    }
 
     /**
      * @dataProvider cdefDataProvider

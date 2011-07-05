@@ -7,10 +7,14 @@ namespace Heatbeat\Parser\Template\Node;
  */
 class VDefNodeTest extends \PHPUnit_Framework_TestCase {
 
-    private $validationData = array(
-        'name' => 'test',
-        'rpn' => 'inbytes,10,*',
-    );
+    private $validationData;
+
+    protected function setUp() {
+        $this->validationData = array(
+            'name' => 'test',
+            'rpn' => 'inbytes,10,*',
+        );
+    }
 
     /**
      * @dataProvider vdefDataProvider

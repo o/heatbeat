@@ -7,13 +7,17 @@ namespace Heatbeat\Parser\Template\Node;
  */
 class GraphOptionNodeTest extends \PHPUnit_Framework_TestCase {
 
-    private $validationData = array(
-        'name' => 'test',
-        'label' => 'Test',
-        'base' => 1000,
-        'lower' => 10,
-        'upper' => 50
-    );
+    private $validationData;
+
+    protected function setUp() {
+        $this->validationData = array(
+            'name' => 'test',
+            'label' => 'Test',
+            'base' => 1000,
+            'lower' => 10,
+            'upper' => 50
+        );
+    }
 
     public function testValidate() {
         $array = $this->validationData;

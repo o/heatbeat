@@ -7,11 +7,15 @@ namespace Heatbeat\Parser\Template\Node;
  */
 class TemplateOptionNodeTest extends \PHPUnit_Framework_TestCase {
 
-    private $validationData = array(
-        'name' => 'test',
-        'version' => '1.0',
-        'source-name' => 'Foo_Random'
-    );
+    private $validationData;
+
+    protected function setUp() {
+        $this->validationData = array(
+            'name' => 'test',
+            'version' => '1.0',
+            'source-name' => 'Foo_Random'
+        );
+    }
 
     public function testValidate() {
         $array = $this->validationData;

@@ -7,10 +7,14 @@ namespace Heatbeat\Parser\Template\Node;
  */
 class GPrintNodeTest extends \PHPUnit_Framework_TestCase {
 
-    private $validationData = array(
-        'definition-name' => 'ds0',
-        'format' => '%6.2lf %Sbps'
-    );
+    private $validationData;
+
+    protected function setUp() {
+        $this->validationData = array(
+            'definition-name' => 'ds0',
+            'format' => '%6.2lf %Sbps'
+        );
+    }
 
     /**
      * @dataProvider gprintDataProvider
@@ -21,7 +25,7 @@ class GPrintNodeTest extends \PHPUnit_Framework_TestCase {
                     'format' => $format
                 ));
         $this->assertEquals($result, $object->getAsString());
-        $this->assertTrue($object->validate());        
+        $this->assertTrue($object->validate());
     }
 
     public function gprintDataProvider() {

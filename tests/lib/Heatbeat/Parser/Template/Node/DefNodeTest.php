@@ -7,12 +7,16 @@ namespace Heatbeat\Parser\Template\Node;
  */
 class DefNodeTest extends \PHPUnit_Framework_TestCase {
 
-    private $validationData = array(
-        'name' => 'test',
-        'filename' => 'baz.rrd',
-        'datastore-name' => 'ds0',
-        'cf' => 'AVERAGE'
-    );
+    private $validationData;
+
+    protected function setUp() {
+        $this->validationData = array(
+            'name' => 'test',
+            'filename' => 'baz.rrd',
+            'datastore-name' => 'ds0',
+            'cf' => 'AVERAGE'
+        );
+    }
 
     /**
      * @dataProvider defDataProvider
