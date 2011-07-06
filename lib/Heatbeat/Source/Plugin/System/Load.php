@@ -26,8 +26,6 @@
 namespace Heatbeat\Source\Plugin\System;
 
 use Heatbeat\Source\AbstractSource,
-    Heatbeat\Source\SourceInterface,
-    Heatbeat\Source\AbstractInputOutput,
     Heatbeat\Source\SourceOutput,
     Heatbeat\Exception\SourceException;
 
@@ -38,7 +36,7 @@ use Heatbeat\Source\AbstractSource,
  * @package     Heatbeat\Source\Plugin\System
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class Load extends AbstractSource implements SourceInterface {
+class Load extends AbstractSource {
 
     public function perform() {
         $loads = false;

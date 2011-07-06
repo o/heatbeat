@@ -26,8 +26,6 @@
 namespace Heatbeat\Source\Plugin\System;
 
 use Heatbeat\Source\AbstractSource,
-    Heatbeat\Source\SourceInterface,
-    Heatbeat\Source\AbstractInputOutput,
     Heatbeat\Source\SourceOutput,
     Heatbeat\Exception\SourceException,
     Heatbeat\Util\CommandExecutor;
@@ -39,7 +37,7 @@ use Heatbeat\Source\AbstractSource,
  * @package     Heatbeat\Source\Plugin\System
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class LoggedUsers extends AbstractSource implements SourceInterface {
+class LoggedUsers extends AbstractSource {
 
     public function perform() {
         $command = 'who | grep -c :';
