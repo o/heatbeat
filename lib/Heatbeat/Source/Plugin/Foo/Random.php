@@ -26,8 +26,6 @@
 namespace Heatbeat\Source\Plugin\Foo;
 
 use Heatbeat\Source\AbstractSource,
-    Heatbeat\Source\SourceInterface,
-    Heatbeat\Source\AbstractInputOutput,
     Heatbeat\Source\SourceInput,
     Heatbeat\Source\SourceOutput,
     Heatbeat\Exception\SourceException;
@@ -39,7 +37,7 @@ use Heatbeat\Source\AbstractSource,
  * @package     Heatbeat\Source\Plugin\Foo
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class Random extends AbstractSource implements SourceInterface {
+class Random extends AbstractSource {
 
     public function perform() {
         /**
