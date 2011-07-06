@@ -43,7 +43,7 @@ abstract class AbstractParser {
 
     CONST YAML_EXT = '.yml';
 
-    protected function getFilename() {
+    public function getFilename() {
         return $this->filename;
     }
 
@@ -55,11 +55,11 @@ abstract class AbstractParser {
         $this->filepath = $filepath;
     }
 
-    private function getFilepath() {
+    public function getFilepath() {
         return $this->filepath;
     }
 
-    protected function getFullPath() {
+    public function getFullPath() {
         return $this->getFilepath() . DIRECTORY_SEPARATOR . $this->getFilename() . self::YAML_EXT;
     }
 
