@@ -32,7 +32,8 @@ namespace Heatbeat\Parser;
  * @package     Heatbeat\Parser
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-use Symfony\Component\Yaml\Yaml;
+use Symfony\Component\Yaml\Yaml,
+    Heatbeat\Exception\HeatbeatException;
 
 abstract class AbstractParser {
 
@@ -42,7 +43,7 @@ abstract class AbstractParser {
 
     CONST YAML_EXT = '.yml';
 
-    protected function getFilename() {
+    public function getFilename() {
         return $this->filename;
     }
 
@@ -54,12 +55,12 @@ abstract class AbstractParser {
         $this->filepath = $filepath;
     }
 
-    private function getFilepath() {
+    public function getFilepath() {
         return $this->filepath;
     }
 
-    protected function getFullPath() {
-        return $this->getFilepath() . \DIRECTORY_SEPARATOR . $this->getFilename() . self::YAML_EXT;
+    public function getFullPath() {
+        return $this->getFilepath() . DIRECTORY_SEPARATOR . $this->getFilename() . self::YAML_EXT;
     }
 
     public function parse() {
@@ -70,9 +71,9 @@ abstract class AbstractParser {
         return $this->values;
     }
 
-    public function setValues(array $values) {
-        if (!is_array($values)) {
-            throw new \Heatbeat\Exception\HeatbeatException(sprintf('No values parsed in %s', $this->getFullPath()));
+    public function setValues($values) {
+        if ((!is_array($values)) OR (count($values) == 0)) {
+            throw new HeatbeatException(sprintf('No values parsed in %s', $this->getFullPath()));
         }
         $this->values = new \ArrayIterator($values);
     }

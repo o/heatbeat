@@ -7,12 +7,16 @@ namespace Heatbeat\Parser\Template\Node;
  */
 class RraNodeTest extends \PHPUnit_Framework_TestCase {
 
-    private $validationData = array(
-        'cf' => 'AVERAGE',
-        'xff' => 0.5,
-        'steps' => 1,
-        'rows' => 273
-    );
+    private $validationData;
+
+    protected function setUp() {
+        $this->validationData = array(
+            'cf' => 'AVERAGE',
+            'xff' => 0.5,
+            'steps' => 1,
+            'rows' => 273
+        );
+    }
 
     /**
      * @dataProvider rraDataProvider
@@ -34,7 +38,7 @@ class RraNodeTest extends \PHPUnit_Framework_TestCase {
             array('MAX', 0.5, 1, 288, 'RRA:MAX:0.5:1:288')
         );
     }
- 
+
     /**
      * @expectedException Heatbeat\Exception\NodeValidationException
      */
@@ -43,8 +47,8 @@ class RraNodeTest extends \PHPUnit_Framework_TestCase {
         unset($array['cf']);
         $object = new RraNode($array);
         $object->validate();
-    }    
-    
+    }
+
     /**
      * @expectedException Heatbeat\Exception\NodeValidationException
      */
@@ -53,8 +57,8 @@ class RraNodeTest extends \PHPUnit_Framework_TestCase {
         unset($array['xff']);
         $object = new RraNode($array);
         $object->validate();
-    }        
-    
+    }
+
     /**
      * @expectedException Heatbeat\Exception\NodeValidationException
      */
@@ -63,8 +67,8 @@ class RraNodeTest extends \PHPUnit_Framework_TestCase {
         unset($array['steps']);
         $object = new RraNode($array);
         $object->validate();
-    }        
-    
+    }
+
     /**
      * @expectedException Heatbeat\Exception\NodeValidationException
      */
@@ -73,8 +77,8 @@ class RraNodeTest extends \PHPUnit_Framework_TestCase {
         unset($array['rows']);
         $object = new RraNode($array);
         $object->validate();
-    }    
-    
+    }
+
     /**
      * @expectedException Heatbeat\Exception\NodeValidationException
      */
@@ -83,8 +87,8 @@ class RraNodeTest extends \PHPUnit_Framework_TestCase {
         $array['cf'] = 'FOO';
         $object = new RraNode($array);
         $object->validate();
-    }    
-    
+    }
+
     /**
      * @expectedException Heatbeat\Exception\NodeValidationException
      */
@@ -93,8 +97,8 @@ class RraNodeTest extends \PHPUnit_Framework_TestCase {
         $array['xff'] = 12;
         $object = new RraNode($array);
         $object->validate();
-    }  
-    
+    }
+
     /**
      * @expectedException Heatbeat\Exception\NodeValidationException
      */
@@ -103,8 +107,8 @@ class RraNodeTest extends \PHPUnit_Framework_TestCase {
         $array['steps'] = 'foo';
         $object = new RraNode($array);
         $object->validate();
-    }     
-    
+    }
+
     /**
      * @expectedException Heatbeat\Exception\NodeValidationException
      */
@@ -113,7 +117,6 @@ class RraNodeTest extends \PHPUnit_Framework_TestCase {
         $array['rows'] = 'foo';
         $object = new RraNode($array);
         $object->validate();
-    }     
- 
-    
+    }
+
 }

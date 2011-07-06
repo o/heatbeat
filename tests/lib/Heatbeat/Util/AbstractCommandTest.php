@@ -1,35 +1,23 @@
 <?php
 
-namespace Heatbeat\Util\Command\RRDTool;
+namespace Heatbeat\Util;
 
 /**
- * Test class for TestCommand.
+ * Test class for AbstractCommand.
  */
-class TestCommandTest extends \PHPUnit_Framework_TestCase {
+class AbstractCommandTest extends \PHPUnit_Framework_TestCase {
 
     /**
-     * @var TestCommand
+     * @var AbstractCommand
      */
     protected $object;
 
     protected function setUp() {
-        $this->object = new TestCommand;
-    }
-
-    public function testDefaultCommandName() {
-        $this->assertEquals(
-                $this->object->getCommand(), 'rrdtool'
-        );
-    }
-
-    public function testPredefinedSubCommandName() {
-        $this->assertEquals(
-                $this->object->getSubCommand(), 'test'
-        );
+        $this->object = $this->getMockForAbstractClass('Heatbeat\Util\AbstractCommand');
     }
 
     public function testSetGetCommand() {
-        $command = 'ls';
+        $command = 'svn';
         $this->assertTrue($this->object->setCommand($command));
         $this->assertEquals(
                 $command, $this->object->getCommand()
@@ -37,7 +25,7 @@ class TestCommandTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testSetGetSubCommand() {
-        $subcommand = 'clear';
+        $subcommand = 'revert';
         $this->assertTrue($this->object->setSubCommand($subcommand));
         $this->assertEquals(
                 $subcommand, $this->object->getSubCommand()
@@ -52,14 +40,12 @@ class TestCommandTest extends \PHPUnit_Framework_TestCase {
         );
     }
 
-    protected function resetArgs() {
-        $this->object->setArguments(array());
-    }
-
     public function testAddGetArgument() {
-        $this->resetArgs();
+        $this->object->setArguments(array());
         $this->assertTrue($this->object->addArgument('test'));
-        $this->assertEquals(array('test'), $this->object->getArguments());
+        $this->assertEquals(
+                array('test'), $this->object->getArguments()
+        );
     }
 
     public function testSetGetOptions() {
@@ -70,14 +56,11 @@ class TestCommandTest extends \PHPUnit_Framework_TestCase {
         );
     }
 
-    private function resetOpts() {
-        $this->object->setOptions(array());
-    }
-
     public function testSetGetOption() {
-        $this->resetOpts();
         $this->assertTrue($this->object->setOption('baz', 'bar'));
-        $this->assertEquals(array('baz' => 'bar'), $this->object->getOptions());
+        $this->assertEquals
+                (array('baz' => 'bar'), $this->object->getOptions()
+        );
     }
 
 }

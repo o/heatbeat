@@ -32,7 +32,7 @@ namespace Heatbeat;
  * @package     Heatbeat
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-use \Symfony\Component\ClassLoader\UniversalClassLoader;
+use Symfony\Component\ClassLoader\UniversalClassLoader;
 
 class Autoloader {
     const FOLDER_ROOT = 'root';
@@ -62,16 +62,16 @@ class Autoloader {
     }
 
     private function setPaths() {
-        $rootPath = realpath(dirname(__DIR__) . \DIRECTORY_SEPARATOR . '..');
+        $rootPath = realpath(dirname(__DIR__) . DIRECTORY_SEPARATOR . '..');
         $this->paths = array(
             'root' => $rootPath,
-            'lib' => $rootPath . \DIRECTORY_SEPARATOR . self::FOLDER_LIBRARY,
-            'templates' => $rootPath . \DIRECTORY_SEPARATOR . self::FOLDER_TEMPLATE,
-            'external' => $rootPath . \DIRECTORY_SEPARATOR . self::FOLDER_EXTERNAL,
-            'rrd' => $rootPath . \DIRECTORY_SEPARATOR . self::FOLDER_RRD,
-            'vendor' => $rootPath . \DIRECTORY_SEPARATOR . self::FOLDER_VENDOR,
-            'logs' => $rootPath . \DIRECTORY_SEPARATOR . self::FOLDER_LOG,
-            'graphs' => $rootPath . \DIRECTORY_SEPARATOR . self::FOLDER_GRAPH
+            'lib' => $rootPath . DIRECTORY_SEPARATOR . self::FOLDER_LIBRARY,
+            'templates' => $rootPath . DIRECTORY_SEPARATOR . self::FOLDER_TEMPLATE,
+            'external' => $rootPath . DIRECTORY_SEPARATOR . self::FOLDER_EXTERNAL,
+            'rrd' => $rootPath . DIRECTORY_SEPARATOR . self::FOLDER_RRD,
+            'vendor' => $rootPath . DIRECTORY_SEPARATOR . self::FOLDER_VENDOR,
+            'logs' => $rootPath . DIRECTORY_SEPARATOR . self::FOLDER_LOG,
+            'graphs' => $rootPath . DIRECTORY_SEPARATOR . self::FOLDER_GRAPH
         );
     }
 

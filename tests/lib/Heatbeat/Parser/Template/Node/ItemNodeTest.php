@@ -7,12 +7,16 @@ namespace Heatbeat\Parser\Template\Node;
  */
 class ItemNodeTest extends \PHPUnit_Framework_TestCase {
 
-    private $validationData = array(
-        'type' => 'AREA',
-        'definition-name' => 'ds0',
-        'color' => 'FFF000',
-        'legend' => 'Oh my..'
-    );
+    private $validationData;
+
+    protected function setUp() {
+        $this->validationData = array(
+            'type' => 'AREA',
+            'definition-name' => 'ds0',
+            'color' => 'FFF000',
+            'legend' => 'Oh my..'
+        );
+    }
 
     /**
      * @dataProvider itemDataProvider
@@ -34,7 +38,6 @@ class ItemNodeTest extends \PHPUnit_Framework_TestCase {
             array('AREA', 'ds0c', 'FF00FF', 'resolution 7200 seconds per interval', 'AREA:ds0c#FF00FF:resolution 7200 seconds per interval'),
             array('STACK', 'ds2', 'FF00FA', 'moo', 'STACK:ds2#FF00FA:moo'),
             array('LINE2', 'meh', 'FF00FC', 'bars', 'LINE2:meh#FF00FC:bars')
-            
         );
     }
 

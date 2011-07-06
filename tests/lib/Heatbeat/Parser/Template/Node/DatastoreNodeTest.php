@@ -7,13 +7,17 @@ namespace Heatbeat\Parser\Template\Node;
  */
 class DatastoreNodeTest extends \PHPUnit_Framework_TestCase {
 
-    private $validationData = array(
-        'name' => 'test',
-        'type' => 'GAUGE',
-        'heartbeat' => 600,
-        'min' => 0,
-        'max' => 100
-    );
+    private $validationData;
+
+    protected function setUp() {
+        $this->validationData = array(
+            'name' => 'test',
+            'type' => 'GAUGE',
+            'heartbeat' => 600,
+            'min' => 0,
+            'max' => 100
+        );
+    }
 
     /**
      * @dataProvider dsDataProvider
@@ -102,7 +106,7 @@ class DatastoreNodeTest extends \PHPUnit_Framework_TestCase {
      */
     public function testInvalidHeartbeat() {
         $array = $this->validationData;
-        $array['heartbeat'] = 'foo';        
+        $array['heartbeat'] = 'foo';
         $object = new DatastoreNode($array);
         $object->validate();
     }
@@ -112,7 +116,7 @@ class DatastoreNodeTest extends \PHPUnit_Framework_TestCase {
      */
     public function testInvalidMin() {
         $array = $this->validationData;
-        $array['min'] = 'foo';        
+        $array['min'] = 'foo';
         $object = new DatastoreNode($array);
         $object->validate();
     }
@@ -122,7 +126,7 @@ class DatastoreNodeTest extends \PHPUnit_Framework_TestCase {
      */
     public function testInvalidMax() {
         $array = $this->validationData;
-        $array['max'] = 'foo';        
+        $array['max'] = 'foo';
         $object = new DatastoreNode($array);
         $object->validate();
     }

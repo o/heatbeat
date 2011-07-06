@@ -41,6 +41,11 @@ use Heatbeat\Parser\AbstractParser,
 class ConfigParser extends AbstractParser {
     const FILENAME = 'config';
 
+    public function __construct() {
+        $this->setFilepath(Autoloader::getInstance()->getPath(Autoloader::FOLDER_ROOT));
+        $this->setFilename(self::FILENAME);
+    }
+
     public function getConfigurationOptions() {
         $values = $this->getValues();
         if ($values->offsetExists('configuration') AND count($values->offsetGet('configuration'))) {

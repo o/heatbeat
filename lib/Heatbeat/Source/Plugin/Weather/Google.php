@@ -26,8 +26,6 @@
 namespace Heatbeat\Source\Plugin\Weather;
 
 use Heatbeat\Source\AbstractSource,
-    Heatbeat\Source\SourceInterface,
-    Heatbeat\Source\AbstractInputOutput,
     Heatbeat\Source\SourceOutput,
     Heatbeat\Exception\SourceException;
 
@@ -38,7 +36,7 @@ use Heatbeat\Source\AbstractSource,
  * @package     Heatbeat\Source\Plugin\Weather
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class Google extends AbstractSource implements SourceInterface {
+class Google extends AbstractSource {
 
     public function perform() {
         $xml = simplexml_load_file('http://www.google.com/ig/api?hl=en&weather=' . $this->getInput()->getValue('location'));

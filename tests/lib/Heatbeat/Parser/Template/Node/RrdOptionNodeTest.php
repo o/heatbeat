@@ -7,9 +7,13 @@ namespace Heatbeat\Parser\Template\Node;
  */
 class RrdOptionNodeTest extends \PHPUnit_Framework_TestCase {
 
-    private $validationData = array(
-        'step' => 300
-    );
+    private $validationData;
+
+    protected function setUp() {
+        $this->validationData = array(
+            'step' => 300
+        );
+    }
 
     public function testValidate() {
         $array = $this->validationData;
