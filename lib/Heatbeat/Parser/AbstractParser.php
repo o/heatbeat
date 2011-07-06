@@ -71,8 +71,8 @@ abstract class AbstractParser {
         return $this->values;
     }
 
-    public function setValues(array $values) {
-        if (!is_array($values)) {
+    public function setValues($values) {
+        if ((!is_array($values)) OR (count($values) == 0)) {
             throw new HeatbeatException(sprintf('No values parsed in %s', $this->getFullPath()));
         }
         $this->values = new \ArrayIterator($values);
