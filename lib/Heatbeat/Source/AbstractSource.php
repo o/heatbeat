@@ -26,7 +26,8 @@
 namespace Heatbeat\Source;
 
 use Heatbeat\Util\CommandExecutor,
-    Heatbeat\Autoloader;
+    Heatbeat\Autoloader,
+    Heatbeat\Exception\SourceException;
 
 /**
  * Abstract source class for data fetching
@@ -59,5 +60,9 @@ abstract class AbstractSource {
     public function getExternalFolderPath() {
         return Autoloader::getInstance()->getPath(Autoloader::FOLDER_EXTERNAL);
     }
+    
+    public function perform() {
+        throw new SourceException('You must override the perform() method in the concrete command class.');
+    }    
 
 }
