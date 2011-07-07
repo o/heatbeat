@@ -125,14 +125,68 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase {
         $this->assertFalse($this->object->isInt($param));
     }
 
-    public function testHasArrayKey() {
-        $this->assertTrue($this->object->hasArrayKey('foo', array('foo' => 'bar')));
-        $this->assertTrue($this->object->hasArrayKey('foo', new \ArrayObject(array('foo' => 'bar'))));
-        $this->assertTrue($this->object->hasArrayKey('foo', new \ArrayIterator(array('foo' => 'bar'))));
-        $this->assertFalse($this->object->hasArrayKey('foo', array('meh' => 'bar')));
-        $this->assertFalse($this->object->hasArrayKey('foo', new \ArrayObject(array('baz' => 'bar'))));
-        $this->assertFalse($this->object->hasArrayKey('foo', new \ArrayIterator(array('foolish' => 'bar'))));
-        $this->assertFalse($this->object->hasArrayKey(array(1), array('foo' => 'bar')));        
+    public function validArrayKeyProvider() {
+        return array(
+            array('foo', array('foo' => 'bar')),
+            array('foo', new \ArrayObject(array('foo' => 'bar'))),
+            array('foo', new \ArrayIterator(array('foo' => 'bar'))),
+            array('foo', array('foo' => array(1, 2, 3 => array('baz'))))
+        );
+    }
+
+    public function invalidArrayKeyProvider() {
+        return array(
+            array('this', array('foo' => 'bar')),
+            array('cf', new \ArrayObject(array('baz' => 'bar'))),
+            array('mf', new \ArrayIterator(array('foolish' => 'bar'))),
+            array(array(1), array('foo' => 'bar'))
+        );
+    }
+
+    /**
+     * @dataProvider validArrayKeyProvider
+     */
+    public function testHasArrayKey($key, $array) {
+        $this->assertTrue($this->object->hasArrayKey($key, $array));
+    }
+
+    /**
+     * @dataProvider invalidArrayKeyProvider
+     */
+    public function testHasArrayKeyFail($key, $array) {
+        $this->assertFalse($this->object->hasArrayKey($key, $array));
+    }
+
+    public function validArrayContainProvider() {
+        return array(
+            array('foo', array('foo', 'bar')),
+            array('baz', array('foo', 'baz')),
+            array(1, array(1, 2, 3)),
+            array('ccc', new \ArrayIterator(array(1 => 'ccc', 2 => 'meh')))
+        );
+    }
+
+    public function invalidArrayContainProvider() {
+        return array(
+            array('a', array('foo', 'bar')),
+            array('b', array('foo', 'baz')),
+            array(4, array(1, 2, 3)),
+            array('fff', new \ArrayIterator(array(1 => 'ccc', 2 => 'meh')))
+        );
+    }
+
+    /**
+     * @dataProvider validArrayContainProvider
+     */
+    public function testHasContains($needle, $haystackarray) {
+        $this->assertTrue($this->object->hasContains($needle, $haystackarray));
+    }
+
+    /**
+     * @dataProvider invalidArrayContainProvider
+     */
+    public function testHasContainsFail($needle, $haystackarray) {
+        $this->assertFalse($this->object->hasContains($needle, $haystackarray));
     }
 
 }
