@@ -85,7 +85,7 @@ class Validator {
      * @param array $searcharray
      * @return type 
      */
-    public function hasArrayKey($key, array $searcharray) {
+    public function hasArrayKey($key, $searcharray) {
         if (!(is_integer($key) || is_string($key))) {
             return false;
         }
