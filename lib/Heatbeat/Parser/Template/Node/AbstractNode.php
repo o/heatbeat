@@ -57,6 +57,17 @@ abstract class AbstractNode extends \ArrayObject {
         'LINE3',
         'STACK'
     );
+    
+    private $validator;
+    
+    public function __construct($input) {
+        parent::__construct($input);
+        $this->validator = new \Heatbeat\Parser\Validator();
+    }
+    
+    public function getValidator() {
+        return $this->validator;
+    }
 
     /**
      * Checks is given parameter was defined
@@ -66,7 +77,7 @@ abstract class AbstractNode extends \ArrayObject {
      * @throws NodeValidationException
      */
     protected function isDefined($key) {
-        if (!$this->offsetExists($key)) {
+        if (!($this->offsetExists($key) AND $this->getValidator()->isNotBlank($this->offsetGet($key)))) {
             throw new NodeValidationException(sprintf('%s, %s argument is not defined.', $this->getClassName(), $key));
         }
         return true;
@@ -80,7 +91,7 @@ abstract class AbstractNode extends \ArrayObject {
      * @throws NodeValidationException
      */
     protected function isValidType($key) {
-        if (!in_array(strtoupper($this->offsetGet($key)), $this->validTypes)) {
+        if (!$this->getValidator()->hasContains($this->offsetGet($key), $this->validTypes)) {
             throw new NodeValidationException(sprintf("%s, %s argument must be one of these : %s.", $this->getClassName(), $key, implode(', ', $this->validTypes)));
         };
         return true;
@@ -94,7 +105,7 @@ abstract class AbstractNode extends \ArrayObject {
      * @throws NodeValidationException
      */
     protected function isValidGraphType($key) {
-        if (!in_array(strtoupper($this->offsetGet($key)), $this->validGraphTypes)) {
+        if (!$this->getValidator()->hasContains($this->offsetGet($key), $this->validGraphTypes)) {
             throw new NodeValidationException(sprintf("%s, %s argument must be one of these : %s.", $this->getClassName(), $key, implode(', ', $this->validGraphTypes)));
         };
         return true;
@@ -108,7 +119,7 @@ abstract class AbstractNode extends \ArrayObject {
      * @throws NodeValidationException
      */
     protected function isValidCf($key) {
-        if (!in_array(strtoupper($this->offsetGet($key)), $this->validCfs)) {
+        if (!$this->getValidator()->hasContains($this->offsetGet($key), $this->validCfs)) {
             throw new NodeValidationException(sprintf("%s, %s argument must be one of these : %s.", $this->getClassName(), $key, implode(', ', $this->validCfs)));
         };
         return true;
@@ -122,7 +133,7 @@ abstract class AbstractNode extends \ArrayObject {
      * @throws NodeValidationException
      */
     protected function isValidInt($key) {
-        if (!is_int($this->offsetGet($key))) {
+        if (!$this->getValidator()->isInt($this->offsetGet($key))) {
             throw new NodeValidationException(sprintf('%s, %s argument is not an integer.', $this->getClassName(), $key));
         }
         return true;
@@ -135,7 +146,7 @@ abstract class AbstractNode extends \ArrayObject {
      * @return bool 
      */
     protected function isValidLimit($key) {
-        if (!is_int($this->offsetGet($key)) AND $this->offsetGet($key) != GraphCommand::TEMPLATE_PARAMETER_AUTO) {
+        if (!$this->getValidator()->isInt($this->offsetGet($key)) AND $this->offsetGet($key) != GraphCommand::TEMPLATE_PARAMETER_AUTO) {
             throw new NodeValidationException(sprintf('%s, %s argument is not valid, it must be an integer or "auto".', $this->getClassName(), $key));
         }
         return true;
@@ -162,8 +173,8 @@ abstract class AbstractNode extends \ArrayObject {
      * @return bool 
      * @throws NodeValidationException
      */
-    protected function isHex($key) {
-        if (preg_match('/[^0-9a-fA-F]/', $this->offsetGet($key))) {
+    protected function isValidColor($key) {
+        if (!$this->getValidator()->isHex($this->offsetGet($key))) {
             throw new NodeValidationException(sprintf("%s, %s parameter must be a HEX value.", $this->getClassName(), $key));
         }
         return true;
