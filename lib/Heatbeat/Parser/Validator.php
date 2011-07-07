@@ -35,33 +35,66 @@ namespace Heatbeat\Parser;
 class Validator {
 
     /**
-     * Returns given parameter is a valid alphanumeric value
+     * Returns parameter is a valid alphanumeric value
      * 
      * @param string $value
      * @return bool 
      */
     public function isAlphanum($value) {
-        return filter_var($value, FILTER_VALIDATE_REGEXP, array('options' => array('regexp' => "/^[a-zA-Z0-9]+$/")));
+        return filter_var(
+                $value, FILTER_VALIDATE_REGEXP, array('options' => array('regexp' => "/^[a-zA-Z0-9]+$/"))
+        );
     }
 
     /**
-     * Returns given parameter is a valid hex value
+     * Returns parameter is a valid hex value
      * 
-     * @param type $value
-     * @return type 
+     * @param mixed $value
+     * @return bool 
      */
     public function isHex($value) {
-        return filter_var($value, FILTER_VALIDATE_REGEXP, array('options' => array('regexp' => "/[^0-9a-fA-F]/")));
+        return filter_var(
+                $value, FILTER_VALIDATE_REGEXP, array('options' => array('regexp' => "/[^0-9a-fA-F]/"))
+        );
     }
 
     /**
-     * Returns given parameter is blank (like Rails blank)
+     * Returns parameter is blank (like Rails blank)
      * 
-     * @param type $value
-     * @return type 
+     * @param mixed $value
+     * @return bool 
      */
     public function isBlank($value) {
         return empty($value) && !is_numeric($value);
+    }
+
+    /**
+     * Returns value is integer and between given range
+     * 
+     * @param int $value
+     * @param int $min
+     * @param int $max
+     * @param int $default
+     * @return bool 
+     */
+    public function isIntInRange($value, $min, $max, $default) {
+        return filter_var(
+                $value, FILTER_VALIDATE_INT, array('options' => array('min_range' => $min, 'max_range' => $max, 'default' => $default))
+        );
+    }
+
+    /**
+     * Returns an array has a specified key.
+     * 
+     * @param mixed $key
+     * @param array $searcharray
+     * @return type 
+     */
+    public function hasArrayKey($key, array $searcharray) {
+        if (!(is_integer($key) || is_string($key))) {
+            return false;
+        }
+        return array_key_exists($key, $searcharray);
     }
 
 }
