@@ -16,41 +16,79 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase {
         $this->object = new Validator;
     }
 
-    public function alphanumProvider() {
+    public function validAlphanumProvider() {
         return array(
-          array('foo'),
-          array('noSoupForYou'),
-          array(12),
-          array('datastore2'),
-          array('IAMVALID')
+            array('foo'),
+            array('noSoupForYou'),
+            array(12),
+            array('datastore2'),
+            array('IAMVALID')
+        );
+    }
+
+    public function inValidAlphanumProvider() {
+        return array(
+            array('meh_'),
+            array('foo bar'),
+            array('baz/'),
+            array('1231*'),
+            array('IAMNOTVALID!!')
         );
     }
 
     /**
-     * @dataProvider alphanumProvider
+     * @dataProvider validAlphanumProvider
      */
     public function testIsAlphanum($param) {
         $this->assertTrue($this->object->isAlphanum($param));
     }
 
     /**
-     * @todo Implement testIsHex().
+     * @dataProvider inValidAlphanumProvider
      */
-    public function testIsHex() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
+    public function testIsAlphanumFail($param) {
+        $this->assertFalse($this->object->isAlphanum($param));
+    }
+
+    public function validHexProvider() {
+        return array(
+            array('FFFF00'),
+            array(000000),
+            array('00AAAA'),
+            array(187263),
+            array('ADDAEE')
+        );
+    }
+
+    public function invalidHexProvider() {
+        return array(
+            array('FFFF0G'),
+            array('GGGGGG'),
+            array('00AHAA'),
+            array('78687V'),
+            array('ADXAEE')
         );
     }
 
     /**
-     * @todo Implement testIsBlank().
+     * @dataProvider validHexProvider
      */
-    public function testIsBlank() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
+    public function testIsHex($param) {
+        $this->assertTrue($this->object->isHex($param));
+    }
+
+    /**
+     * @dataProvider invalidHexProvider
+     */
+    public function testIsHexFail($param) {
+        $this->assertFalse($this->object->isHex($param));
+    }
+
+    public function testIsNotBlank() {
+        $this->assertFalse($this->object->isNotBlank(''));
+        $this->assertFalse($this->object->isNotBlank(NULL));
+        $this->assertTrue($this->object->isNotBlank(0));
+        $this->assertTrue($this->object->isNotBlank('foo'));
     }
 
     public function validIntProvider() {
@@ -79,13 +117,13 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase {
     public function testIsInt($param) {
         $this->assertTrue($this->object->isInt($param));
     }
-    
+
     /**
      * @dataProvider invalidIntProvider
      */
     public function testIsIntFail($param) {
         $this->assertFalse($this->object->isInt($param));
-    }    
+    }
 
     /**
      * @todo Implement testHasArrayKey().
