@@ -125,14 +125,14 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase {
         $this->assertFalse($this->object->isInt($param));
     }
 
-    /**
-     * @todo Implement testHasArrayKey().
-     */
     public function testHasArrayKey() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
+        $this->assertTrue($this->object->hasArrayKey('foo', array('foo' => 'bar')));
+        $this->assertTrue($this->object->hasArrayKey('foo', new \ArrayObject(array('foo' => 'bar'))));
+        $this->assertTrue($this->object->hasArrayKey('foo', new \ArrayIterator(array('foo' => 'bar'))));
+        $this->assertFalse($this->object->hasArrayKey('foo', array('meh' => 'bar')));
+        $this->assertFalse($this->object->hasArrayKey('foo', new \ArrayObject(array('baz' => 'bar'))));
+        $this->assertFalse($this->object->hasArrayKey('foo', new \ArrayIterator(array('foolish' => 'bar'))));
+        $this->assertFalse($this->object->hasArrayKey(array(1), array('foo' => 'bar')));        
     }
 
 }
