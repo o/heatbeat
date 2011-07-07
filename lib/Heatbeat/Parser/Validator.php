@@ -41,7 +41,7 @@ class Validator {
      * @return bool 
      */
     public function isAlphanum($value) {
-        return filter_var(
+        return (bool) filter_var(
                 $value, FILTER_VALIDATE_REGEXP, array('options' => array('regexp' => "/^[a-zA-Z0-9]+$/"))
         );
     }
@@ -69,18 +69,13 @@ class Validator {
     }
 
     /**
-     * Returns value is integer and between given range
+     * Returns parameter is valid int and greater / equal to 0
      * 
      * @param int $value
-     * @param int $min
-     * @param int $max
-     * @param int $default
      * @return bool 
      */
-    public function isIntInRange($value, $min, $max, $default) {
-        return filter_var(
-                $value, FILTER_VALIDATE_INT, array('options' => array('min_range' => $min, 'max_range' => $max, 'default' => $default))
-        );
+    public function isInt($value) {
+        return filter_var($value, FILTER_VALIDATE_INT) === 0 OR !filter_var($value, FILTER_VALIDATE_INT, array('options' => array('min_range' => 0))) === false;
     }
 
     /**
