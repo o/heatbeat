@@ -92,4 +92,17 @@ class Validator {
         return array_key_exists($key, $searcharray);
     }
 
+    /**
+     *
+     * @param mixed $needle
+     * @param array $haystackarray
+     * @return bool 
+     */
+    public function hasContains($needle, $haystackarray) {
+        if ($haystackarray instanceof \Traversable) {
+            $haystackarray = iterator_to_array($haystackarray);
+        }
+        return in_array($needle, $haystackarray, true);
+    }
+
 }
