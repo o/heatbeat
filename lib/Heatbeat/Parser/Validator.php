@@ -53,7 +53,7 @@ class Validator {
      * @return bool 
      */
     public function isHex($value) {
-        return filter_var(
+        return !(bool) filter_var(
                 $value, FILTER_VALIDATE_REGEXP, array('options' => array('regexp' => "/[^0-9a-fA-F]/"))
         );
     }
@@ -64,8 +64,8 @@ class Validator {
      * @param mixed $value
      * @return bool 
      */
-    public function isBlank($value) {
-        return empty($value) && !is_numeric($value);
+    public function isNotBlank($value) {
+        return !(empty($value) AND !is_numeric($value));
     }
 
     /**
