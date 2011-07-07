@@ -7,52 +7,56 @@ namespace Heatbeat\Parser\Template\Node;
  */
 class CDefNodeTest extends \PHPUnit_Framework_TestCase {
 
-    private $validationData;
-
-    protected function setUp() {
-        $this->validationData = array(
-            'name' => 'result',
-            'rpn' => '1,0,value,IF',
-        );
+    /**
+     * @dataProvider validDataProvider
+     */
+    public function testGetAsString($array, $result) {
+        $object = new CDefNode($array);
+        $this->assertArrayHasKey('name', $array);
+        $this->assertArrayHasKey('rpn', $array);
+        $this->assertEquals($result, $object->getAsString());
     }
 
     /**
-     * @dataProvider cdefDataProvider
+     * @dataProvider validDataProvider
      */
-    public function testGetAsString($name, $rpn, $result) {
-        $object = new CDefNode(array(
-                    'name' => $name,
-                    'rpn' => $rpn
-                ));
-        $this->assertEquals($result, $object->getAsString());
+    public function testValidate($array) {
+        $object = new CDefNode($array);
+        $this->assertInternalType('array', $array);
+        $this->assertArrayHasKey('name', $array);
+        $this->assertArrayHasKey('rpn', $array);
         $this->assertTrue($object->validate());
     }
+    
+    /**
+     * @expectedException Heatbeat\Exception\NodeValidationException
+     * @dataProvider nonValidDataProvider
+     */
+    public function testFailValidate($array) {
+        $object = new CDefNode($array);
+        $this->assertInternalType('array', $array);
+        $object->validate();        
+    }
 
-    public function cdefDataProvider() {
+    public function validDataProvider() {
         return array(
-            array('inbits', 'inbytes,8,*', 'CDEF:inbits=inbytes,8,*'),
-            array('test', 'number,100000,GT,UNKN,number,IF', 'CDEF:test=number,100000,GT,UNKN,number,IF')
+            array(array('name' => 'result', 'rpn' => '1,0,value,IF'), 'CDEF:result=1,0,value,IF'),
+            array(array('name' => 'inbits', 'rpn' => 'inbytes,8,*'), 'CDEF:inbits=inbytes,8,*'),
+            array(array('name' => 'test', 'rpn' => 'number,100000,GT,UNKN,number,IF'), 'CDEF:test=number,100000,GT,UNKN,number,IF'),
+            array(array('name' => 'eq', 'rpn' => 'TIME,1202924474,GT,a,a,UN,0,a,IF,IF,TIME,1202924474,GT,c,c,UN,0,c,IF,IF,+'), 'CDEF:eq=TIME,1202924474,GT,a,a,UN,0,a,IF,IF,TIME,1202924474,GT,c,c,UN,0,c,IF,IF,+'),
+            array(array('name' => 'foo', 'rpn' => 'a,0,*'), 'CDEF:foo=a,0,*')
         );
     }
-
-    /**
-     * @expectedException Heatbeat\Exception\NodeValidationException
-     */
-    public function testNameNotExists() {
-        $array = $this->validationData;
-        unset($array['name']);
-        $object = new CDefNode($array);
-        $object->validate();
-    }
-
-    /**
-     * @expectedException Heatbeat\Exception\NodeValidationException
-     */
-    public function testRpnNotExists() {
-        $array = $this->validationData;
-        unset($array['rpn']);
-        $object = new CDefNode($array);
-        $object->validate();
+    
+    public function nonValidDataProvider() {
+        return array(
+            #array(array('name' => '', 'rpn' => '')),
+            #array(array('name' => '', 'rpn' => '1,0,value,IF')),
+            #array(array('name' => 'inbits', 'rpn' => '')),
+            array(array('foo' => 'test', 'rpn' => 'number,100000,GT,UNKN,number,IF')),
+            array(array('name' => 'foo', 'baz' => 'a,0,*')),
+            array(array())
+        );        
     }
 
 }
