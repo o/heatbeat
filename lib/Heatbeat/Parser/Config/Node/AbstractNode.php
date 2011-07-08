@@ -36,15 +36,26 @@ use Heatbeat\Exception\NodeValidationException;
  */
 abstract class AbstractNode extends \ArrayObject {
 
+    private $validator;
+
+    public function __construct($input) {
+        parent::__construct($input);
+        $this->validator = new \Heatbeat\Parser\Validator();
+    }
+
+    public function getValidator() {
+        return $this->validator;
+    }
+
     /**
      * Checks is given parameter was defined
-     * 
+     *
      * @param string $key
-     * @return bool 
+     * @return bool
      * @throws NodeValidationException
      */
     protected function isDefined($key) {
-        if (!$this->offsetExists($key)) {
+        if (!($this->offsetExists($key) AND $this->getValidator()->isNotBlank($this->offsetGet($key)))) {
             throw new NodeValidationException(sprintf('%s, %s argument is not defined.', $this->getClassName(), $key));
         }
         return true;
