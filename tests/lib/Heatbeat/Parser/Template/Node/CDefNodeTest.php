@@ -15,7 +15,7 @@ class CDefNodeTest extends \PHPUnit_Framework_TestCase {
         $this->assertArrayHasKey('name', $array);
         $this->assertArrayHasKey('rpn', $array);
         $this->assertEquals($result, $object->getAsString());
-        $this->assertInternalType('string', $object->getAsString());        
+        $this->assertInternalType('string', $object->getAsString());
     }
 
     /**
@@ -28,7 +28,7 @@ class CDefNodeTest extends \PHPUnit_Framework_TestCase {
         $this->assertArrayHasKey('rpn', $array);
         $this->assertTrue($object->validate());
     }
-    
+
     /**
      * @expectedException Heatbeat\Exception\NodeValidationException
      * @dataProvider nonValidDataProvider
@@ -36,7 +36,7 @@ class CDefNodeTest extends \PHPUnit_Framework_TestCase {
     public function testFailValidate($array) {
         $object = new CDefNode($array);
         $this->assertInternalType('array', $array);
-        $object->validate();        
+        $object->validate();
     }
 
     public function validDataProvider() {
@@ -48,7 +48,7 @@ class CDefNodeTest extends \PHPUnit_Framework_TestCase {
             array(array('name' => 'foo', 'rpn' => 'a,0,*'), 'CDEF:foo=a,0,*')
         );
     }
-    
+
     public function nonValidDataProvider() {
         return array(
             array(array('name' => '', 'rpn' => '')),
@@ -56,7 +56,8 @@ class CDefNodeTest extends \PHPUnit_Framework_TestCase {
             array(array('name' => 'inbits', 'rpn' => '')),
             array(array('foo' => 'test', 'rpn' => 'number,100000,GT,UNKN,number,IF')),
             array(array('name' => 'foo;', 'baz' => 'a,0,*')),
-        );        
+            array(array('name' => 'fools'))
+        );
     }
 
 }

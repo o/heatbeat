@@ -7,86 +7,64 @@ namespace Heatbeat\Parser\Template\Node;
  */
 class DefNodeTest extends \PHPUnit_Framework_TestCase {
 
-    private $validationData;
-
-    protected function setUp() {
-        $this->validationData = array(
-            'name' => 'test',
-            'filename' => 'baz.rrd',
-            'datastore-name' => 'ds0',
-            'cf' => 'AVERAGE'
-        );
+    /**
+     * @dataProvider validDataProvider
+     */
+    public function testGetAsString($array, $result) {
+        $object = new DefNode($array);
+        $this->assertArrayHasKey('name', $array);
+        $this->assertArrayHasKey('filename', $array);
+        $this->assertArrayHasKey('datastore-name', $array);
+        $this->assertArrayHasKey('cf', $array);
+        $this->assertEquals($result, $object->getAsString());
+        $this->assertInternalType('string', $object->getAsString());
     }
 
     /**
-     * @dataProvider defDataProvider
+     * @dataProvider validDataProvider
      */
-    public function testGetAsString($name, $filename, $datastorename, $cf, $result) {
-        $object = new DefNode(array(
-                    'name' => $name,
-                    'filename' => $filename,
-                    'datastore-name' => $datastorename,
-                    'cf' => $cf
-                ));
-        $this->assertEquals($result, $object->getAsString());
+    public function testValidate($array) {
+        $object = new DefNode($array);
+        $this->assertInternalType('array', $array);
+        $this->assertArrayHasKey('name', $array);
+        $this->assertArrayHasKey('filename', $array);
+        $this->assertArrayHasKey('datastore-name', $array);
+        $this->assertArrayHasKey('cf', $array);
         $this->assertTrue($object->validate());
     }
 
-    public function defDataProvider() {
+    /**
+     * @expectedException Heatbeat\Exception\NodeValidationException
+     * @dataProvider nonValidDataProvider
+     */
+    public function testFailValidate($array) {
+        $object = new DefNode($array);
+        $this->assertInternalType('array', $array);
+        $object->validate();
+    }
+
+    public function validDataProvider() {
         return array(
-            array('ds0a', 'test.rrd', 'ds0', 'AVERAGE', 'DEF:ds0a=test.rrd:ds0:AVERAGE'),
-            array('fooDS', 'baz.rrd', 'barDS', 'LAST', 'DEF:fooDS=baz.rrd:barDS:LAST'),
+            array(array('name' => 'test', 'filename' => 'baz.rrd', 'datastore-name' => 'ds1', 'cf' => 'AVERAGE'), 'DEF:test=baz.rrd:ds1:AVERAGE'),
+            array(array('name' => 'def1', 'filename' => 'users.rrd', 'datastore-name' => 'def2', 'cf' => 'MAX'), 'DEF:def1=users.rrd:def2:MAX'),
+            array(array('name' => 'tree', 'filename' => 'usage.rrd', 'datastore-name' => 'tree', 'cf' => 'MIN'), 'DEF:tree=usage.rrd:tree:MIN'),
+            array(array('name' => 'baz', 'filename' => 'files.rrd', 'datastore-name' => 'bar', 'cf' => 'LAST'), 'DEF:baz=files.rrd:bar:LAST'),
+            array(array('name' => 'averages', 'filename' => 'git.rrd', 'datastore-name' => 'averages', 'cf' => 'AVERAGE'), 'DEF:averages=git.rrd:averages:AVERAGE')
         );
     }
 
-    /**
-     * @expectedException Heatbeat\Exception\NodeValidationException
-     */
-    public function testNameNotExists() {
-        $array = $this->validationData;
-        unset($array['name']);
-        $object = new DefNode($array);
-        $object->validate();
-    }
-
-    /**
-     * @expectedException Heatbeat\Exception\NodeValidationException
-     */
-    public function testFilenameNotExists() {
-        $array = $this->validationData;
-        unset($array['filename']);
-        $object = new DefNode($array);
-        $object->validate();
-    }
-
-    /**
-     * @expectedException Heatbeat\Exception\NodeValidationException
-     */
-    public function testDatastoreNotExists() {
-        $array = $this->validationData;
-        unset($array['datastore-name']);
-        $object = new DefNode($array);
-        $object->validate();
-    }
-
-    /**
-     * @expectedException Heatbeat\Exception\NodeValidationException
-     */
-    public function testCfNotExists() {
-        $array = $this->validationData;
-        unset($array['cf']);
-        $object = new DefNode($array);
-        $object->validate();
-    }
-
-    /**
-     * @expectedException Heatbeat\Exception\NodeValidationException
-     */
-    public function testInvalidCf() {
-        $array = $this->validationData;
-        $array['cf'] = 'FOO';
-        $object = new DefNode($array);
-        $object->validate();
+    public function nonValidDataProvider() {
+        return array(
+            array(array('name' => 'test', 'filename' => 'baz.rrd', 'datastore-name' => 'ds1', 'cf' => 'AVERAGES')),
+            array(array('name' => 'def1', 'filename' => 'users.rrd', 'datastore-name' => 'ds2', 'cf' => 'MORE')),
+            array(array('name' => 'tree', 'filename' => 'usage.rrd', 'datastore-name' => 'tree', 'cf' => 'TIME')),
+            array(array('name' => 'baz', 'filename' => 'files.rrd', 'datastore-name' => 'bar', 'cf' => 'BAZ')),
+            array(array('name' => 'averages', 'filename' => '', 'datastore-name' => 'averages', 'cf' => 'AVERAGE')),
+            array(array('name' => 'test!', 'filename' => 'baz.rrd', 'datastore-name' => 'ds54', 'cf' => 'AVERAGE')),
+            array(array('name' => 'averages', 'filename' => 'git.rrd', 'datastore-name' => '', 'cf' => 'AVERAGE')),
+            array(array('' => 'averages', 'filename' => 'total.rrd', 'datastore-name' => 'ds12', 'cf' => 'AVERAGE')),
+            array(array('asd' => 'averages', 'filename' => 'disk.rrd', 'cf' => 'AVERAGE'))
+        );
     }
 
 }
