@@ -20,7 +20,9 @@ class AbstractParserTest extends \PHPUnit_Framework_TestCase {
         return array(
             array('file.rrd'),
             array('user.rrd'),
-            array('foo.rrd')
+            array('foo.rrd'),
+            array('bar.rrd'),
+            array('baz.rrd')
         );
     }
 
@@ -33,6 +35,7 @@ class AbstractParserTest extends \PHPUnit_Framework_TestCase {
         $this->assertAttributeEmpty('filename', $this->object);
         $this->object->setFilename($filename);
         $this->assertAttributeNotEmpty('filename', $this->object);
+        $this->assertAttributeEquals($filename, 'filename', $this->object);
         $this->assertEquals($filename, $this->object->getFilename());
     }
 
@@ -40,7 +43,9 @@ class AbstractParserTest extends \PHPUnit_Framework_TestCase {
         return array(
             array('/'),
             array('/home'),
-            array('/home/osman')
+            array('/home/osman'),
+            array('/home/osman/devel'),
+            array('/home/osman/devel/heatbeat')
         );
     }
 
@@ -53,6 +58,7 @@ class AbstractParserTest extends \PHPUnit_Framework_TestCase {
         $this->assertAttributeEmpty('filepath', $this->object);
         $this->object->setFilepath($filepath);
         $this->assertAttributeNotEmpty('filepath', $this->object);
+        $this->assertAttributeEquals($filepath, 'filepath', $this->object);        
         $this->assertEquals($filepath, $this->object->getFilepath());
     }
 
@@ -72,14 +78,15 @@ class AbstractParserTest extends \PHPUnit_Framework_TestCase {
         $this->assertClassHasAttribute('values', 'Heatbeat\Parser\AbstractParser');
         $this->assertAttributeEmpty('values', $this->object);
         $this->object->setValues($values);
-        $this->assertInstanceOf('\\ArrayIterator', $this->object->getValues());
     }
 
     public function valueDataProvider() {
         return array(
             array(array(1, 2, 3)),
             array(array('foo' => 'bar')),
-            array(array('osman', 'baz', 'thing'))
+            array(array('osman', 'baz', 'thing')),
+            array(array('values' => array('this', 'boots'))),
+            array(array(true))
         );
     }
 
@@ -92,6 +99,7 @@ class AbstractParserTest extends \PHPUnit_Framework_TestCase {
         $this->assertAttributeEmpty('values', $this->object);
         $this->object->setValues($values);
         $this->assertAttributeNotEmpty('values', $this->object);
+        $this->assertAttributeEquals(new \ArrayIterator($values), 'values', $this->object);                
         $this->assertEquals(new \ArrayIterator($values), $this->object->getValues());
         $this->assertInstanceOf('\\ArrayIterator', $this->object->getValues());
     }
@@ -100,7 +108,9 @@ class AbstractParserTest extends \PHPUnit_Framework_TestCase {
         return array(
             array('', 'foo', '/foo.yml'),
             array('/Users/osman', 'test', '/Users/osman/test.yml'),
-            array('path/to', 'file', 'path/to/file.yml')
+            array('path/to', 'file', 'path/to/file.yml'),
+            array('/Library', 'bar', '/Library/bar.yml'),
+            array('/root', 'config', '/root/config.yml')
         );
     }
 
