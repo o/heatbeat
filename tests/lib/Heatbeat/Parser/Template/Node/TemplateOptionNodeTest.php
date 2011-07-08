@@ -7,60 +7,47 @@ namespace Heatbeat\Parser\Template\Node;
  */
 class TemplateOptionNodeTest extends \PHPUnit_Framework_TestCase {
 
-    private $validationData;
-
-    protected function setUp() {
-        $this->validationData = array(
-            'name' => 'test',
-            'version' => '1.0',
-            'source-name' => 'Foo_Random'
-        );
-    }
-
-    public function testValidate() {
-        $array = $this->validationData;
+    /**
+     * @dataProvider validDataProvider
+     */
+    public function testValidate($array) {
         $object = new TemplateOptionNode($array);
+        $this->assertInternalType('array', $array);
+        $this->assertArrayHasKey('name', $array);
+        $this->assertArrayHasKey('version', $array);
+        $this->assertArrayHasKey('source-name', $array);
         $this->assertTrue($object->validate());
     }
 
     /**
      * @expectedException Heatbeat\Exception\NodeValidationException
+     * @dataProvider nonValidDataProvider
      */
-    public function testNameNotExists() {
-        $array = $this->validationData;
-        unset($array['name']);
+    public function testFailValidate($array) {
         $object = new TemplateOptionNode($array);
+        $this->assertInternalType('array', $array);
         $object->validate();
     }
 
-    /**
-     * @expectedException Heatbeat\Exception\NodeValidationException
-     */
-    public function testVersionNotExists() {
-        $array = $this->validationData;
-        unset($array['version']);
-        $object = new TemplateOptionNode($array);
-        $object->validate();
+    public function validDataProvider() {
+        return array(
+            array(array('name' => 'Loads', 'version' => 0.1, 'source-name' => 'Foo_Random')),
+            array(array('name' => 'Randoms', 'version' => 1, 'source-name' => 'System_Load')),
+            array(array('name' => 'Foo', 'version' => 2, 'source-name' => 'Foo_Random')),
+            array(array('name' => 'Baz data', 'version' => 0.2, 'source-name' => 'Foo_Random')),
+            array(array('name' => 'No name', 'version' => 0.5, 'source-name' => 'Foo_Random'))
+        );
     }
 
-    /**
-     * @expectedException Heatbeat\Exception\NodeValidationException
-     */
-    public function testSourceNotExists() {
-        $array = $this->validationData;
-        unset($array['source-name']);
-        $object = new TemplateOptionNode($array);
-        $object->validate();
-    }
-
-    /**
-     * @expectedException Heatbeat\Exception\NodeValidationException
-     */
-    public function testValidSource() {
-        $array = $this->validationData;
-        $array['source-name'] = 'Foo_Bar';
-        $object = new TemplateOptionNode($array);
-        $object->validate();
+    public function nonValidDataProvider() {
+        return array(
+            array(array('name' => '', 'version' => 0.1, 'source-name' => 'Foo_Random')),
+            array(array('name' => 'Randoms', 'version' => '', 'source-name' => 'System_Load')),
+            array(array('name' => 'Foo', 'version' => 2, 'source-name' => '')),
+            array(array('names' => 'Baz data', 'version' => 0.2, 'source-name' => 'Foo_Randoms')),
+            array(array('name' => 'No name', 'versions' => 0.5, 'source-name' => 'Foo_Random')),
+            array(array('name' => 'No name', 'version' => 0.5, 'sourcename' => 'Foo_Random'))
+        );
     }
 
 }
