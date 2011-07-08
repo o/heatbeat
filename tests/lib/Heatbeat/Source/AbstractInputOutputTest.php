@@ -16,7 +16,7 @@ class AbstractInputOutputTest extends \PHPUnit_Framework_TestCase {
         $this->object = $this->getMockForAbstractClass('Heatbeat\Source\AbstractInputOutput');
     }
 
-    public function testInitObject() {
+    public function assertPreConditions() {
         $this->assertEmpty(iterator_to_array($this->object));
     }
 
@@ -33,7 +33,9 @@ class AbstractInputOutputTest extends \PHPUnit_Framework_TestCase {
         return array(
             array('foo', 'bar'),
             array(1, 2),
-            array('go', 'to')
+            array('go', 'to'),
+            array('speed', true),
+            array('moo', 'foo')
         );
     }
 
