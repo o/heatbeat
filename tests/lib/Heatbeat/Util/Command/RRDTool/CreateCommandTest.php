@@ -16,15 +16,15 @@ class CreateCommandTest extends \PHPUnit_Framework_TestCase {
         $this->object = new CreateCommand;
     }
 
-    public function testInit() {
-        $this->assertEquals('create', $this->object->getSubCommand());
-        $this->assertEquals('rrdtool', $this->object->getCommand());
-        $this->assertEmpty($this->object->getArguments());
-        $this->assertNotNull($this->object->getOptions());
+    public function assertPreConditions() {
+        $this->assertAttributeEquals('rrdtool', 'command', $this->object);
+        $this->assertAttributeEquals('create', 'subCommand', $this->object);
+        $this->assertAttributeEmpty('arguments', $this->object);
+        $this->assertAttributeNotEmpty('options', $this->object);
         $this->assertArrayHasKey('no-overwrite', $this->object->getOptions());
         $this->assertArrayHasKey('start', $this->object->getOptions());
-        $this->assertContains(
-                array(array('no-overwrite' => true)), $this->object->getOptions()
+        $this->assertAttributeContains(
+                array(array('no-overwrite' => true)), 'options', $this->object
         );
     }
 
@@ -33,7 +33,8 @@ class CreateCommandTest extends \PHPUnit_Framework_TestCase {
             array(300),
             array(600),
             array(1800),
-            array(60)
+            array(60),
+            array(100)
         );
     }
 
@@ -43,8 +44,8 @@ class CreateCommandTest extends \PHPUnit_Framework_TestCase {
     public function testSetStep($step) {
         $this->assertArrayNotHasKey('step', $this->object->getOptions());
         $this->object->setStep($step);
-        $this->assertContains(
-                array('step' => $step), $this->object->getOptions()
+        $this->assertAttributeContains(
+                array('step' => $step), 'options', $this->object
         );
     }
 
@@ -94,6 +95,17 @@ class CreateCommandTest extends \PHPUnit_Framework_TestCase {
                 )),
                 'DS:this:ABSOLUTE:60:100:200'
             ),
+            array(
+                array(new \Heatbeat\Parser\Template\Node\DatastoreNode(array(
+                        'name' => 'temps',
+                        'type' => 'GAUGE',
+                        'heartbeat' => 600,
+                        'min' => 0,
+                        'max' => 273
+                            )
+                )),
+                'DS:temps:GAUGE:600:0:273'
+            )
         );
     }
 
@@ -102,8 +114,8 @@ class CreateCommandTest extends \PHPUnit_Framework_TestCase {
      */
     public function testSetDatastores($datastores, $result) {
         $this->object->setDatastores($datastores);
-        $this->assertContains(
-                $result, $this->object->getArguments()
+        $this->assertAttributeContains(
+                $result, 'arguments', $this->object
         );
     }
 
@@ -148,6 +160,16 @@ class CreateCommandTest extends \PHPUnit_Framework_TestCase {
                             )
                 )),
                 'RRA:AVERAGE:0.1:8:300'
+            ),
+            array(
+                array(new \Heatbeat\Parser\Template\Node\RRANode(array(
+                        'cf' => 'LAST',
+                        'xff' => 1,
+                        'steps' => 1,
+                        'rows' => 300
+                            )
+                )),
+                'RRA:LAST:1:1:300'
             )
         );
     }
@@ -157,8 +179,8 @@ class CreateCommandTest extends \PHPUnit_Framework_TestCase {
      */
     public function testSetRras($rras, $result) {
         $this->object->setRras($rras);
-        $this->assertContains(
-                $result, $this->object->getArguments()
+        $this->assertAttributeContains(
+                $result, 'arguments', $this->object
         );
     }
 

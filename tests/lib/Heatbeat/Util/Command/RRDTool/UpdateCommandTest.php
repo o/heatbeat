@@ -16,11 +16,11 @@ class UpdateCommandTest extends \PHPUnit_Framework_TestCase {
         $this->object = new UpdateCommand;
     }
 
-    public function testInit() {
-        $this->assertEquals('updatev', $this->object->getSubCommand());
-        $this->assertEquals('rrdtool', $this->object->getCommand());
-        $this->assertEmpty($this->object->getArguments());
-        $this->assertEmpty($this->object->getOptions());
+    public function assertPreConditions() {
+        $this->assertAttributeEquals('rrdtool', 'command', $this->object);
+        $this->assertAttributeEquals('updatev', 'subCommand', $this->object);
+        $this->assertAttributeEmpty('arguments', $this->object);
+        $this->assertAttributeEmpty('options', $this->object);
     }
 
     /**
@@ -30,11 +30,11 @@ class UpdateCommandTest extends \PHPUnit_Framework_TestCase {
         $this->object->setValues(
                 $source
         );
-        $this->assertEquals(
-                $resultopts, $this->object->getOptions()
+        $this->assertAttributeEquals(
+                $resultopts, 'options', $this->object
         );
-        $this->assertEquals(
-                $resultargs, $this->object->getArguments()
+        $this->assertAttributeEquals(
+                $resultargs, 'arguments', $this->object
         );
     }
 
