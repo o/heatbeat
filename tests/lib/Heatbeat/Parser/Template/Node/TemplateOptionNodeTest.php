@@ -44,9 +44,10 @@ class TemplateOptionNodeTest extends \PHPUnit_Framework_TestCase {
             array(array('name' => '', 'version' => 0.1, 'source-name' => 'Foo_Random')),
             array(array('name' => 'Randoms', 'version' => '', 'source-name' => 'System_Load')),
             array(array('name' => 'Foo', 'version' => 2, 'source-name' => '')),
-            array(array('names' => 'Baz data', 'version' => 0.2, 'source-name' => 'Foo_Randoms')),
+            array(array('names' => 'Baz data', 'version' => 0.2, 'source-name' => 'Foo_Random')),
             array(array('name' => 'No name', 'versions' => 0.5, 'source-name' => 'Foo_Random')),
-            array(array('name' => 'No name', 'version' => 0.5, 'sourcename' => 'Foo_Random'))
+            array(array('name' => 'No name', 'version' => 0.5, 'sourcename' => 'Foo_Random')),
+            array(array('name' => 'Randoms', 'version' => 1, 'source-name' => 'System_Loads'))
         );
     }
 
