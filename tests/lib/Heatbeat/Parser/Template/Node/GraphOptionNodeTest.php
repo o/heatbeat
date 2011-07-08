@@ -7,102 +7,48 @@ namespace Heatbeat\Parser\Template\Node;
  */
 class GraphOptionNodeTest extends \PHPUnit_Framework_TestCase {
 
-    private $validationData;
-
-    protected function setUp() {
-        $this->validationData = array(
-            'name' => 'test',
-            'label' => 'Test',
-            'base' => 1000,
-            'lower' => 10,
-            'upper' => 50
-        );
-    }
-
-    public function testValidate() {
-        $array = $this->validationData;
+    /**
+     * @dataProvider validDataProvider
+     */
+    public function testValidate($array) {
         $object = new GraphOptionNode($array);
+        $this->assertInternalType('array', $array);
+        $this->assertArrayHasKey('name', $array);
+        $this->assertArrayHasKey('label', $array);
+        $this->assertArrayHasKey('base', $array);
+        $this->assertArrayHasKey('upper', $array);
+        $this->assertArrayHasKey('lower', $array);
         $this->assertTrue($object->validate());
     }
 
     /**
      * @expectedException Heatbeat\Exception\NodeValidationException
+     * @dataProvider nonValidDataProvider
      */
-    public function testNameNotExists() {
-        $array = $this->validationData;
-        unset($array['name']);
+    public function testFailValidate($array) {
         $object = new GraphOptionNode($array);
+        $this->assertInternalType('array', $array);
         $object->validate();
     }
 
-    /**
-     * @expectedException Heatbeat\Exception\NodeValidationException
-     */
-    public function testLabelNotExists() {
-        $array = $this->validationData;
-        unset($array['label']);
-        $object = new GraphOptionNode($array);
-        $object->validate();
+    public function validDataProvider() {
+        return array(
+            array(array('name' => 'Loads', 'label' => 'Test', 'base' => 1000, 'lower' => 100, 'upper' => 'auto')),
+            array(array('name' => 'Disk Usage', 'label' => 'Second Test', 'base' => 1024, 'lower' => 100, 'upper' => 350)),
+            array(array('name' => 'Total of X', 'label' => 'Labelz', 'base' => 1000, 'lower' => 'auto', 'upper' => 250)),
+            array(array('name' => 'Received Y', 'label' => 'Vertical', 'base' => 1024, 'lower' => 0, 'upper' => 150)),
+            array(array('name' => 'Tons of foos', 'label' => 'Foo values of foo', 'base' => 950, 'lower' => 0, 'upper' => 650)),
+        );
     }
 
-    /**
-     * @expectedException Heatbeat\Exception\NodeValidationException
-     */
-    public function testBaseNotExists() {
-        $array = $this->validationData;
-        unset($array['base']);
-        $object = new GraphOptionNode($array);
-        $object->validate();
-    }
-
-    /**
-     * @expectedException Heatbeat\Exception\NodeValidationException
-     */
-    public function testLowerNotExists() {
-        $array = $this->validationData;
-        unset($array['lower']);
-        $object = new GraphOptionNode($array);
-        $object->validate();
-    }
-
-    /**
-     * @expectedException Heatbeat\Exception\NodeValidationException
-     */
-    public function testUpperNotExists() {
-        $array = $this->validationData;
-        unset($array['upper']);
-        $object = new GraphOptionNode($array);
-        $object->validate();
-    }
-
-    /**
-     * @expectedException Heatbeat\Exception\NodeValidationException
-     */
-    public function testInvalidBase() {
-        $array = $this->validationData;
-        $array['base'] = 'foo';
-        $object = new GraphOptionNode($array);
-        $object->validate();
-    }
-
-    /**
-     * @expectedException Heatbeat\Exception\NodeValidationException
-     */
-    public function testInvalidLower() {
-        $array = $this->validationData;
-        $array['lower'] = 'bar';
-        $object = new GraphOptionNode($array);
-        $object->validate();
-    }
-
-    /**
-     * @expectedException Heatbeat\Exception\NodeValidationException
-     */
-    public function testInvalidUpper() {
-        $array = $this->validationData;
-        $array['upper'] = 'baz';
-        $object = new GraphOptionNode($array);
-        $object->validate();
+    public function nonValidDataProvider() {
+        return array(
+            array(array('names' => 'Loads', 'label' => 'Test', 'base' => 1000, 'lower' => 100, 'upper' => 1000)),
+            array(array('name' => 'Loads', 'label' => '', 'base' => 1000, 'lower' => 100, 'upper' => 273)),
+            array(array('name' => 'Loads', 'label' => 'Test', 'base' => 'auto', 'lower' => 100, 'upper' => 'auto')),
+            array(array('name' => '', 'label' => 'Test', 'base' => 1000, 'lower' => 100, 'upper' => 'auto')),
+            array(array('name' => '', 'label' => 'Test', 'base' => 1000, 'lower' => 100, 'upper' => -5)),
+        );
     }
 
 }
