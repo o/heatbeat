@@ -45,6 +45,7 @@ class GPrintNode extends AbstractNode implements NodeInterface {
 
     public function validate() {
         $this->isDefined('definition-name');
+        $this->isValidName('definition-name');
         $this->isDefined('format');
         return true;
     }
