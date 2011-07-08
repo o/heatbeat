@@ -32,7 +32,7 @@ class CommandExecutorTest extends \PHPUnit_Framework_TestCase {
         $object1->setOption('foo', 'bar');
         $object2 = $this->getMockForAbstractClass('Heatbeat\Util\AbstractCommand');
         $object2->setCommand('svn');
-        $object2->setSubCommand('log');        
+        $object2->setSubCommand('log');
         $object2->addArgument('path/to/file');
         $object2->setOption('meh', false);
         $object3 = $this->getMockForAbstractClass('Heatbeat\Util\AbstractCommand');
@@ -57,14 +57,39 @@ class CommandExecutorTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($result, $object->getCommandString());
     }
 
-    public function testExecute() {
+    public function validCommandProvider() {
+        return array(
+            array('ls -al'),
+            array('df'),
+            array('uptime'),
+            array('hostname'),
+            array('rrdtool -v')
+        );
+    }
+
+    /**
+     *
+     * @dataProvider validCommandProvider
+     */
+    public function testExecute($command) {
         $object = new CommandExecutor();
-        $object->setCommandString('ls -al');
+        $object->setCommandString($command);
         $result = $object->execute();
         $this->assertTrue($result->isSuccessful());
     }
 
+    public function invalidCommandProvider() {
+        return array(
+            array('foo -h'),
+            array('bar help'),
+            array('baz --version'),
+            array('moar file'),
+            array('hai')
+        );
+    }
+
     /**
+     * @dataProvider invalidCommandProvider
      * @expectedException Heatbeat\Exception\ExecutionException
      */
     public function testFailExecute() {
