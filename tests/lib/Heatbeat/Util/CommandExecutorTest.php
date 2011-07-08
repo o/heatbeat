@@ -10,7 +10,11 @@ class CommandExecutorTest extends \PHPUnit_Framework_TestCase {
     public function testSetGetCommandObject() {
         $commandObject = $this->getMockForAbstractClass('Heatbeat\Util\AbstractCommand');
         $object = new CommandExecutor();
+        $this->assertObjectHasAttribute('commandObject', $object);
+        $this->assertAttributeEmpty('commandObject', $object);
         $object->setCommandObject($commandObject);
+        $this->assertAttributeNotEmpty('commandObject', $object);        
+        $this->assertAttributeEquals($commandObject, 'commandObject', $object);
         $this->assertEquals(
                 $commandObject, $object->getCommandObject()
         );
@@ -19,7 +23,11 @@ class CommandExecutorTest extends \PHPUnit_Framework_TestCase {
     public function testSetGetCommandString() {
         $commandString = 'ls -al';
         $object = new CommandExecutor();
+        $this->assertObjectHasAttribute('commandString', $object);        
+        $this->assertAttributeEmpty('commandString', $object);
         $object->setCommandString($commandString);
+        $this->assertAttributeNotEmpty('commandString', $object);        
+        $this->assertAttributeEquals($commandString, 'commandString', $object);
         $this->assertEquals(
                 $commandString, $object->getCommandString()
         );
@@ -61,7 +69,7 @@ class CommandExecutorTest extends \PHPUnit_Framework_TestCase {
         return array(
             array('ls -al'),
             array('df'),
-            array('uptime'),
+            array('cd /'),
             array('hostname'),
             array('rrdtool -v')
         );
@@ -92,9 +100,9 @@ class CommandExecutorTest extends \PHPUnit_Framework_TestCase {
      * @dataProvider invalidCommandProvider
      * @expectedException Heatbeat\Exception\ExecutionException
      */
-    public function testFailExecute() {
+    public function testExecuteFail($command) {
         $object = new CommandExecutor();
-        $object->setCommandString('foo --bar');
+        $object->setCommandString($command);
         $object->execute();
     }
 
