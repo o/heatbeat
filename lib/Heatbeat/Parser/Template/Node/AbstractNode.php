@@ -82,12 +82,12 @@ abstract class AbstractNode extends \ArrayObject {
         }
         return true;
     }
-    
+
     /**
      * Checks is given parameter is alphanumeric
-     * 
+     *
      * @param string $key
-     * @return bool 
+     * @return bool
      * @throws NodeValidationException
      */
     protected function isValidName($key) {
@@ -95,7 +95,7 @@ abstract class AbstractNode extends \ArrayObject {
             throw new NodeValidationException(sprintf('%s, %s argument is not valid alphanumeric name.', $this->getClassName(), $key));
         }
         return true;
-    }    
+    }
 
     /**
      * Checks given parameter is a valid DS type
@@ -174,7 +174,7 @@ abstract class AbstractNode extends \ArrayObject {
      * @throws NodeValidationException
      */
     protected function isValidXff($key) {
-        if ((($this->offsetGet($key)) < 0) OR (($this->offsetGet($key)) > 1)) {
+        if ((($this->offsetGet($key)) < 0) OR (($this->offsetGet($key)) > 1) OR !is_numeric($this->offsetGet($key))) {
             throw new NodeValidationException(sprintf("%s, %s parameter must be between of 0 and 1.", $this->getClassName(), $key));
         }
         return true;
