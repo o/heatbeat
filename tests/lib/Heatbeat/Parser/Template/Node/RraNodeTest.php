@@ -65,7 +65,8 @@ class RraNodeTest extends \PHPUnit_Framework_TestCase {
             array(array('cf' => 'AVERAGE', 'xff' => 0.5, 'steps' => '', 'rows' => 100)),
             array(array('cf' => 'LAST', 'xff' => 1, 'steps' => 1, 'rows' => '')),
             array(array('cf' => 'MINS', 'xff' => 0.1, 'steps' => 12, 'rows' => 564)),
-            array(array('cf' => 'MAX', 'xff' => 'goo', 'steps' => 6, 'rows' => 456)),
+            array(array('cf' => 'MAX', 'xff' => 5, 'steps' => 6, 'rows' => 456)),
+            array(array('cf' => 'MAX', 'xff' => 'foo', 'steps' => 6, 'rows' => 456)),
             array(array('cf' => 'AVERAGE', 'xff' => 0.8, 'steps' => 'tr', 'rows' => 68)),
             array(array('cf' => 'AVERAGE', 'xff' => 0.5, 'steps' => 30, 'rows' => 'baz'))
         );
