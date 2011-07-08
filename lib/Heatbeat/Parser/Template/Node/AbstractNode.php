@@ -82,6 +82,20 @@ abstract class AbstractNode extends \ArrayObject {
         }
         return true;
     }
+    
+    /**
+     * Checks is given parameter is alphanumeric
+     * 
+     * @param string $key
+     * @return bool 
+     * @throws NodeValidationException
+     */
+    protected function isValidName($key) {
+        if (!$this->getValidator()->isAlphanum($this->offsetGet($key))) {
+            throw new NodeValidationException(sprintf('%s, %s argument is not valid alphanumeric name.', $this->getClassName(), $key));
+        }
+        return true;
+    }    
 
     /**
      * Checks given parameter is a valid DS type
