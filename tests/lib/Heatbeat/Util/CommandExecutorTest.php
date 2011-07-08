@@ -62,6 +62,7 @@ class CommandExecutorTest extends \PHPUnit_Framework_TestCase {
         $object = new CommandExecutor();
         $object->setCommandObject($commandObject);
         $object->prepare();
+        $this->assertAttributeEquals($result, 'commandString', $object);
         $this->assertEquals($result, $object->getCommandString());
     }
 
