@@ -7,116 +7,65 @@ namespace Heatbeat\Parser\Template\Node;
  */
 class RraNodeTest extends \PHPUnit_Framework_TestCase {
 
-    private $validationData;
-
-    protected function setUp() {
-        $this->validationData = array(
-            'cf' => 'AVERAGE',
-            'xff' => 0.5,
-            'steps' => 1,
-            'rows' => 273
-        );
+    /**
+     * @dataProvider validDataProvider
+     */
+    public function testGetAsString($array, $result) {
+        $object = new RraNode($array);
+        $this->assertArrayHasKey('cf', $array);
+        $this->assertArrayHasKey('xff', $array);
+        $this->assertArrayHasKey('steps', $array);
+        $this->assertArrayHasKey('rows', $array);
+        $this->assertEquals($result, $object->getAsString());
+        $this->assertInternalType('string', $object->getAsString());
     }
 
     /**
-     * @dataProvider rraDataProvider
+     * @dataProvider validDataProvider
      */
-    public function testGetAsString($cf, $xff, $steps, $rows, $result) {
-        $object = new RraNode(array(
-                    'cf' => $cf,
-                    'xff' => $xff,
-                    'steps' => $steps,
-                    'rows' => $rows
-                ));
-        $this->assertEquals($result, $object->getAsString());
+    public function testValidate($array) {
+        $object = new RraNode($array);
+        $this->assertInternalType('array', $array);
+        $this->assertArrayHasKey('cf', $array);
+        $this->assertArrayHasKey('xff', $array);
+        $this->assertArrayHasKey('steps', $array);
+        $this->assertArrayHasKey('rows', $array);
         $this->assertTrue($object->validate());
     }
 
-    public function rraDataProvider() {
+    /**
+     * @expectedException Heatbeat\Exception\NodeValidationException
+     * @dataProvider nonValidDataProvider
+     */
+    public function testFailValidate($array) {
+        $object = new RraNode($array);
+        $this->assertInternalType('array', $array);
+        $object->validate();
+    }
+
+    public function validDataProvider() {
         return array(
-            array('AVERAGE', 1, 12, 24, 'RRA:AVERAGE:1:12:24'),
-            array('MAX', 0.5, 1, 288, 'RRA:MAX:0.5:1:288')
+            array(array('cf' => 'AVERAGE', 'xff' => 0.5, 'steps' => 4, 'rows' => 100), 'RRA:AVERAGE:0.5:4:100'),
+            array(array('cf' => 'LAST', 'xff' => 1, 'steps' => 1, 'rows' => 324), 'RRA:LAST:1:1:324'),
+            array(array('cf' => 'MIN', 'xff' => 0.1, 'steps' => 12, 'rows' => 564), 'RRA:MIN:0.1:12:564'),
+            array(array('cf' => 'MAX', 'xff' => 0.5, 'steps' => 6, 'rows' => 456), 'RRA:MAX:0.5:6:456'),
+            array(array('cf' => 'AVERAGE', 'xff' => 0.8, 'steps' => 2, 'rows' => 68), 'RRA:AVERAGE:0.8:2:68'),
+            array(array('cf' => 'AVERAGE', 'xff' => 0.5, 'steps' => 30, 'rows' => 1000), 'RRA:AVERAGE:0.5:30:1000'),
         );
     }
 
-    /**
-     * @expectedException Heatbeat\Exception\NodeValidationException
-     */
-    public function testCfNotExists() {
-        $array = $this->validationData;
-        unset($array['cf']);
-        $object = new RraNode($array);
-        $object->validate();
-    }
-
-    /**
-     * @expectedException Heatbeat\Exception\NodeValidationException
-     */
-    public function testXffNotExists() {
-        $array = $this->validationData;
-        unset($array['xff']);
-        $object = new RraNode($array);
-        $object->validate();
-    }
-
-    /**
-     * @expectedException Heatbeat\Exception\NodeValidationException
-     */
-    public function testStepsNotExists() {
-        $array = $this->validationData;
-        unset($array['steps']);
-        $object = new RraNode($array);
-        $object->validate();
-    }
-
-    /**
-     * @expectedException Heatbeat\Exception\NodeValidationException
-     */
-    public function testRowsNotExists() {
-        $array = $this->validationData;
-        unset($array['rows']);
-        $object = new RraNode($array);
-        $object->validate();
-    }
-
-    /**
-     * @expectedException Heatbeat\Exception\NodeValidationException
-     */
-    public function testInvalidCf() {
-        $array = $this->validationData;
-        $array['cf'] = 'FOO';
-        $object = new RraNode($array);
-        $object->validate();
-    }
-
-    /**
-     * @expectedException Heatbeat\Exception\NodeValidationException
-     */
-    public function testInvalidXff() {
-        $array = $this->validationData;
-        $array['xff'] = 12;
-        $object = new RraNode($array);
-        $object->validate();
-    }
-
-    /**
-     * @expectedException Heatbeat\Exception\NodeValidationException
-     */
-    public function testInvalidSteps() {
-        $array = $this->validationData;
-        $array['steps'] = 'foo';
-        $object = new RraNode($array);
-        $object->validate();
-    }
-
-    /**
-     * @expectedException Heatbeat\Exception\NodeValidationException
-     */
-    public function testInvalidRows() {
-        $array = $this->validationData;
-        $array['rows'] = 'foo';
-        $object = new RraNode($array);
-        $object->validate();
+    public function nonValidDataProvider() {
+        return array(
+            array(array('cfs' => 'AVERAGE', 'xff' => 0.5, 'steps' => 4, 'rows' => 100)),
+            array(array('cf' => 'AVERAGE', 'xffs' => 0.5, 'steps' => 4, 'rows' => 100)),
+            array(array('cf' => 'AVERAGE', 'xff' => 0.5, 'step' => 4, 'rows' => 100)),
+            array(array('cf' => 'AVERAGE', 'xff' => 0.5, 'steps' => 4, 'row' => 100)),
+            array(array('cf' => 'AVERAGE', 'xff' => 2, 'steps' => 4, 'rows' => 100)),
+            array(array('cf' => 'AVERAGE', 'xff' => 'too', 'steps' => 'baz', 'rows' => 100)),
+            array(array('cf' => 'AVERAGE', 'xff' => 0.5, 'steps' => 'baz', 'rows' => 100)),
+            array(array('cf' => 'AVERAGE', 'xff' => 0.5, 'steps' => 4, 'rows' => 'f99')),
+            array(array('cf' => 'AVERAGES', 'xff' => 0.5, 'steps' => 4, 'rows' => 11)),
+        );
     }
 
 }
