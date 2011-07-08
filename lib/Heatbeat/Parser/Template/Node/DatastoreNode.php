@@ -48,6 +48,7 @@ class DatastoreNode extends AbstractNode implements NodeInterface {
 
     public function validate() {
         $this->isDefined('name');
+        $this->isValidName('name');
         $this->isDefined('type');
         $this->isValidType('type');
         $this->isDefined('min');
