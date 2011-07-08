@@ -46,6 +46,7 @@ class ItemNode extends AbstractNode implements NodeInterface {
         $this->isDefined('type');
         $this->isValidGraphType('type');
         $this->isDefined('definition-name');
+        $this->isValidName('definition-name');
         $this->isDefined('color');
         $this->isValidColor('color');
         $this->isDefined('legend');
