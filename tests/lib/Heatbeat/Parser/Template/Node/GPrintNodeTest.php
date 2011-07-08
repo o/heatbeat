@@ -7,52 +7,54 @@ namespace Heatbeat\Parser\Template\Node;
  */
 class GPrintNodeTest extends \PHPUnit_Framework_TestCase {
 
-    private $validationData;
-
-    protected function setUp() {
-        $this->validationData = array(
-            'definition-name' => 'ds0',
-            'format' => '%6.2lf %Sbps'
-        );
+    /**
+     * @dataProvider validDataProvider
+     */
+    public function testGetAsString($array, $result) {
+        $object = new GPrintNode($array);
+        $this->assertArrayHasKey('definition-name', $array);
+        $this->assertArrayHasKey('format', $array);
+        $this->assertEquals($result, $object->getAsString());
+        $this->assertInternalType('string', $object->getAsString());
     }
 
     /**
-     * @dataProvider gprintDataProvider
+     * @dataProvider validDataProvider
      */
-    public function testGetAsString($definitionname, $format, $result) {
-        $object = new GPrintNode(array(
-                    'definition-name' => $definitionname,
-                    'format' => $format
-                ));
-        $this->assertEquals($result, $object->getAsString());
+    public function testValidate($array) {
+        $object = new GPrintNode($array);
+        $this->assertInternalType('array', $array);
+        $this->assertArrayHasKey('definition-name', $array);
+        $this->assertArrayHasKey('format', $array);
         $this->assertTrue($object->validate());
     }
 
-    public function gprintDataProvider() {
+    /**
+     * @expectedException Heatbeat\Exception\NodeValidationException
+     * @dataProvider nonValidDataProvider
+     */
+    public function testFailValidate($array) {
+        $object = new GPrintNode($array);
+        $this->assertInternalType('array', $array);
+        $object->validate();
+    }
+
+    public function validDataProvider() {
         return array(
-            array('ds0avg', '%6.2lf %Sbps', 'GPRINT:ds0avg:%6.2lf %Sbps'),
-            array('ds1min', '%6.2lf %Sbps', 'GPRINT:ds1min:%6.2lf %Sbps')
+            array(array('definition-name' => 'foo', 'format' => '%6.2lf %Sbps'), 'GPRINT:foo:%6.2lf %Sbps'),
+            array(array('definition-name' => 'temp', 'format' => 'Bar %lf%s'), 'GPRINT:temp:Bar %lf%s'),
+            array(array('definition-name' => 'disk1', 'format' => 'Avg %5.2lf'), 'GPRINT:disk1:Avg %5.2lf'),
+            array(array('definition-name' => 'cpu', 'format' => 'Cur %5.2lf'), 'GPRINT:cpu:Cur %5.2lf'),
         );
     }
 
-    /**
-     * @expectedException Heatbeat\Exception\NodeValidationException
-     */
-    public function testDefinitionNotExists() {
-        $array = $this->validationData;
-        unset($array['definition-name']);
-        $object = new GPrintNode($array);
-        $object->validate();
-    }
-
-    /**
-     * @expectedException Heatbeat\Exception\NodeValidationException
-     */
-    public function testFormatNotExists() {
-        $array = $this->validationData;
-        unset($array['format']);
-        $object = new GPrintNode($array);
-        $object->validate();
+    public function nonValidDataProvider() {
+        return array(
+            array(array('definition-name' => 'foo!', 'format' => '%6.2lf %Sbps')),
+            array(array('definition-name' => '', 'format' => '%lf%s')),
+            array(array('definition-name' => 'disk1', 'frmat' => 'Avg %5.2lf')),
+            array(array('definitionname' => 'cpu', 'format' => 'Cur %5.2lf')),
+        );
     }
 
 }
