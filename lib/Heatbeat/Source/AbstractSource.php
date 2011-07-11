@@ -62,7 +62,7 @@ abstract class AbstractSource {
     }
     
     public function perform() {
-        throw new SourceException('You must override the perform() method in the concrete command class.');
+        throw new SourceException('You must override the perform() method in the concrete source class.');
     }    
 
 }
