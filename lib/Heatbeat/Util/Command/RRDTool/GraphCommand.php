@@ -41,7 +41,7 @@ use Heatbeat\Autoloader,
  */
 class GraphCommand extends RRDToolCommand {
 
-    protected $subCommand = 'graph';
+    protected $subCommand = 'graphv';
 
     const PARAMETER_START = 'start';
     const PARAMETER_TITLE = 'title';
