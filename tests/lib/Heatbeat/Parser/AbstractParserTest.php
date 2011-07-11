@@ -58,7 +58,7 @@ class AbstractParserTest extends \PHPUnit_Framework_TestCase {
         $this->assertAttributeEmpty('filepath', $this->object);
         $this->object->setFilepath($filepath);
         $this->assertAttributeNotEmpty('filepath', $this->object);
-        $this->assertAttributeEquals($filepath, 'filepath', $this->object);        
+        $this->assertAttributeEquals($filepath, 'filepath', $this->object);
         $this->assertEquals($filepath, $this->object->getFilepath());
     }
 
@@ -99,7 +99,7 @@ class AbstractParserTest extends \PHPUnit_Framework_TestCase {
         $this->assertAttributeEmpty('values', $this->object);
         $this->object->setValues($values);
         $this->assertAttributeNotEmpty('values', $this->object);
-        $this->assertAttributeEquals(new \ArrayIterator($values), 'values', $this->object);                
+        $this->assertAttributeEquals(new \ArrayIterator($values), 'values', $this->object);
         $this->assertEquals(new \ArrayIterator($values), $this->object->getValues());
         $this->assertInstanceOf('\\ArrayIterator', $this->object->getValues());
     }
@@ -123,10 +123,47 @@ class AbstractParserTest extends \PHPUnit_Framework_TestCase {
         $this->object->setFilepath($filepath);
         $this->assertEquals($result, $this->object->getFullPath());
     }
-    
-    public function testParse() {
-        $this->markTestIncomplete();
+
+    public function validFixtureFilenameProvider() {
+        return array(
+            array('sample1'),
+            array('sample2'),
+            array('sample3')
+        );
     }
+
+    /**
+     * @dataProvider validFixtureFilenameProvider
+     */
+    public function testParse($filename) {
+        $this->object->setFilepath(__DIR__ . '/fixtures');
+        $this->object->setFilename($filename);
+        $this->assertFileExists($this->object->getFullPath());
+        $this->object->parse();
+        $this->assertAttributeNotEmpty('values', $this->object);
+        $this->assertAttributeInstanceOf('\ArrayIterator', 'values', $this->object);
+    }
+
+    public function invalidFixtureFilenameProvider() {
+        return array(
+            array('sample4'),
+            array('sample5'),
+            array('sample6')
+        );
+    }
+
+    /**
+     * @dataProvider invalidFixtureFilenameProvider
+     * @expectedException Heatbeat\Exception\HeatbeatException
+     */
+    public function testParseFail($filename) {
+        $this->object->setFilepath(__DIR__ . '/fixtures');
+        $this->object->setFilename($filename);
+        $this->assertFileNotExists($this->object->getFullPath());
+        $this->object->parse();
+    }
+
+
 
 }
 
