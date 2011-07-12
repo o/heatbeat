@@ -25,6 +25,8 @@
 
 namespace Heatbeat\Source;
 
+use Heatbeat\Exception\SourceException;
+
 /**
  * Abstract class for input/output
  *
@@ -39,7 +41,11 @@ abstract class AbstractInputOutput extends \ArrayObject {
     }
 
     public function setValue($index, $newval) {
-        return parent::offsetSet($index, $newval);
+        if ($index) {
+            return parent::offsetSet($index, $newval);
+        } else {
+            throw new SourceException('You need to give an index to value');
+        }
     }
 
 }
