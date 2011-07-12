@@ -16,115 +16,38 @@ class AbstractParserTest extends \PHPUnit_Framework_TestCase {
         $this->object = $this->getMockForAbstractClass('Heatbeat\Parser\AbstractParser');
     }
 
-    public function filenameDataProvider() {
-        return array(
-            array('file.rrd'),
-            array('user.rrd'),
-            array('foo.rrd'),
-            array('bar.rrd'),
-            array('baz.rrd')
-        );
+    public function testGetFilename() {
+        $this->assertNull($this->object->getFilename());
+        $this->object->setFilename('foo');
+        $this->assertEquals('foo', $this->object->getFilename());
     }
 
-    /**
-     *
-     * @dataProvider filenameDataProvider
-     */
-    public function testSetGetFilename($filename) {
-        $this->assertClassHasAttribute('filename', 'Heatbeat\Parser\AbstractParser');
-        $this->assertAttributeEmpty('filename', $this->object);
-        $this->object->setFilename($filename);
-        $this->assertAttributeNotEmpty('filename', $this->object);
-        $this->assertAttributeEquals($filename, 'filename', $this->object);
-        $this->assertEquals($filename, $this->object->getFilename());
+    public function testSetFilename() {
+        $this->assertNull($this->object->getFilename());
+        $this->object->setFilename('bar');
+        $this->assertEquals('bar', $this->object->getFilename());
     }
 
-    public function filepathDataProvider() {
-        return array(
-            array('/'),
-            array('/home'),
-            array('/home/osman'),
-            array('/home/osman/devel'),
-            array('/home/osman/devel/heatbeat')
-        );
+    public function testSetFilepath() {
+        $this->assertNull($this->object->getFilepath());
+        $this->object->setFilepath('/path/to/foo');
+        $this->assertEquals('/path/to/foo', $this->object->getFilepath());
     }
 
-    /**
-     *
-     * @dataProvider filepathDataProvider
-     */
-    public function testSetGetFilepath($filepath) {
-        $this->assertClassHasAttribute('filepath', 'Heatbeat\Parser\AbstractParser');
-        $this->assertAttributeEmpty('filepath', $this->object);
-        $this->object->setFilepath($filepath);
-        $this->assertAttributeNotEmpty('filepath', $this->object);
-        $this->assertAttributeEquals($filepath, 'filepath', $this->object);
-        $this->assertEquals($filepath, $this->object->getFilepath());
+    public function testGetFilepath() {
+        $this->assertNull($this->object->getFilepath());
+        $this->object->setFilepath('/path/to/bar');
+        $this->assertEquals('/path/to/bar', $this->object->getFilepath());
     }
 
-    public function failValueProvider() {
-        return array(
-            array(array()),
-            array('path/to/foo'),
-            array(new \stdClass)
-        );
+
+    public function testGetFullPath() {
+        $this->object->setFilepath('/home/osman/devel/heatbeat');
+        $this->object->setFilename('test');
+        $this->assertEquals('/home/osman/devel/heatbeat/test.yml', $this->object->getFullPath());
     }
 
-    /**
-     * @expectedException Heatbeat\Exception\HeatbeatException
-     * @dataProvider failValueProvider
-     */
-    public function testFailSetGetValues($values) {
-        $this->assertClassHasAttribute('values', 'Heatbeat\Parser\AbstractParser');
-        $this->assertAttributeEmpty('values', $this->object);
-        $this->object->setValues($values);
-    }
-
-    public function valueDataProvider() {
-        return array(
-            array(array(1, 2, 3)),
-            array(array('foo' => 'bar')),
-            array(array('osman', 'baz', 'thing')),
-            array(array('values' => array('this', 'boots'))),
-            array(array(true))
-        );
-    }
-
-    /**
-     *
-     * @dataProvider valueDataProvider
-     */
-    public function testSetGetValues($values) {
-        $this->assertClassHasAttribute('values', 'Heatbeat\Parser\AbstractParser');
-        $this->assertAttributeEmpty('values', $this->object);
-        $this->object->setValues($values);
-        $this->assertAttributeNotEmpty('values', $this->object);
-        $this->assertAttributeEquals(new \ArrayIterator($values), 'values', $this->object);
-        $this->assertEquals(new \ArrayIterator($values), $this->object->getValues());
-        $this->assertInstanceOf('\\ArrayIterator', $this->object->getValues());
-    }
-
-    public function namePathDataProvider() {
-        return array(
-            array('', 'foo', '/foo.yml'),
-            array('/Users/osman', 'test', '/Users/osman/test.yml'),
-            array('path/to', 'file', 'path/to/file.yml'),
-            array('/Library', 'bar', '/Library/bar.yml'),
-            array('/root', 'config', '/root/config.yml')
-        );
-    }
-
-    /**
-     *
-     * @dataProvider namePathDataProvider
-     */
-    public function testGetFullPath($filepath, $filename, $result) {
-        $this->object->setFilename($filename);
-        $this->object->setFilepath($filepath);
-        $this->assertEquals($result, $this->object->getFullPath());
-    }
-
-    public function validFixtureFilenameProvider() {
+    public function validFilenameProvider() {
         return array(
             array('sample1'),
             array('sample2'),
@@ -133,18 +56,17 @@ class AbstractParserTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @dataProvider validFixtureFilenameProvider
+     * @dataProvider validFilenameProvider
      */
     public function testParse($filename) {
         $this->object->setFilepath(__DIR__ . '/fixtures');
         $this->object->setFilename($filename);
         $this->assertFileExists($this->object->getFullPath());
         $this->object->parse();
-        $this->assertAttributeNotEmpty('values', $this->object);
         $this->assertAttributeInstanceOf('\ArrayIterator', 'values', $this->object);
     }
 
-    public function invalidFixtureFilenameProvider() {
+    public function invalidFilenameProvider() {
         return array(
             array('sample4'),
             array('sample5'),
@@ -153,7 +75,7 @@ class AbstractParserTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @dataProvider invalidFixtureFilenameProvider
+     * @dataProvider invalidFilenameProvider
      * @expectedException Heatbeat\Exception\HeatbeatException
      */
     public function testParseFail($filename) {
@@ -163,7 +85,17 @@ class AbstractParserTest extends \PHPUnit_Framework_TestCase {
         $this->object->parse();
     }
 
+    public function testGetValues() {
+        $this->assertNull($this->object->getValues());
+        $this->object->setValues(array(1,2,3));
+        $this->assertEquals(new \ArrayIterator(array(1,2,3)), $this->object->getValues());
+    }
 
+    public function testSetValues() {
+        $this->assertNull($this->object->getValues());
+        $this->object->setValues(array(4,5,6));
+        $this->assertEquals(new \ArrayIterator(array(4,5,6)), $this->object->getValues());
+    }
 
 }
 
