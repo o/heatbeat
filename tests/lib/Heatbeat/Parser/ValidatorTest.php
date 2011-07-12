@@ -139,7 +139,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase {
             array('this', array('foo' => 'bar')),
             array('cf', new \ArrayObject(array('baz' => 'bar'))),
             array('mf', new \ArrayIterator(array('foolish' => 'bar'))),
-            array(array(1), array('foo' => 'bar'))
+            array('amf', array('foo' => 'bar'))
         );
     }
 
