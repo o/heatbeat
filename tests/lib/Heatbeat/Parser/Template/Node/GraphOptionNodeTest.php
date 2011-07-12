@@ -12,12 +12,6 @@ class GraphOptionNodeTest extends \PHPUnit_Framework_TestCase {
      */
     public function testValidate($array) {
         $object = new GraphOptionNode($array);
-        $this->assertInternalType('array', $array);
-        $this->assertArrayHasKey('name', $array);
-        $this->assertArrayHasKey('label', $array);
-        $this->assertArrayHasKey('base', $array);
-        $this->assertArrayHasKey('upper', $array);
-        $this->assertArrayHasKey('lower', $array);
         $this->assertTrue($object->validate());
     }
 
@@ -27,7 +21,6 @@ class GraphOptionNodeTest extends \PHPUnit_Framework_TestCase {
      */
     public function testFailValidate($array) {
         $object = new GraphOptionNode($array);
-        $this->assertInternalType('array', $array);
         $object->validate();
     }
 

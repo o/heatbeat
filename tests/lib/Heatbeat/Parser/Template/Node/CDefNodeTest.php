@@ -12,10 +12,7 @@ class CDefNodeTest extends \PHPUnit_Framework_TestCase {
      */
     public function testGetAsString($array, $result) {
         $object = new CDefNode($array);
-        $this->assertArrayHasKey('name', $array);
-        $this->assertArrayHasKey('rpn', $array);
-        $this->assertEquals($result, $object->getAsString());
-        $this->assertInternalType('string', $object->getAsString());
+        $this->assertSame($result, $object->getAsString());
     }
 
     /**
@@ -23,9 +20,6 @@ class CDefNodeTest extends \PHPUnit_Framework_TestCase {
      */
     public function testValidate($array) {
         $object = new CDefNode($array);
-        $this->assertInternalType('array', $array);
-        $this->assertArrayHasKey('name', $array);
-        $this->assertArrayHasKey('rpn', $array);
         $this->assertTrue($object->validate());
     }
 
@@ -35,7 +29,6 @@ class CDefNodeTest extends \PHPUnit_Framework_TestCase {
      */
     public function testFailValidate($array) {
         $object = new CDefNode($array);
-        $this->assertInternalType('array', $array);
         $object->validate();
     }
 

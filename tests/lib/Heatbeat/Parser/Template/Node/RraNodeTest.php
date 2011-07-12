@@ -12,12 +12,7 @@ class RraNodeTest extends \PHPUnit_Framework_TestCase {
      */
     public function testGetAsString($array, $result) {
         $object = new RraNode($array);
-        $this->assertArrayHasKey('cf', $array);
-        $this->assertArrayHasKey('xff', $array);
-        $this->assertArrayHasKey('steps', $array);
-        $this->assertArrayHasKey('rows', $array);
-        $this->assertEquals($result, $object->getAsString());
-        $this->assertInternalType('string', $object->getAsString());
+        $this->assertSame($result, $object->getAsString());
     }
 
     /**
@@ -25,11 +20,6 @@ class RraNodeTest extends \PHPUnit_Framework_TestCase {
      */
     public function testValidate($array) {
         $object = new RraNode($array);
-        $this->assertInternalType('array', $array);
-        $this->assertArrayHasKey('cf', $array);
-        $this->assertArrayHasKey('xff', $array);
-        $this->assertArrayHasKey('steps', $array);
-        $this->assertArrayHasKey('rows', $array);
         $this->assertTrue($object->validate());
     }
 
@@ -39,7 +29,6 @@ class RraNodeTest extends \PHPUnit_Framework_TestCase {
      */
     public function testFailValidate($array) {
         $object = new RraNode($array);
-        $this->assertInternalType('array', $array);
         $object->validate();
     }
 

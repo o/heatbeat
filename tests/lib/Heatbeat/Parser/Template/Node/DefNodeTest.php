@@ -12,12 +12,7 @@ class DefNodeTest extends \PHPUnit_Framework_TestCase {
      */
     public function testGetAsString($array, $result) {
         $object = new DefNode($array);
-        $this->assertArrayHasKey('name', $array);
-        $this->assertArrayHasKey('filename', $array);
-        $this->assertArrayHasKey('datastore-name', $array);
-        $this->assertArrayHasKey('cf', $array);
-        $this->assertEquals($result, $object->getAsString());
-        $this->assertInternalType('string', $object->getAsString());
+        $this->assertSame($result, $object->getAsString());
     }
 
     /**
@@ -25,11 +20,6 @@ class DefNodeTest extends \PHPUnit_Framework_TestCase {
      */
     public function testValidate($array) {
         $object = new DefNode($array);
-        $this->assertInternalType('array', $array);
-        $this->assertArrayHasKey('name', $array);
-        $this->assertArrayHasKey('filename', $array);
-        $this->assertArrayHasKey('datastore-name', $array);
-        $this->assertArrayHasKey('cf', $array);
         $this->assertTrue($object->validate());
     }
 
@@ -39,7 +29,6 @@ class DefNodeTest extends \PHPUnit_Framework_TestCase {
      */
     public function testFailValidate($array) {
         $object = new DefNode($array);
-        $this->assertInternalType('array', $array);
         $object->validate();
     }
 

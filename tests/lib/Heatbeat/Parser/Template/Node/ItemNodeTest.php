@@ -12,12 +12,7 @@ class ItemNodeTest extends \PHPUnit_Framework_TestCase {
      */
     public function testGetAsString($array, $result) {
         $object = new ItemNode($array);
-        $this->assertArrayHasKey('type', $array);
-        $this->assertArrayHasKey('definition-name', $array);
-        $this->assertArrayHasKey('color', $array);
-        $this->assertArrayHasKey('legend', $array);
-        $this->assertEquals($result, $object->getAsString());
-        $this->assertInternalType('string', $object->getAsString());
+        $this->assertSame($result, $object->getAsString());
     }
 
     /**
@@ -25,11 +20,6 @@ class ItemNodeTest extends \PHPUnit_Framework_TestCase {
      */
     public function testValidate($array) {
         $object = new ItemNode($array);
-        $this->assertInternalType('array', $array);
-        $this->assertArrayHasKey('type', $array);
-        $this->assertArrayHasKey('definition-name', $array);
-        $this->assertArrayHasKey('color', $array);
-        $this->assertArrayHasKey('legend', $array);
         $this->assertTrue($object->validate());
     }
 
@@ -39,7 +29,6 @@ class ItemNodeTest extends \PHPUnit_Framework_TestCase {
      */
     public function testFailValidate($array) {
         $object = new ItemNode($array);
-        $this->assertInternalType('array', $array);
         $object->validate();
     }
 

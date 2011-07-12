@@ -12,10 +12,6 @@ class TemplateOptionNodeTest extends \PHPUnit_Framework_TestCase {
      */
     public function testValidate($array) {
         $object = new TemplateOptionNode($array);
-        $this->assertInternalType('array', $array);
-        $this->assertArrayHasKey('name', $array);
-        $this->assertArrayHasKey('version', $array);
-        $this->assertArrayHasKey('source-name', $array);
         $this->assertTrue($object->validate());
     }
 
@@ -25,7 +21,6 @@ class TemplateOptionNodeTest extends \PHPUnit_Framework_TestCase {
      */
     public function testFailValidate($array) {
         $object = new TemplateOptionNode($array);
-        $this->assertInternalType('array', $array);
         $object->validate();
     }
 

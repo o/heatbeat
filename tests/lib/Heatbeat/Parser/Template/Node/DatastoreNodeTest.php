@@ -12,13 +12,7 @@ class DatastoreNodeTest extends \PHPUnit_Framework_TestCase {
      */
     public function testGetAsString($array, $result) {
         $object = new DatastoreNode($array);
-        $this->assertArrayHasKey('name', $array);
-        $this->assertArrayHasKey('type', $array);
-        $this->assertArrayHasKey('heartbeat', $array);
-        $this->assertArrayHasKey('min', $array);
-        $this->assertArrayHasKey('max', $array);
-        $this->assertEquals($result, $object->getAsString());
-        $this->assertInternalType('string', $object->getAsString());
+        $this->assertSame($result, $object->getAsString());
     }
 
     /**
@@ -26,12 +20,6 @@ class DatastoreNodeTest extends \PHPUnit_Framework_TestCase {
      */
     public function testValidate($array) {
         $object = new DatastoreNode($array);
-        $this->assertInternalType('array', $array);
-        $this->assertArrayHasKey('name', $array);
-        $this->assertArrayHasKey('type', $array);
-        $this->assertArrayHasKey('heartbeat', $array);
-        $this->assertArrayHasKey('min', $array);
-        $this->assertArrayHasKey('max', $array);
         $this->assertTrue($object->validate());
     }
 
@@ -41,7 +29,6 @@ class DatastoreNodeTest extends \PHPUnit_Framework_TestCase {
      */
     public function testFailValidate($array) {
         $object = new DatastoreNode($array);
-        $this->assertInternalType('array', $array);
         $object->validate();
     }
 

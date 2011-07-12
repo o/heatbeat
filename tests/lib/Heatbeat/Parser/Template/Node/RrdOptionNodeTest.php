@@ -12,8 +12,6 @@ class RrdOptionNodeTest extends \PHPUnit_Framework_TestCase {
      */
     public function testValidate($array) {
         $object = new RrdOptionNode($array);
-        $this->assertInternalType('array', $array);
-        $this->assertArrayHasKey('step', $array);
         $this->assertTrue($object->validate());
     }
 
@@ -23,7 +21,6 @@ class RrdOptionNodeTest extends \PHPUnit_Framework_TestCase {
      */
     public function testFailValidate($array) {
         $object = new RrdOptionNode($array);
-        $this->assertInternalType('array', $array);
         $object->validate();
     }
 
