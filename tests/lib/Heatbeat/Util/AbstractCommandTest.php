@@ -16,137 +16,73 @@ class AbstractCommandTest extends \PHPUnit_Framework_TestCase {
         $this->object = $this->getMockForAbstractClass('Heatbeat\Util\AbstractCommand');
     }
 
-    protected function assertPreConditions() {
-        $this->assertAttributeEmpty('arguments', $this->object);
-        $this->assertAttributeEmpty('options', $this->object);
-        $this->assertAttributeEmpty('command', $this->object);
-        $this->assertAttributeEmpty('subCommand', $this->object);
+    public function testSetCommand() {
+        $this->assertNull($this->object->getCommand());
+        $this->object->setCommand('git');
+        $this->assertEquals('git', $this->object->getCommand());
     }
 
-    /**
-     * @dataProvider commandProvider
-     */
-    public function testSetGetCommand($command) {
-        $this->assertTrue($this->object->setCommand($command));
-        $this->assertAttributeNotEmpty('command', $this->object);
-        $this->assertAttributeEquals($command, 'command', $this->object);
-        $this->assertEquals(
-                $command, $this->object->getCommand()
-        );
+    public function testSetSubCommand() {
+        $this->assertNull($this->object->getSubCommand());
+        $this->object->setSubCommand('checkout');
+        $this->assertEquals('checkout', $this->object->getSubCommand());
     }
 
-    public function commandProvider() {
-        return array(
-            array('git'),
-            array('svn'),
-            array('more'),
-            array('tail'),
-            array('bzr')
-        );
+    public function testSetArguments() {
+        $this->assertEmpty($this->object->getArguments());
+        $this->object->setArguments(array('foo', 'bar', 'baz'));
+        $this->assertEquals(array('foo', 'bar', 'baz'), $this->object->getArguments());
+
+        $this->setExpectedException('\ErrorException');
+        $this->object->setArguments('bogus');
     }
 
-    /**
-     *
-     * @dataProvider subcommandProvider
-     */
-    public function testSetGetSubCommand($subcommand) {
-        $this->assertTrue($this->object->setSubCommand($subcommand));
-        $this->assertAttributeNotEmpty('subCommand', $this->object);
-        $this->assertAttributeEquals($subcommand, 'subCommand', $this->object);
-        $this->assertEquals(
-                $subcommand, $this->object->getSubCommand()
-        );
+    public function testAddArgument() {
+        $this->assertEmpty($this->object->getArguments());
+        $this->object->addArgument('arg');
+        $this->assertContains('arg', $this->object->getArguments());
     }
 
-    public function subcommandProvider() {
-        return array(
-            array('revert'),
-            array('checkout'),
-            array('log'),
-            array('commit'),
-            array('branch')
-        );
+    public function testSetOptions() {
+        $this->assertEmpty($this->object->getOptions());
+        $this->object->setOptions(array('foo' => 'bar', 'baz' => 'do'));
+        $this->assertEquals(array('foo' => 'bar', 'baz' => 'do'), $this->object->getOptions());
+
+        $this->setExpectedException('\ErrorException');
+        $this->object->setOptions('bogus');
     }
 
-    /**
-     * @dataProvider argumentsProvider
-     */
-    public function testSetGetArguments($arguments) {
-        $this->assertTrue($this->object->setArguments($arguments));
-        $this->assertAttributeNotEmpty('arguments', $this->object);
-        $this->assertAttributeEquals($arguments, 'arguments', $this->object);
-        $this->assertEquals(
-                $arguments, $this->object->getArguments()
-        );
+    public function testSetOption() {
+        $this->assertEmpty($this->object->getOptions());
+        $this->object->setOption('baz');
+        $this->assertContains(array('baz' => true), $this->object->getOptions());
+
+        $this->object->setOption('flag', 'value');
+        $this->assertContains(array('flag' => 'value'), $this->object->getOptions());
     }
 
-    public function argumentsProvider() {
-        return array(
-            array(array(1, 2, 3)),
-            array(array('foo', 'bar', 'baz')),
-            array(array('some', 'arguments')),
-            array(array('filename.rrd')),
-            array(array('lots', 'of', 'string', 'arguments'))
-        );
+    public function testGetCommand() {
+        $this->assertNull($this->object->getCommand());
+        $this->object->setCommand('svn');
+        $this->assertEquals('svn', $this->object->getCommand());
     }
 
-    /**
-     * @dataProvider argumentProvider
-     */
-    public function testAddGetArgument($argument) {
-        $this->assertTrue($this->object->addArgument($argument));
-        $this->assertAttributeNotEmpty('arguments', $this->object);
-        $this->assertAttributeContains($argument, 'arguments', $this->object);
-        $this->assertEquals(
-                array($argument), $this->object->getArguments()
-        );
+    public function testGetSubCommand() {
+        $this->assertNull($this->object->getSubCommand());
+        $this->object->setSubCommand('revert');
+        $this->assertEquals('revert', $this->object->getSubCommand());
     }
 
-    public function argumentProvider() {
-        return array(
-            array('test'),
-            array('foo'),
-            array('bar'),
-            array('baz'),
-            array('arg'),
-        );
+    public function testGetArguments() {
+        $this->assertEmpty($this->object->getArguments());
+        $this->object->setArguments(array(1, 2, 3));
+        $this->assertEquals(array(1, 2, 3), $this->object->getArguments());
     }
 
-    /**
-     * @dataProvider optionProvider
-     */
-    public function testSetGetOptions($key, $value) {
-        $options = array($key => $value);
-        $this->assertTrue($this->object->setOptions($options));
-        $this->assertAttributeNotEmpty('options', $this->object);
-        $this->assertAttributeEquals($options, 'options', $this->object);
-        $this->assertArrayHasKey($key, $this->object->getOptions());
-        $this->assertEquals(
-                $options, $this->object->getOptions()
-        );
-    }
-
-    /**
-     * @dataProvider optionProvider
-     */
-    public function testSetGetOption($key, $value) {
-        $this->assertTrue($this->object->setOption($key, $value));
-        $this->assertAttributeNotEmpty('options', $this->object);
-        $this->assertAttributeEquals(array($key => $value), 'options', $this->object);
-        $this->assertArrayHasKey($key, $this->object->getOptions());
-        $this->assertEquals
-                (array($key => $value), $this->object->getOptions()
-        );
-    }
-
-    public function optionProvider() {
-        return array(
-            array('baz', 'bar'),
-            array('foo', 'baz'),
-            array('width', 12),
-            array('min', 5),
-            array('step', 300)
-        );
+    public function testGetOptions() {
+        $this->assertEmpty($this->object->getOptions());
+        $this->object->setOptions(array('foo' => 'graph'));
+        $this->assertEquals(array('foo' => 'graph'), $this->object->getOptions());
     }
 
 }
