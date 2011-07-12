@@ -20,6 +20,9 @@ class AbstractInputOutputTest extends \PHPUnit_Framework_TestCase {
         $this->assertFalse($this->object->offsetExists('users'));
         $this->object->setValue('users', 5);
         $this->assertEquals(5, $this->object->getValue('users'));
+
+        $this->setExpectedException('Heatbeat\Exception\SourceException');
+        $this->object->setValue('', 'bogus');
     }
 
     public function testSetValue() {
