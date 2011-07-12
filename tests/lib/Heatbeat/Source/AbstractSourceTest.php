@@ -16,52 +16,47 @@ class AbstractSourceTest extends \PHPUnit_Framework_TestCase {
         $this->object = $this->getMockForAbstractClass('\Heatbeat\Source\AbstractSource');
     }
 
-    public function inputOutputDataProvider() {
-        return array(
-            array(array('foo' => 'bar', 'baz' => 'fuu')),
-            array(array('a' => 'journey', 'never' => 'ends')),
-            array(array('temp' => '12', 'type' => 'f')),
-            array(array('arg1' => 'state', 'arg2' => 'trance')),
-            array(array('loc' => 'NY'))
+    public function testGetInput() {
+        $this->assertNull($this->object->getInput());
+        $this->object->setInput(new SourceInput(array('foo' => 'baz')));
+        $this->assertEquals(new SourceInput(array('foo' => 'baz')), $this->object->getInput());
+    }
+
+    public function testSetInput() {
+        $this->assertNull($this->object->getInput());
+        $this->object->setInput(new SourceInput(array('foo' => 'bar')));
+        $this->assertEquals(new SourceInput(array('foo' => 'bar')), $this->object->getInput());
+
+        $this->setExpectedException('\ErrorException');
+        $this->object->setInput('bogus');
+    }
+
+    public function testGetOutput() {
+        $this->assertNull($this->object->getOutput());
+        $this->object->setOutput(new SourceOutput(array('foo' => 'baz')));
+        $this->assertEquals(new SourceOutput(array('foo' => 'baz')), $this->object->getOutput());
+    }
+
+    public function testSetOutput() {
+        $this->assertNull($this->object->getOutput());
+        $this->object->setOutput(new SourceOutput(array('foo' => 'bar')));
+        $this->assertEquals(new SourceOutput(array('foo' => 'bar')), $this->object->getOutput());
+
+        $this->setExpectedException('\ErrorException');
+        $this->object->setInput('bogus');
+    }
+
+    /**
+     * @todo Implement testGetExternalFolderPath().
+     */
+    public function testGetExternalFolderPath() {
+        $this->markTestIncomplete(
+                'This test has not been implemented yet.'
         );
     }
 
-    /**
-     *
-     * @dataProvider inputOutputDataProvider
-     */
-    public function testSetGetInput($input) {
-        $input = new SourceInput($input);
-        $this->assertClassHasAttribute('input', '\Heatbeat\Source\AbstractSource');
-        $this->assertAttributeEmpty('input', $this->object);
-        $this->object->setInput(new SourceInput($input));
-        $this->assertAttributeNotEmpty('input', $this->object);
-        $this->assertAttributeEquals($input, 'input', $this->object);
-        $this->assertAttributeInstanceOf('\Heatbeat\Source\SourceInput', 'input', $this->object);
-        $this->assertEquals($input, $this->object->getInput());
-        $this->assertInstanceOf('\Heatbeat\Source\SourceInput', $this->object->getInput());
-    }
-
-    /**
-     *
-     * @dataProvider inputOutputDataProvider
-     */
-    public function testSetGetOutput($output) {
-        $output = new SourceOutput($output);
-        $this->assertClassHasAttribute('output', '\Heatbeat\Source\AbstractSource');
-        $this->assertAttributeEmpty('output', $this->object);
-        $this->object->setOutput($output);
-        $this->assertAttributeNotEmpty('output', $this->object);
-        $this->assertAttributeEquals($output, 'output', $this->object);
-        $this->assertAttributeInstanceOf('\Heatbeat\Source\SourceOutput', 'output', $this->object);
-        $this->assertEquals($output, $this->object->getOutput());
-        $this->assertInstanceOf('\Heatbeat\Source\SourceOutput', $this->object->getOutput());
-    }
-
-    /**
-     * @expectedException \Heatbeat\Exception\SourceException
-     */
     public function testPerform() {
+        $this->setExpectedException('\Heatbeat\Exception\SourceException');
         $this->object->perform();
     }
 
