@@ -45,7 +45,7 @@ class GraphCommandTest extends \PHPUnit_Framework_TestCase {
 
     public function testSetVerticalLabel() {
         $this->assertArrayNotHasKey('vertical-label', $this->object->getOptions());
-        $this->object->setTitle('Users');
+        $this->object->setVerticalLabel('Users');
         $this->assertContains(array('vertical-label' => 'Users'), $this->object->getOptions());
     }
 
@@ -53,17 +53,24 @@ class GraphCommandTest extends \PHPUnit_Framework_TestCase {
         $this->assertArrayNotHasKey('lower-limit', $this->object->getOptions());
         $this->object->setLowerlimit(1);
         $this->assertContains(array('lower-limit' => 1), $this->object->getOptions());
+
+
+        $this->object->setLowerlimit('auto');
+        $this->assertContains(array('alt_autoscale_min' => true), $this->object->getOptions());
     }
 
     public function testSetUpperlimit() {
         $this->assertArrayNotHasKey('upper-limit', $this->object->getOptions());
         $this->object->setUpperlimit(100);
         $this->assertContains(array('upper-limit' => 100), $this->object->getOptions());
+
+        $this->object->setUpperlimit('auto');
+        $this->assertContains(array('alt_autoscale_max' => true), $this->object->getOptions());
     }
 
     public function testSetBase() {
         $this->assertArrayNotHasKey('base', $this->object->getOptions());
-        $this->object->setUpperlimit(1024);
+        $this->object->setBase(1024);
         $this->assertContains(array('base' => 1024), $this->object->getOptions());
     }
 
