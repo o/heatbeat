@@ -17,36 +17,16 @@ class CreateCommandTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function assertPreConditions() {
-        $this->assertAttributeEquals('rrdtool', 'command', $this->object);
-        $this->assertAttributeEquals('create', 'subCommand', $this->object);
-        $this->assertAttributeEmpty('arguments', $this->object);
-        $this->assertAttributeNotEmpty('options', $this->object);
+        $this->assertEquals('rrdtool', $this->object->getCommand());
+        $this->assertEquals('create', $this->object->getSubCommand());
         $this->assertArrayHasKey('no-overwrite', $this->object->getOptions());
         $this->assertArrayHasKey('start', $this->object->getOptions());
-        $this->assertAttributeContains(
-                array(array('no-overwrite' => true)), 'options', $this->object
-        );
+        $this->assertContains(array('no-overwrite' => true), $this->object->getOptions());
     }
 
-    public function stepProvider() {
-        return array(
-            array(300),
-            array(600),
-            array(1800),
-            array(60),
-            array(100)
-        );
-    }
-
-    /**
-     * @dataProvider stepProvider
-     */
-    public function testSetStep($step) {
-        $this->assertArrayNotHasKey('step', $this->object->getOptions());
-        $this->object->setStep($step);
-        $this->assertAttributeContains(
-                array('step' => $step), 'options', $this->object
-        );
+    public function testSetStep() {
+        $this->object->setStep(300);
+        $this->assertContains(array('step' => 300), $this->object->getOptions());
     }
 
     public function datastoreProvider() {
@@ -113,10 +93,14 @@ class CreateCommandTest extends \PHPUnit_Framework_TestCase {
      * @dataProvider datastoreProvider
      */
     public function testSetDatastores($datastores, $result) {
+        $this->assertEmpty($this->object->getArguments());
         $this->object->setDatastores($datastores);
-        $this->assertAttributeContains(
-                $result, 'arguments', $this->object
-        );
+        $this->assertContains($result, $this->object->getArguments());
+    }
+
+    public function testSetDatastoresWithNonArrayValue() {
+        $this->setExpectedException('\ErrorException');
+        $this->object->setDatastores('bogus');
     }
 
     public function rraDataProvider() {
@@ -178,49 +162,36 @@ class CreateCommandTest extends \PHPUnit_Framework_TestCase {
      * @dataProvider rraDataProvider
      */
     public function testSetRras($rras, $result) {
+        $this->assertEmpty($this->object->getArguments());
         $this->object->setRras($rras);
-        $this->assertAttributeContains(
-                $result, 'arguments', $this->object
-        );
+        $this->assertContains($result, $this->object->getArguments());
     }
 
-    public function overwriteDataProvider() {
-        return array(
-            array(true, false),
-            array(false, true)
-        );
+    public function testSetRrasWithNonArrayValue() {
+        $this->setExpectedException('\ErrorException');
+        $this->object->setRras('bogus');
     }
 
-    /**
-     * @dataProvider overwriteDataProvider
-     */
-    public function testSetOverwrite($overwrite, $result) {
-        $this->object->setOverwrite($overwrite);
-        $this->assertArrayHasKey('no-overwrite', $this->object->getOptions());
+    public function testSetOverwrite() {
+        $this->object->setOverwrite(false);
+        $this->assertContains(array('no-overwrite' => true), $this->object->getOptions());
+
+        $this->object->setOverwrite(true);
         $options = $this->object->getOptions();
-        $this->assertEquals($result, $options['no-overwrite']);
+        $this->assertFalse($options['no-overwrite']);
     }
 
-    public function startDataProvider() {
-        return array(
-            array(1201867500),
-            array(1417582388),
-            array(1323842093),
-            array('N'),
-            array(1239717988),
-            array(1380980980)
-        );
-    }
-
-    /**
-     * @dataProvider startDataProvider
-     */
-    public function testSetStart($start) {
-        $this->object->setStart($start);
-        $this->assertArrayHasKey('start', $this->object->getOptions());
+    public function testSetStart() {
+        $this->assertArrayNotHasKey('step', $this->object->getOptions());
+        $this->object->setStep(300);
         $this->assertContains(
-                array('start' => $start), $this->object->getOptions()
+                array('step' => 300), $this->object->getOptions()
         );
+
+    }
+
+    public function testInit() {
+        $this->assertNull($this->object->init());
     }
 
 }
