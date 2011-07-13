@@ -16,29 +16,12 @@ class UpdateCommandTest extends \PHPUnit_Framework_TestCase {
         $this->object = new UpdateCommand;
     }
 
-    public function assertPreConditions() {
-        $this->assertAttributeEquals('rrdtool', 'command', $this->object);
-        $this->assertAttributeEquals('updatev', 'subCommand', $this->object);
-        $this->assertAttributeEmpty('arguments', $this->object);
-        $this->assertAttributeEmpty('options', $this->object);
+    public function testInitializedObject() {
+        $this->assertEquals('rrdtool', $this->object->getCommand());
+        $this->assertEquals('updatev', $this->object->getSubCommand());
     }
 
-    /**
-     * @dataProvider setValuesDataProvider
-     */
-    public function testSetValues($source, $resultopts, $resultargs) {
-        $this->object->setValues(
-                $source
-        );
-        $this->assertAttributeEquals(
-                $resultopts, 'options', $this->object
-        );
-        $this->assertAttributeEquals(
-                $resultargs, 'arguments', $this->object
-        );
-    }
-
-    public function setValuesDataProvider() {
+    public function valueDataProvider() {
         return array(
             array(
                 new \Heatbeat\Source\SourceOutput(array(
@@ -65,6 +48,22 @@ class UpdateCommandTest extends \PHPUnit_Framework_TestCase {
                 array('N:500')
             )
         );
+    }
+
+    /**
+     * @dataProvider valueDataProvider
+     */
+    public function testSetValues($values, $resultopts, $resultargs) {
+        $this->assertEmpty($this->object->getArguments());
+        $this->assertEmpty($this->object->getOptions());
+        $this->object->setValues($values);
+        $this->assertEquals($resultopts, $this->object->getOptions());
+        $this->assertEquals($resultargs, $this->object->getArguments());
+    }
+
+    public function testSetValuesWithFailValues() {
+        $this->setExpectedException('\ErrorException');
+        $this->object->setValues('bogus');
     }
 
 }
