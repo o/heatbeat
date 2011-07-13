@@ -44,10 +44,29 @@ class Autoloader {
     const FOLDER_LOG = 'logs';
     const FOLDER_GRAPH = 'graphs';
 
+    /**
+     *
+     * @var Autoloader
+     */
     private static $instance;
+
+    /**
+     *
+     * @var UniversalClassLoader
+     */
     private $loader;
+
+    /**
+     *
+     * @var array
+     */
     private $paths;
 
+    /**
+     * Returns instance of autoloader
+     *
+     * @return Autoloader
+     */
     public static function getInstance() {
         if (null === self::$instance) {
             self::$instance = new self();
@@ -61,6 +80,9 @@ class Autoloader {
         $this->setErrorExceptionHandling();
     }
 
+    /**
+     * Sets necessary path for using all around Heatbeat
+     */
     private function setPaths() {
         $rootPath = realpath(dirname(__DIR__) . DIRECTORY_SEPARATOR . '..');
         $this->paths = array(
@@ -75,6 +97,9 @@ class Autoloader {
         );
     }
 
+    /**
+     * Registers Heatbeat and Symfony component autoloader
+     */
     private function register() {
         require_once $this->getPath('vendor') . '/Symfony/Component/ClassLoader/UniversalClassLoader.php';
         $loader = new UniversalClassLoader();
@@ -88,20 +113,44 @@ class Autoloader {
         $this->setLoader($loader);
     }
 
+    /**
+     * Sets error and exception handling
+     */
     private function setErrorExceptionHandling() {
         error_reporting(E_ALL | E_STRICT);
         set_error_handler(array($this, 'handleErrors'));
         set_exception_handler(array($this, 'handleExceptions'));
     }
 
-    private function setLoader($loader) {
+    /**
+     * Sets autoloader
+     *
+     * @param UniversalClassLoader $loader
+     */
+    private function setLoader(UniversalClassLoader $loader) {
         $this->loader = $loader;
     }
 
+    /**
+     * Returns full path of given path identifier
+     *
+     * @param string $path
+     * @return string
+     */
     public function getPath($path) {
         return $this->paths[$path];
     }
 
+    /**
+     * Handles standard php errors
+     *
+     * @param int $errno
+     * @param string $errstr
+     * @param string $errfile
+     * @param int $errline
+     * @return bool
+     * @throws \ErrorException
+     */
     public static function handleErrors($errno, $errstr = '', $errfile = '', $errline = '') {
         if (0 == error_reporting()) {
             return false;
@@ -109,6 +158,11 @@ class Autoloader {
         throw new \ErrorException($errstr, 0, $errno, $errfile, $errline);
     }
 
+    /**
+     * Handles and logs exceptions
+     *
+     * @param \Exception $exc
+     */
     public static function handleExceptions(\Exception $exc) {
         $message = sprintf('[%s] %s', get_class($exc), $exc->getMessage());
         \Heatbeat\Log\BaseLogger::getInstance()->log($message);
