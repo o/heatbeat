@@ -25,6 +25,7 @@ class CreateCommandTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testSetStep() {
+        $this->assertArrayNotHasKey('step', $this->object->getOptions());
         $this->object->setStep(300);
         $this->assertContains(array('step' => 300), $this->object->getOptions());
     }
@@ -182,20 +183,19 @@ class CreateCommandTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testSetStart() {
-        $this->assertArrayNotHasKey('step', $this->object->getOptions());
-        $this->object->setStep(1309467600);
+        $this->object->setStart(1309467600);
         $this->assertContains(
-                array('step' => 1309467600), $this->object->getOptions()
+                array('start' => 1309467600), $this->object->getOptions()
         );
 
-        $this->object->setStep('N');
+        $this->object->setStart('N');
         $this->assertContains(
-                array('step' => 'N'), $this->object->getOptions()
+                array('start' => 'N'), $this->object->getOptions()
         );
 
-        $this->object->setStep('-1h');
+        $this->object->setStart('-1h');
         $this->assertContains(
-                array('step' => '-1h'), $this->object->getOptions()
+                array('start' => '-1h'), $this->object->getOptions()
         );
     }
 
