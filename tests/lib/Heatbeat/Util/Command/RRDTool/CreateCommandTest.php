@@ -16,7 +16,7 @@ class CreateCommandTest extends \PHPUnit_Framework_TestCase {
         $this->object = new CreateCommand;
     }
 
-    public function assertPreConditions() {
+    public function testInitializedObject() {
         $this->assertEquals('rrdtool', $this->object->getCommand());
         $this->assertEquals('create', $this->object->getSubCommand());
         $this->assertArrayHasKey('no-overwrite', $this->object->getOptions());

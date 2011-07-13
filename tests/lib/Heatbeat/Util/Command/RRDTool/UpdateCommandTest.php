@@ -16,7 +16,7 @@ class UpdateCommandTest extends \PHPUnit_Framework_TestCase {
         $this->object = new UpdateCommand;
     }
 
-    public function assertPreConditions() {
+    public function testInitializedObject() {
         $this->assertEquals('rrdtool', $this->object->getCommand());
         $this->assertEquals('updatev', $this->object->getSubCommand());
     }
