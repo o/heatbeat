@@ -33,7 +33,12 @@ namespace Heatbeat\Parser\Template\Node;
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
 interface NodeInterface {
+
+    /**
+     * Seperator that used in concenating values in RRDTool arguments
+     */
     const SEPERATOR = ':';
+    
     const EQUAL = '=';
 
     /**

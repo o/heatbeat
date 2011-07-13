@@ -57,14 +57,23 @@ abstract class AbstractNode extends \ArrayObject {
         'LINE3',
         'STACK'
     );
-    
+
+    /**
+     *
+     * @var Validator
+     */
     private $validator;
     
     public function __construct($input) {
         parent::__construct($input);
         $this->validator = new \Heatbeat\Parser\Validator();
     }
-    
+
+    /**
+     * Returns validator object
+     *
+     * @return Validator
+     */
     public function getValidator() {
         return $this->validator;
     }
