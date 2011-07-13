@@ -36,10 +36,22 @@ use Heatbeat\Exception\SourceException;
  */
 abstract class AbstractInputOutput extends \ArrayObject {
 
+    /**
+     *
+     * @param string $index
+     * @return mixed
+     */
     public function getValue($index) {
         return parent::offsetGet($index);
     }
 
+    /**
+     *
+     * @param string|int $index
+     * @param mixed $newval
+     * @return bool
+     * @throws SourceException
+     */
     public function setValue($index, $newval) {
         if ($index) {
             return parent::offsetSet($index, $newval);

@@ -38,31 +38,61 @@ use Heatbeat\Util\CommandExecutor,
  */
 abstract class AbstractSource {
 
+    /**
+     *
+     * @var SourceInput
+     */
     private $input;
+    /**
+     * @var SourceOutput
+     */
     private $output;
 
+    /**
+     * Returns source input
+     *
+     * @return SourceInput
+     */
     public function getInput() {
         return $this->input;
     }
 
+    /**
+     * Sets source input
+     *
+     * @param SourceInput $input
+     */
     public function setInput(SourceInput $input) {
         $this->input = $input;
     }
 
+    /**
+     * Returns source output
+     *
+     * @return SourceOutput
+     */
     public function getOutput() {
         return $this->output;
     }
 
-    public function setOutput($output) {
-        $this->output = new SourceOutput($output);
+    /**
+     * Sets source output
+     *
+     * @param SourceOutput $output 
+     */
+    public function setOutput(SourceOutput $output) {
+        $this->output = $output;
     }
 
     public function getExternalFolderPath() {
         return Autoloader::getInstance()->getPath(Autoloader::FOLDER_EXTERNAL);
     }
-    
+
+    /**
+     * Performs data source fetch
+     */
     public function perform() {
         throw new SourceException('You must override the perform() method in the concrete source class.');
-    }    
+    }
 
 }
