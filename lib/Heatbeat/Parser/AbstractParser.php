@@ -37,40 +37,91 @@ use Symfony\Component\Yaml\Yaml,
 
 abstract class AbstractParser {
 
+    /**
+     *
+     * @var string
+     */
     private $filename;
+
+    /**
+     *
+     * @var string
+     */
     protected $filepath;
+    /**
+     *
+     * @var ArrayIterator
+     */
     protected $values;
 
     CONST YAML_EXT = '.yml';
 
+    /**
+     * Returns filename of yaml file
+     *
+     * @return string
+     */
     public function getFilename() {
         return $this->filename;
     }
 
+    /**
+     * Sets filename of yaml
+     *
+     * @param string $filename
+     */
     public function setFilename($filename) {
         $this->filename = $filename;
     }
 
+    /**
+     * Sets path of yaml file
+     *
+     * @param string $filepath
+     */
     public function setFilepath($filepath) {
         $this->filepath = $filepath;
     }
 
+    /**
+     * Returns path of yaml file
+     *
+     * @return string
+     */
     public function getFilepath() {
         return $this->filepath;
     }
 
+    /**
+     * Returns full path of yaml file including file extension
+     *
+     * @return string
+     */
     public function getFullPath() {
         return $this->getFilepath() . DIRECTORY_SEPARATOR . $this->getFilename() . self::YAML_EXT;
     }
 
+    /**
+     * Parses and sets values of yaml file.
+     */
     public function parse() {
         $this->setValues(Yaml::load($this->getFullPath()));
     }
 
+    /**
+     * Returns parsed yaml values
+     *
+     * @return ArrayIterator
+     */
     public function getValues() {
         return $this->values;
     }
 
+    /**
+     * Sets parsed yaml values
+     *
+     * @param type $values
+     */
     public function setValues($values) {
         if ((!is_array($values)) OR (count($values) == 0)) {
             throw new HeatbeatException(sprintf('No values parsed in %s', $this->getFullPath()));
