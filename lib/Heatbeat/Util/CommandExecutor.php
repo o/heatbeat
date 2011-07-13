@@ -52,7 +52,7 @@ class CommandExecutor {
     /**
      * Returns command object
      * 
-     * @return type 
+     * @return AbstractCommand
      */
     public function getCommandObject() {
         return $this->commandObject;
@@ -88,7 +88,6 @@ class CommandExecutor {
     /**
      * Prepares command for execution
      *
-     * @return string
      */
     public function prepare() {
         $result = new \ArrayObject();
