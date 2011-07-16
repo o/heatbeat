@@ -105,7 +105,7 @@ abstract class AbstractParser {
      * Parses and sets values of yaml file.
      */
     public function parse() {
-        $this->setValues(Yaml::load($this->getFullPath()));
+        $this->setValues(Yaml::parse($this->getFullPath()));
     }
 
     /**
