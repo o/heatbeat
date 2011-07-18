@@ -186,7 +186,8 @@ class GraphCommand extends RRDToolCommand {
                     'slope-mode' => true,
                     'width' => 800,
                     'height' => 200,
-                    'end' => -300
+                    'end' => -300,
+                    'units-exponent' => 0
                 )
         );
     }
