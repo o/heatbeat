@@ -23,6 +23,7 @@ class GraphCommandTest extends \PHPUnit_Framework_TestCase {
         $this->assertContains(array(array('width' => 800)), $this->object->getOptions());
         $this->assertContains(array(array('height' => 200)), $this->object->getOptions());
         $this->assertContains(array(array('end' => -300)), $this->object->getOptions());
+        $this->assertContains(array(array('units-exponent' => true)), $this->object->getOptions());
     }
 
     public function testSetGraphFilename() {
