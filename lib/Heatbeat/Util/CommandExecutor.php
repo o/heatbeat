@@ -52,7 +52,7 @@ class CommandExecutor {
     /**
      * Returns command object
      * 
-     * @return type 
+     * @return AbstractCommand
      */
     public function getCommandObject() {
         return $this->commandObject;
@@ -88,7 +88,6 @@ class CommandExecutor {
     /**
      * Prepares command for execution
      *
-     * @return string
      */
     public function prepare() {
         $result = new \ArrayObject();
@@ -100,13 +99,13 @@ class CommandExecutor {
             }
             $result->append(self::LONG_OPTION . $key);
             if ($option !== true) {
-                $result->append(\escapeshellarg($option));
+                $result->append(escapeshellarg($option));
             }
         }
         foreach ($this->getCommandObject()->getArguments() as $argument) {
-            $result->append(\escapeshellarg($argument));
+            $result->append(escapeshellarg($argument));
         }
-        $this->setCommandString(\implode(\chr(32), \iterator_to_array($result)));
+        $this->setCommandString(implode(chr(32), iterator_to_array($result)));
     }
 
     /**

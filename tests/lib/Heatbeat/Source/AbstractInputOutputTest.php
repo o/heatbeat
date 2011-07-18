@@ -16,25 +16,19 @@ class AbstractInputOutputTest extends \PHPUnit_Framework_TestCase {
         $this->object = $this->getMockForAbstractClass('Heatbeat\Source\AbstractInputOutput');
     }
 
-    public function testInitObject() {
-        $this->assertEmpty(iterator_to_array($this->object));
+    public function testGetValue() {
+        $this->assertFalse($this->object->offsetExists('users'));
+        $this->object->setValue('users', 5);
+        $this->assertEquals(5, $this->object->getValue('users'));
+
+        $this->setExpectedException('Heatbeat\Exception\SourceException');
+        $this->object->setValue('', 'bogus');
     }
 
-    /**
-     * @dataProvider dataProvider
-     */
-    public function testSetGetValue($index, $newval) {
-        $this->object->setValue($index, $newval);
-        $this->assertArrayHasKey($index, iterator_to_array($this->object));
-        $this->assertEquals($this->object->getValue($index), $newval);
-    }
-
-    public function dataProvider() {
-        return array(
-            array('foo', 'bar'),
-            array(1, 2),
-            array('go', 'to')
-        );
+    public function testSetValue() {
+        $this->assertFalse($this->object->offsetExists('bar'));
+        $this->object->setValue('bar', 'baz');
+        $this->assertEquals('baz', $this->object->getValue('bar'));
     }
 
 }

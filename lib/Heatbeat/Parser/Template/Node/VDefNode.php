@@ -41,6 +41,7 @@ class VDefNode extends AbstractNode implements NodeInterface {
 
     public function validate() {
         $this->isDefined('name');
+        $this->isValidName('name');
         $this->isDefined('rpn');
         return true;
     }

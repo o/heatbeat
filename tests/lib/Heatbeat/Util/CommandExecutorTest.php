@@ -7,43 +7,64 @@ namespace Heatbeat\Util;
  */
 class CommandExecutorTest extends \PHPUnit_Framework_TestCase {
 
-    public function testSetGetCommandObject() {
-        $commandObject = $this->getMockForAbstractClass('Heatbeat\Util\AbstractCommand');
-        $object = new CommandExecutor();
-        $object->setCommandObject($commandObject);
-        $this->assertEquals(
-                $commandObject, $object->getCommandObject()
-        );
+    /**
+     * @var CommandExecutor
+     */
+    protected $object;
+
+    protected function setUp() {
+        $this->object = new CommandExecutor;
     }
 
-    public function testSetGetCommandString() {
-        $commandString = 'ls -al';
-        $object = new CommandExecutor();
-        $object->setCommandString($commandString);
-        $this->assertEquals(
-                $commandString, $object->getCommandString()
-        );
+    public function testGetCommandObject() {
+        $commandObject = $this->getMockForAbstractClass('Heatbeat\Util\AbstractCommand');
+        $this->assertNull($this->object->getCommandObject());
+        $this->object->setCommandObject($commandObject);
+        $this->assertTrue($commandObject == $this->object->getCommandObject());
     }
+
+    public function testSetCommandObject() {
+        $commandObject = $this->getMockForAbstractClass('Heatbeat\Util\AbstractCommand');
+        $this->assertNull($this->object->getCommandObject());
+        $this->object->setCommandObject($commandObject);
+        $this->assertTrue($commandObject == $this->object->getCommandObject());
+
+        $this->setExpectedException('\ErrorException');
+        $this->object->setCommandObject('bogus');
+    }
+
+    public function testGetCommandString() {
+        $this->assertNull($this->object->getCommandString());
+        $this->object->setCommandString('git checkout -b dev');
+        $this->assertEquals('git checkout -b dev', $this->object->getCommandString());
+    }
+
+    public function testSetCommandString() {
+        $this->assertNull($this->object->getCommandString());
+        $this->object->setCommandString('uptime');
+        $this->assertEquals('uptime', $this->object->getCommandString());
+    }
+
 
     public function prepareDataProvider() {
-        $object1 = $this->getMockForAbstractClass('Heatbeat\Util\AbstractCommand');
-        $object1->setCommand('rrdtool');
-        $object1->setSubCommand('create');
-        $object1->setOption('foo', 'bar');
-        $object2 = $this->getMockForAbstractClass('Heatbeat\Util\AbstractCommand');
-        $object2->setCommand('svn');
-        $object2->setSubCommand('log');        
-        $object2->addArgument('path/to/file');
-        $object2->setOption('meh', false);
-        $object3 = $this->getMockForAbstractClass('Heatbeat\Util\AbstractCommand');
-        $object3->setCommand('git');
-        $object3->setSubCommand('checkout');
-        $object3->setOption('track');
-        $object3->addArgument('origin/experimental');
+        $example1 = $this->getMockForAbstractClass('Heatbeat\Util\AbstractCommand');
+        $example1->setCommand('rrdtool');
+        $example1->setSubCommand('create');
+        $example1->setOption('foo', 'bar');
+        $example2 = $this->getMockForAbstractClass('Heatbeat\Util\AbstractCommand');
+        $example2->setCommand('svn');
+        $example2->setSubCommand('log');
+        $example2->addArgument('path/to/file');
+        $example2->setOption('meh', false);
+        $example3 = $this->getMockForAbstractClass('Heatbeat\Util\AbstractCommand');
+        $example3->setCommand('git');
+        $example3->setSubCommand('checkout');
+        $example3->setOption('track');
+        $example3->addArgument('origin/experimental');
         return array(
-            array($object1, "rrdtool create --foo 'bar'"),
-            array($object2, "svn log 'path/to/file'"),
-            array($object3, "git checkout --track 'origin/experimental'")
+            array($example1, "rrdtool create --foo 'bar'"),
+            array($example2, "svn log 'path/to/file'"),
+            array($example3, "git checkout --track 'origin/experimental'")
         );
     }
 
@@ -51,26 +72,19 @@ class CommandExecutorTest extends \PHPUnit_Framework_TestCase {
      * @dataProvider prepareDataProvider
      */
     public function testPrepare($commandObject, $result) {
-        $object = new CommandExecutor();
-        $object->setCommandObject($commandObject);
-        $object->prepare();
-        $this->assertEquals($result, $object->getCommandString());
+        $this->object->setCommandObject($commandObject);
+        $this->object->prepare();
+        $this->assertEquals($result, $this->object->getCommandString());
     }
 
     public function testExecute() {
-        $object = new CommandExecutor();
-        $object->setCommandString('ls -al');
-        $result = $object->execute();
-        $this->assertTrue($result->isSuccessful());
-    }
+        $this->object->setCommandString('hostname');
+        $process = $this->object->execute();
+        $this->assertTrue($process->isSuccessful());
 
-    /**
-     * @expectedException Heatbeat\Exception\ExecutionException
-     */
-    public function testFailExecute() {
-        $object = new CommandExecutor();
-        $object->setCommandString('foo --bar');
-        $object->execute();
+        $this->setExpectedException('Heatbeat\Exception\ExecutionException');
+        $this->object->setCommandString('bogus');
+        $this->object->execute();
     }
 
 }

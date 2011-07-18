@@ -7,128 +7,56 @@ namespace Heatbeat\Parser\Template\Node;
  */
 class DatastoreNodeTest extends \PHPUnit_Framework_TestCase {
 
-    private $validationData;
-
-    protected function setUp() {
-        $this->validationData = array(
-            'name' => 'test',
-            'type' => 'GAUGE',
-            'heartbeat' => 600,
-            'min' => 0,
-            'max' => 100
-        );
+    /**
+     * @dataProvider validDataProvider
+     */
+    public function testGetAsString($array, $result) {
+        $object = new DatastoreNode($array);
+        $this->assertSame($result, $object->getAsString());
     }
 
     /**
-     * @dataProvider dsDataProvider
+     * @dataProvider validDataProvider
      */
-    public function testGetAsString($name, $type, $heartbeat, $min, $max, $result) {
-        $object = new DatastoreNode(array(
-                    'name' => $name,
-                    'type' => $type,
-                    'heartbeat' => $heartbeat,
-                    'min' => $min,
-                    'max' => $max
-                ));
-        $this->assertEquals($result, $object->getAsString());
+    public function testValidate($array) {
+        $object = new DatastoreNode($array);
         $this->assertTrue($object->validate());
     }
 
-    public function dsDataProvider() {
+    /**
+     * @expectedException Heatbeat\Exception\NodeValidationException
+     * @dataProvider nonValidDataProvider
+     */
+    public function testFailValidate($array) {
+        $object = new DatastoreNode($array);
+        $object->validate();
+    }
+
+    public function validDataProvider() {
         return array(
-            array('temp', 'GAUGE', 600, 0, 100, 'DS:temp:GAUGE:600:0:100'),
-            array('ifOutOctets', 'COUNTER', 1800, 0, 4294967295, 'DS:ifOutOctets:COUNTER:1800:0:4294967295')
+            array(array('name' => 'ccc', 'type' => 'GAUGE', 'heartbeat' => 600, 'min' => 0, 'max' => 1), 'DS:ccc:GAUGE:600:0:1'),
+            array(array('name' => 'ifOutOctets', 'type' => 'COUNTER', 'heartbeat' => 1200, 'min' => 10, 'max' => 100), 'DS:ifOutOctets:COUNTER:1200:10:100'),
+            array(array('name' => 'foo', 'type' => 'DERIVE', 'heartbeat' => 30, 'min' => 100, 'max' => 1000), 'DS:foo:DERIVE:30:100:1000'),
+            array(array('name' => 'bar', 'type' => 'ABSOLUTE', 'heartbeat' => 600, 'min' => 0, 'max' => 100000), 'DS:bar:ABSOLUTE:600:0:100000'),
+            array(array('name' => 'baz', 'type' => 'GAUGE', 'heartbeat' => 60, 'min' => 50, 'max' => 80), 'DS:baz:GAUGE:60:50:80')
         );
     }
 
-    /**
-     * @expectedException Heatbeat\Exception\NodeValidationException
-     */
-    public function testNameNotExists() {
-        $array = $this->validationData;
-        unset($array['name']);
-        $object = new DatastoreNode($array);
-        $object->validate();
-    }
-
-    /**
-     * @expectedException Heatbeat\Exception\NodeValidationException
-     */
-    public function testTypeNotExists() {
-        $array = $this->validationData;
-        unset($array['type']);
-        $object = new DatastoreNode($array);
-        $object->validate();
-    }
-
-    /**
-     * @expectedException Heatbeat\Exception\NodeValidationException
-     */
-    public function testHeartbeatNotExists() {
-        $array = $this->validationData;
-        unset($array['heartbeat']);
-        $object = new DatastoreNode($array);
-        $object->validate();
-    }
-
-    /**
-     * @expectedException Heatbeat\Exception\NodeValidationException
-     */
-    public function testMinNotExists() {
-        $array = $this->validationData;
-        unset($array['min']);
-        $object = new DatastoreNode($array);
-        $object->validate();
-    }
-
-    /**
-     * @expectedException Heatbeat\Exception\NodeValidationException
-     */
-    public function testMaxNotExists() {
-        $array = $this->validationData;
-        unset($array['max']);
-        $object = new DatastoreNode($array);
-        $object->validate();
-    }
-
-    /**
-     * @expectedException Heatbeat\Exception\NodeValidationException
-     */
-    public function testInvalidType() {
-        $array = $this->validationData;
-        $array['type'] = 'FOO';
-        $object = new DatastoreNode($array);
-        $object->validate();
-    }
-
-    /**
-     * @expectedException Heatbeat\Exception\NodeValidationException
-     */
-    public function testInvalidHeartbeat() {
-        $array = $this->validationData;
-        $array['heartbeat'] = 'foo';
-        $object = new DatastoreNode($array);
-        $object->validate();
-    }
-
-    /**
-     * @expectedException Heatbeat\Exception\NodeValidationException
-     */
-    public function testInvalidMin() {
-        $array = $this->validationData;
-        $array['min'] = 'foo';
-        $object = new DatastoreNode($array);
-        $object->validate();
-    }
-
-    /**
-     * @expectedException Heatbeat\Exception\NodeValidationException
-     */
-    public function testInvalidMax() {
-        $array = $this->validationData;
-        $array['max'] = 'foo';
-        $object = new DatastoreNode($array);
-        $object->validate();
+    public function nonValidDataProvider() {
+        return array(
+            array(array('nam' => 'ccc', 'type' => 'GAUGE', 'heartbeat' => 600, 'min' => 0, 'max' => 1)),
+            array(array('name' => 'ifOutOctets', 'typ' => 'COUNTER', 'heartbeat' => 1200, 'min' => 10, 'max' => 100)),
+            array(array('name' => 'foo', 'type' => 'DERIVE', 'heartbea' => 30, 'min' => 100, 'max' => 1000)),
+            array(array('name' => 'bar', 'type' => 'ABSOLUTE', 'heartbeat' => 600, 'mi' => 0, 'max' => 100000)),
+            array(array('name' => 'baz', 'type' => 'GAUGE', 'heartbeat' => 60, 'min' => 50, 'ma' => 80)),
+            array(array('name' => '', 'type' => 'COUNTER', 'heartbeat' => 1200, 'min' => 10, 'max' => 100)),
+            array(array('name' => 'foo', 'type' => '', 'heartbeat' => 30, 'min' => 100, 'max' => 1000)),
+            array(array('name' => 'bar', 'type' => 'ABSOLUTE', 'heartbeat' => '', 'min' => 0, 'max' => 100000)),
+            array(array('name' => 'baz', 'type' => 'GAUGE', 'heartbeat' => 60, 'min' => '', 'max' => 80)),
+            array(array('name' => 'ccc', 'type' => 'GAUGE', 'heartbeat' => 600, 'min' => 0, 'max' => '')),
+            array(array('name' => 'baz!', 'type' => 'GAUGE', 'heartbeat' => 60, 'min' => 50, 'max' => 80)),
+            array(array('name' => 'ccc', 'type' => 'GAUGES', 'heartbeat' => 600, 'min' => 0, 'max' => 1))
+        );
     }
 
 }

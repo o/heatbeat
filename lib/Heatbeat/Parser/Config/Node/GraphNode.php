@@ -42,8 +42,13 @@ class GraphNode extends AbstractNode implements NodeInterface {
         return true;
     }
 
+    /**
+     * Returns serialized hash of object
+     *
+     * @return string
+     */
     private function getHash() {
-        return substr(sha1(serialize($this)), 0, 8);
+        return substr(md5($this->serialize()), 0, 8);
     }
     
     public function getRRDFilename() {

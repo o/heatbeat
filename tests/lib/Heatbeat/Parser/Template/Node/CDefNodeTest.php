@@ -12,9 +12,7 @@ class CDefNodeTest extends \PHPUnit_Framework_TestCase {
      */
     public function testGetAsString($array, $result) {
         $object = new CDefNode($array);
-        $this->assertArrayHasKey('name', $array);
-        $this->assertArrayHasKey('rpn', $array);
-        $this->assertEquals($result, $object->getAsString());
+        $this->assertSame($result, $object->getAsString());
     }
 
     /**
@@ -22,20 +20,16 @@ class CDefNodeTest extends \PHPUnit_Framework_TestCase {
      */
     public function testValidate($array) {
         $object = new CDefNode($array);
-        $this->assertInternalType('array', $array);
-        $this->assertArrayHasKey('name', $array);
-        $this->assertArrayHasKey('rpn', $array);
         $this->assertTrue($object->validate());
     }
-    
+
     /**
      * @expectedException Heatbeat\Exception\NodeValidationException
      * @dataProvider nonValidDataProvider
      */
     public function testFailValidate($array) {
         $object = new CDefNode($array);
-        $this->assertInternalType('array', $array);
-        $object->validate();        
+        $object->validate();
     }
 
     public function validDataProvider() {
@@ -47,16 +41,15 @@ class CDefNodeTest extends \PHPUnit_Framework_TestCase {
             array(array('name' => 'foo', 'rpn' => 'a,0,*'), 'CDEF:foo=a,0,*')
         );
     }
-    
+
     public function nonValidDataProvider() {
         return array(
-            #array(array('name' => '', 'rpn' => '')),
-            #array(array('name' => '', 'rpn' => '1,0,value,IF')),
-            #array(array('name' => 'inbits', 'rpn' => '')),
+            array(array('name' => '', 'rpn' => '1,0,value,IF')),
+            array(array('name' => 'inbits', 'rpn' => '')),
             array(array('foo' => 'test', 'rpn' => 'number,100000,GT,UNKN,number,IF')),
-            array(array('name' => 'foo', 'baz' => 'a,0,*')),
-            array(array())
-        );        
+            array(array('name' => 'foo;', 'baz' => 'a,0,*')),
+            array(array('name' => 'ds!', 'rpn' => '1,0,value,IF'))
+        );
     }
 
 }

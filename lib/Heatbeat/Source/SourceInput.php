@@ -26,7 +26,7 @@
 namespace Heatbeat\Source;
 
 /**
- * Abstract source class for data fetching
+ * Class for storing input arguments for source plugins
  *
  * @category    Heatbeat
  * @package     Heatbeat\Source

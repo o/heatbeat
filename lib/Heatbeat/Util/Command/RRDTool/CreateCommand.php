@@ -42,18 +42,18 @@ class CreateCommand extends RRDToolCommand {
     protected $subCommand = 'create';
 
     /**
+     * Sets step of RRD
      *
      * @param int $step
-     * @return bool 
      */
     public function setStep($step) {
         $this->setOption(self::PARAMETER_STEP, $step);
     }
 
     /**
+     * Sets datastores of RRD
      *
      * @param array $datastores
-     * @return bool 
      */
     public function setDatastores(array $datastores) {
         foreach ($datastores as $datastore) {
@@ -62,9 +62,9 @@ class CreateCommand extends RRDToolCommand {
     }
 
     /**
+     * Sets archives of RRD
      *
      * @param array $rras
-     * @return bool 
      */
     public function setRras(array $rras) {
         foreach ($rras as $rra) {

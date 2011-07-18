@@ -7,53 +7,51 @@ namespace Heatbeat\Parser\Template\Node;
  */
 class VDefNodeTest extends \PHPUnit_Framework_TestCase {
 
-    private $validationData;
-
-    protected function setUp() {
-        $this->validationData = array(
-            'name' => 'test',
-            'rpn' => 'inbytes,10,*',
-        );
+    /**
+     * @dataProvider validDataProvider
+     */
+    public function testGetAsString($array, $result) {
+        $object = new VDefNode($array);
+        $this->assertSame($result, $object->getAsString());
     }
 
     /**
-     * @dataProvider vdefDataProvider
+     * @dataProvider validDataProvider
      */
-    public function testGetAsString($name, $rpn, $result) {
-        $object = new VDefNode(array(
-                    'name' => $name,
-                    'rpn' => $rpn
-                ));
-        $this->assertEquals($result, $object->getAsString());
+    public function testValidate($array) {
+        $object = new VDefNode($array);
         $this->assertTrue($object->validate());
     }
 
-    public function vdefDataProvider() {
+    /**
+     * @expectedException Heatbeat\Exception\NodeValidationException
+     * @dataProvider nonValidDataProvider
+     */
+    public function testFailValidate($array) {
+        $object = new VDefNode($array);
+        $object->validate();
+    }
+
+    public function validDataProvider() {
         return array(
-            array('ds2', 'ds0,95,PERCENT', 'VDEF:ds2=ds0,95,PERCENT'),
-            array('var_name', 'RPN_expression', 'VDEF:var_name=RPN_expression')
+            array(array('name' => 'result', 'rpn' => '1,0,value,IF'), 'VDEF:result=1,0,value,IF'),
+            array(array('name' => 'inbits', 'rpn' => 'inbytes,8,*'), 'VDEF:inbits=inbytes,8,*'),
+            array(array('name' => 'test', 'rpn' => 'number,100000,GT,UNKN,number,IF'), 'VDEF:test=number,100000,GT,UNKN,number,IF'),
+            array(array('name' => 'eq', 'rpn' => 'TIME,1202924474,GT,a,a,UN,0,a,IF,IF,TIME,1202924474,GT,c,c,UN,0,c,IF,IF,+'), 'VDEF:eq=TIME,1202924474,GT,a,a,UN,0,a,IF,IF,TIME,1202924474,GT,c,c,UN,0,c,IF,IF,+'),
+            array(array('name' => 'foo', 'rpn' => 'a,0,*'), 'VDEF:foo=a,0,*')
         );
     }
 
-    /**
-     * @expectedException Heatbeat\Exception\NodeValidationException
-     */
-    public function testNameNotExists() {
-        $array = $this->validationData;
-        unset($array['name']);
-        $object = new VDefNode($array);
-        $object->validate();
+    public function nonValidDataProvider() {
+        return array(
+            array(array('name' => '', 'rpn' => '1,0,value,IF')),
+            array(array('name' => 'inbits', 'rpn' => '')),
+            array(array('foo' => 'test', 'rpn' => 'number,100000,GT,UNKN,number,IF')),
+            array(array('name' => 'foo;', 'baz' => 'a,0,*')),
+            array(array('name' => 'ds!', 'rpn' => '1,0,value,IF'))
+        );
     }
-
-    /**
-     * @expectedException Heatbeat\Exception\NodeValidationException
-     */
-    public function testRpnNotExists() {
-        $array = $this->validationData;
-        unset($array['rpn']);
-        $object = new VDefNode($array);
-        $object->validate();
-    }
+    
 
 }
 

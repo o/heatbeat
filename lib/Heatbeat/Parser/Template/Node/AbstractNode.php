@@ -57,14 +57,23 @@ abstract class AbstractNode extends \ArrayObject {
         'LINE3',
         'STACK'
     );
-    
+
+    /**
+     *
+     * @var Validator
+     */
     private $validator;
     
     public function __construct($input) {
         parent::__construct($input);
         $this->validator = new \Heatbeat\Parser\Validator();
     }
-    
+
+    /**
+     * Returns validator object
+     *
+     * @return Validator
+     */
     public function getValidator() {
         return $this->validator;
     }
@@ -79,6 +88,20 @@ abstract class AbstractNode extends \ArrayObject {
     protected function isDefined($key) {
         if (!($this->offsetExists($key) AND $this->getValidator()->isNotBlank($this->offsetGet($key)))) {
             throw new NodeValidationException(sprintf('%s, %s argument is not defined.', $this->getClassName(), $key));
+        }
+        return true;
+    }
+
+    /**
+     * Checks is given parameter is alphanumeric
+     *
+     * @param string $key
+     * @return bool
+     * @throws NodeValidationException
+     */
+    protected function isValidName($key) {
+        if (!$this->getValidator()->isAlphanum($this->offsetGet($key))) {
+            throw new NodeValidationException(sprintf('%s, %s argument is not valid alphanumeric name.', $this->getClassName(), $key));
         }
         return true;
     }
@@ -160,7 +183,7 @@ abstract class AbstractNode extends \ArrayObject {
      * @throws NodeValidationException
      */
     protected function isValidXff($key) {
-        if ((($this->offsetGet($key)) < 0) OR (($this->offsetGet($key)) > 1)) {
+        if ((($this->offsetGet($key)) < 0) OR (($this->offsetGet($key)) > 1) OR !is_numeric($this->offsetGet($key))) {
             throw new NodeValidationException(sprintf("%s, %s parameter must be between of 0 and 1.", $this->getClassName(), $key));
         }
         return true;

@@ -16,51 +16,73 @@ class AbstractCommandTest extends \PHPUnit_Framework_TestCase {
         $this->object = $this->getMockForAbstractClass('Heatbeat\Util\AbstractCommand');
     }
 
-    public function testSetGetCommand() {
-        $command = 'svn';
-        $this->assertTrue($this->object->setCommand($command));
-        $this->assertEquals(
-                $command, $this->object->getCommand()
-        );
+    public function testSetCommand() {
+        $this->assertNull($this->object->getCommand());
+        $this->object->setCommand('git');
+        $this->assertEquals('git', $this->object->getCommand());
     }
 
-    public function testSetGetSubCommand() {
-        $subcommand = 'revert';
-        $this->assertTrue($this->object->setSubCommand($subcommand));
-        $this->assertEquals(
-                $subcommand, $this->object->getSubCommand()
-        );
+    public function testSetSubCommand() {
+        $this->assertNull($this->object->getSubCommand());
+        $this->object->setSubCommand('checkout');
+        $this->assertEquals('checkout', $this->object->getSubCommand());
     }
 
-    public function testSetGetArguments() {
-        $arguments = array('foo', 'bar', 'baz');
-        $this->assertTrue($this->object->setArguments($arguments));
-        $this->assertEquals(
-                $arguments, $this->object->getArguments()
-        );
+    public function testSetArguments() {
+        $this->assertEmpty($this->object->getArguments());
+        $this->object->setArguments(array('foo', 'bar', 'baz'));
+        $this->assertEquals(array('foo', 'bar', 'baz'), $this->object->getArguments());
+
+        $this->setExpectedException('\ErrorException');
+        $this->object->setArguments('bogus');
     }
 
-    public function testAddGetArgument() {
-        $this->object->setArguments(array());
-        $this->assertTrue($this->object->addArgument('test'));
-        $this->assertEquals(
-                array('test'), $this->object->getArguments()
-        );
+    public function testAddArgument() {
+        $this->assertEmpty($this->object->getArguments());
+        $this->object->addArgument('arg');
+        $this->assertContains('arg', $this->object->getArguments());
     }
 
-    public function testSetGetOptions() {
-        $options = array('foo' => 'bar', 'baz' => 'moar');
-        $this->assertTrue($this->object->setOptions($options));
-        $this->assertEquals(
-                $options, $this->object->getOptions()
-        );
+    public function testSetOptions() {
+        $this->assertEmpty($this->object->getOptions());
+        $this->object->setOptions(array('foo' => 'bar', 'baz' => 'do'));
+        $this->assertEquals(array('foo' => 'bar', 'baz' => 'do'), $this->object->getOptions());
+
+        $this->setExpectedException('\ErrorException');
+        $this->object->setOptions('bogus');
     }
 
-    public function testSetGetOption() {
-        $this->assertTrue($this->object->setOption('baz', 'bar'));
-        $this->assertEquals
-                (array('baz' => 'bar'), $this->object->getOptions()
-        );
+    public function testSetOption() {
+        $this->assertEmpty($this->object->getOptions());
+        $this->object->setOption('baz');
+        $this->assertContains(array('baz' => true), $this->object->getOptions());
+
+        $this->object->setOption('flag', 'value');
+        $this->assertContains(array('flag' => 'value'), $this->object->getOptions());
+    }
+
+    public function testGetCommand() {
+        $this->assertNull($this->object->getCommand());
+        $this->object->setCommand('svn');
+        $this->assertEquals('svn', $this->object->getCommand());
+    }
+
+    public function testGetSubCommand() {
+        $this->assertNull($this->object->getSubCommand());
+        $this->object->setSubCommand('revert');
+        $this->assertEquals('revert', $this->object->getSubCommand());
+    }
+
+    public function testGetArguments() {
+        $this->assertEmpty($this->object->getArguments());
+        $this->object->setArguments(array(1, 2, 3));
+        $this->assertEquals(array(1, 2, 3), $this->object->getArguments());
+    }
+
+    public function testGetOptions() {
+        $this->assertEmpty($this->object->getOptions());
+        $this->object->setOptions(array('foo' => 'graph'));
+        $this->assertEquals(array('foo' => 'graph'), $this->object->getOptions());
     }
 
 }
