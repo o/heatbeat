@@ -81,15 +81,6 @@ class TestSource extends Console\Command\Command {
         }
     }
 
-    private function getPluginInstance($plugin) {
-        $namespaced = str_replace('_', "\\", $plugin);
-        $class_name = '\\Heatbeat\\Source\\Plugin\\' . $namespaced;
-        if (!class_exists($class_name)) {
-            throw new SourceException(sprintf('Unable to find source plugin %s', $plugin));
-        }
-        return new $class_name;
-    }
-
     private function prepareArgs($arguments) {
         $sourceArray = array();
         $argumentsArray = explode("|", $arguments);
