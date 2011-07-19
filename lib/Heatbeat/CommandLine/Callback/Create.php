@@ -52,9 +52,7 @@ class Create extends Shared {
         $this
                 ->setName('create')
                 ->setDescription('Creates RRD files')
-                ->setDefinition(array(
-                    new InputOption('overwrite', 'o', InputArgument::OPTIONAL, "This option overwrites all RRD's", false)
-                ));
+                ->addOption('overwrite', null, InputOption::VALUE_NONE, "This option overwrites all created RRD's");
     }
 
     protected function execute(InputInterface $input, OutputInterface $output) {
