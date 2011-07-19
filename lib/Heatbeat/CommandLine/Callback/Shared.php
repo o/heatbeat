@@ -100,7 +100,7 @@ class Shared extends Command {
         }
         $process = $executor->execute();
         if ($process->isSuccessful()) {
-            $output->writeln($successMessage);
+            $output->writeln(sprintf('<info>%s</info>', $successMessage));
         }
     }
 
