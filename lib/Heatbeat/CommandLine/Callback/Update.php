@@ -49,7 +49,8 @@ class Update extends Shared {
     public function configure() {
         $this
                 ->setName('update')
-                ->setDescription('Updates all RRD files');
+                ->setDescription('Updates all RRD files')
+                ->addOption('no-graph', null, InputOption::VALUE_NONE, 'If set, graphs not will be created.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output) {
@@ -71,6 +72,13 @@ class Update extends Shared {
                 continue;
             }
         }
+        if ($input->getOption('no-graph') === false) {
+            $this->runGraphCommand($input, $output);
+        }
+        $output->writeln($this->getSummary());
+    }
+
+    private function runGraphCommand(InputInterface $input, OutputInterface $output) {
         $command = $this->getApplication()->find('graph');
         $input = new Console\Input\ArrayInput(
                         array(
