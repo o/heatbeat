@@ -67,7 +67,7 @@ class Create extends Shared {
                 $this->executeCommand($input, $output, $commandObject, sprintf("Success : '%s%s' created", $entity->getRRDFilename(), RRDTool::RRD_EXT));
             } catch (\Exception $e) {
                 Logger::getInstance()->log($e->getMessage());
-                $output->writeln($e->getMessage());
+                $this->renderError($e, $output);
                 continue;
             }
         }

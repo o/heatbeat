@@ -76,7 +76,7 @@ class Graph extends Shared {
                 }
             } catch (\Exception $e) {
                 Logger::getInstance()->log($e->getMessage());
-                $output->writeln($e->getMessage());
+                $this->renderError($e, $output);
                 continue;
             }
         }

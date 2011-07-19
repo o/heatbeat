@@ -91,7 +91,7 @@ class Shared extends Command {
         return $templateObject;
     }
 
-    public function executeCommand(InputInterface $input, OutputInterface $output, $commandObject, $successMessage) {
+    public function executeCommand(InputInterface $input, OutputInterface $output, $commandObject, $message) {
         $executor = new Executor();
         $executor->setCommandObject($commandObject);
         $executor->prepare();
@@ -100,7 +100,7 @@ class Shared extends Command {
         }
         $process = $executor->execute();
         if ($process->isSuccessful()) {
-            $output->writeln(sprintf('<info>%s</info>', $successMessage));
+            $this->renderSuccess($message, $output);
         }
     }
 
@@ -115,8 +115,16 @@ class Shared extends Command {
 
     public function getSummary() {
         return sprintf(
-                '<comment>Time: %s sec, Memory: %4.2fMb</comment>', number_format($this->getExecutionTime(), 2), memory_get_peak_usage(TRUE) / 1048576
+                '<comment>Time: %4.2f sec, Memory: %4.2fMb</comment>', number_format($this->getExecutionTime(), 2), memory_get_peak_usage(TRUE) / 1048576
         );
+    }
+
+    protected function renderError($e, OutputInterface $output) {
+        $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
+    }
+
+    protected function renderSuccess($message, OutputInterface $output) {
+        $output->writeln(sprintf('<info>%s</info>', $message));
     }
 
 }
