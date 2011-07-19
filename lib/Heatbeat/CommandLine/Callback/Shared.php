@@ -60,11 +60,11 @@ class Shared extends Command {
         $this->setTemplateObject($templateObject);
     }
 
-    public function getExecutionTime() {
+    private function getExecutionTime() {
         return microtime(true) - $this->processStartTime;
     }
 
-    public function setProcessStartTime() {
+    private function setProcessStartTime() {
         $this->processStartTime = microtime(true);
     }
 
@@ -111,6 +111,12 @@ class Shared extends Command {
             throw new SourceException(sprintf('Unable to find source plugin %s', $plugin));
         }
         return new $class_name;
+    }
+
+    public function getSummary() {
+        return sprintf(
+                '<comment>Time: %s sec, Memory: %4.2fMb</comment>', number_format($this->getExecutionTime(), 2), memory_get_peak_usage(TRUE) / 1048576
+        );
     }
 
 }
