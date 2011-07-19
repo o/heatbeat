@@ -46,46 +46,32 @@ use Symfony\Component\Console\Input\InputArgument,
  * @package     Heatbeat\CommandLine\Callback
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class Create extends Console\Command\Command {
+class Create extends Shared {
 
     public function configure() {
         $this
                 ->setName('create')
                 ->setDescription('Creates RRD files')
-                ->setDefinition(array(
-                    new InputOption('overwrite', 'o', InputArgument::OPTIONAL, "This option overwrites all RRD's", false)
-                ));
+                ->addOption('overwrite', null, InputOption::VALUE_NONE, "This option overwrites all created RRD's");
     }
 
     protected function execute(InputInterface $input, OutputInterface $output) {
-        $config = new Config();
-        $config->parse();
-        $template = new Template();
-        foreach ($config->getGraphEntities() as $entity) {
+        foreach ($this->getConfigObject()->getGraphEntities() as $entity) {
             try {
-                $template->setFilename($entity->offsetGet('template'));
-                $template->parse();
+                $template = $this->getTemplate($entity->offsetGet('template'));
                 $commandObject = new RRDCreate();
                 $commandObject->setFilename($entity->getRRDFilename());
                 $commandObject->setOverwrite($input->getOption('overwrite'));
                 $commandObject->setDatastores($template->getRrdDatastores());
                 $commandObject->setRras($template->getRrdRras());
-                $executor = new Executor();
-                $executor->setCommandObject($commandObject);
-                $executor->prepare();
-                if ($input->getOption('verbose')) {
-                    $output->writeln($executor->getCommandString());
-                }
-                $process = $executor->execute();
-                if ($process->isSuccessful()) {
-                    $output->writeln(sprintf("RRD created with filename '%s%s' successfully.", $entity->getRRDFilename(), RRDTool::RRD_EXT));
-                }
+                $this->executeCommand($input, $output, $commandObject, sprintf("Success : '%s%s' created", $entity->getRRDFilename(), RRDTool::RRD_EXT));
             } catch (\Exception $e) {
                 Logger::getInstance()->log($e->getMessage());
-                $output->writeln($e->getMessage());
+                $this->renderError($e, $output);
                 continue;
             }
         }
+        $output->writeln($this->getSummary());
     }
 
 }

@@ -31,11 +31,8 @@ use Symfony\Component\Console\Input\InputArgument,
     Symfony\Component\Console\Input\InputInterface,
     Symfony\Component\Console\Output\OutputInterface,
     Heatbeat\Autoloader,
-    Heatbeat\Parser\Config\ConfigParser as Config,
-    Heatbeat\Parser\Template\TemplateParser as Template,
     Heatbeat\Util\Command\RRDTool\RRDToolCommand as RRDTool,
     Heatbeat\Util\Command\RRDTool\GraphCommand as RRDGraph,
-    Heatbeat\Util\CommandExecutor as Executor,
     Heatbeat\Log\BaseLogger as Logger,
     Heatbeat\Exception\SourceException;
 
@@ -46,7 +43,7 @@ use Symfony\Component\Console\Input\InputArgument,
  * @package     Heatbeat\CommandLine\Callback
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class Graph extends Console\Command\Command {
+class Graph extends Shared {
 
     public function configure() {
         $this
@@ -55,13 +52,9 @@ class Graph extends Console\Command\Command {
     }
 
     protected function execute(InputInterface $input, OutputInterface $output) {
-        $config = new Config();
-        $config->parse();
-        $template = new Template();
-        foreach ($config->getGraphEntities() as $entity) {
+        foreach ($this->getConfigObject()->getGraphEntities() as $entity) {
             try {
-                $template->setFilename($entity->offsetGet('template'));
-                $template->parse();
+                $template = $this->getTemplate($entity->offsetGet('template'));
                 for ($index = 0; $index < $template->getGraphEntityCount(); $index++) {
                     $commandObject = new RRDGraph();
                     $commandObject->setGraphFilename($entity->getRRDFilename() . $index);
@@ -79,23 +72,15 @@ class Graph extends Console\Command\Command {
                         $commandObject->setCdefs($template->getGraphCdefs($index));
                     if ($template->getGraphVdefs($index))
                         $commandObject->setVdefs($template->getGraphVdefs($index));
-                    $executor = new Executor();
-                    $executor->setCommandObject($commandObject);
-                    $executor->prepare();
-                    if ($input->getOption('verbose')) {
-                        $output->writeln($executor->getCommandString());
-                    }
-                    $process = $executor->execute();
-                    if ($process->isSuccessful()) {
-                        $output->writeln(sprintf("Graph created with filename '%s%s' successfully.", $entity->getRRDFilename() . $index, RRDTool::PNG_EXT));
-                    }
+                    $this->executeCommand($input, $output, $commandObject, sprintf("Success : '%s%s' created.", $entity->getRRDFilename() . $index, RRDTool::PNG_EXT));
                 }
             } catch (\Exception $e) {
                 Logger::getInstance()->log($e->getMessage());
-                $output->writeln($e->getMessage());
+                $this->renderError($e, $output);
                 continue;
             }
         }
+        $output->writeln($this->getSummary());
     }
 
 }

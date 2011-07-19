@@ -40,7 +40,7 @@ use Symfony\Component\Console\Input\InputArgument,
  * @package     Heatbeat\CommandLine\Callback
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class TestSource extends Console\Command\Command {
+class TestSource extends Shared {
 
     public function configure() {
         $this
@@ -79,15 +79,6 @@ class TestSource extends Console\Command\Command {
                 $output->writeLn(sprintf("Key : %s, Value : %s", $key, $value));
             }
         }
-    }
-
-    private function getPluginInstance($plugin) {
-        $namespaced = str_replace('_', "\\", $plugin);
-        $class_name = '\\Heatbeat\\Source\\Plugin\\' . $namespaced;
-        if (!class_exists($class_name)) {
-            throw new SourceException(sprintf('Unable to find source plugin %s', $plugin));
-        }
-        return new $class_name;
     }
 
     private function prepareArgs($arguments) {
