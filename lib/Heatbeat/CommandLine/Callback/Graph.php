@@ -80,6 +80,7 @@ class Graph extends Shared {
                 continue;
             }
         }
+        $output->writeln($this->getSummary());
     }
 
 }

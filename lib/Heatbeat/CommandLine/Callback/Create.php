@@ -71,6 +71,7 @@ class Create extends Shared {
                 continue;
             }
         }
+        $output->writeln($this->getSummary());
     }
 
 }
