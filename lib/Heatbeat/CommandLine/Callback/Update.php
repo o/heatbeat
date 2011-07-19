@@ -72,10 +72,10 @@ class Update extends Shared {
                 continue;
             }
         }
+        $output->writeln($this->getSummary());
         if ($input->getOption('no-graph') === false) {
             $this->runGraphCommand($input, $output);
         }
-        $output->writeln($this->getSummary());
     }
 
     private function runGraphCommand(InputInterface $input, OutputInterface $output) {
