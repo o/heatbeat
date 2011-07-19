@@ -40,7 +40,7 @@ use Symfony\Component\Console\Input\InputArgument,
  * @package     Heatbeat\CommandLine\Callback
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class TestSource extends Console\Command\Command {
+class TestSource extends Shared {
 
     public function configure() {
         $this
