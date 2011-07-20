@@ -34,7 +34,7 @@ namespace Heatbeat\Parser\Config\Node;
  */
 class GraphNode extends AbstractNode implements NodeInterface {
 
-    const FILENAME_SEPERATOR = '-';
+    const FILENAME_SEPERATOR = '_';
     
     public function validate() {
         $this->isDefined('template');
