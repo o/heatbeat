@@ -40,9 +40,13 @@ abstract class AbstractInputOutput extends \ArrayObject {
      *
      * @param string $index
      * @return mixed
+     * @throws SourceException
      */
     public function getValue($index) {
-        return parent::offsetGet($index);
+        if (parent::offsetExists($index)) {
+            return parent::offsetGet($index);
+        }
+        throw new SourceException(sprintf('Undefined input/output parameter : %s', $index));
     }
 
     /**
@@ -55,9 +59,8 @@ abstract class AbstractInputOutput extends \ArrayObject {
     public function setValue($index, $newval) {
         if ($index) {
             return parent::offsetSet($index, $newval);
-        } else {
-            throw new SourceException('You need to give an index to value');
         }
+        throw new SourceException('You need to give an index to value');
     }
 
 }
