@@ -4,26 +4,26 @@ configuration :
         handler : RotatingFile
 
 graphs :
-    - template : random
+    - template : Test_Random
       enabled : true
       arguments :
           min : 5
           max : 10
-          
-    - template : system_load
+
+    - template : Unix_LoadAverages
       enabled : true
-      
-    - template : weather_google
+
+    - template : Unix_LoggedUsers
+      enabled : true
+
+    - template : Unix_TcpConnections
+      enabled : true
+
+    - template : Unix_Processes
+      enabled : true
+
+    - template : Weather_Google
       enabled : true
       arguments :
           location : Istanbul,Turkey
           type : c
-
-    - template : system_loggedusers
-      enabled : true
-      
-    - template : network_tcpconnections
-      enabled : true
-      
-    - template : system_processes
-      enabled : true
