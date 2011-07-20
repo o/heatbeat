@@ -64,6 +64,8 @@ class Create extends Shared {
     protected function execute(InputInterface $input, OutputInterface $output) {
         foreach ($this->getConfigObject()->getGraphEntities() as $entity) {
             try {
+                if ($entity->offsetGet('enabled') === false)
+                    continue;
                 $template = $this->getTemplate($entity->offsetGet('template'));
                 $commandObject = new RRDCreate();
                 $commandObject->setFilename($entity->getRRDFilename());
