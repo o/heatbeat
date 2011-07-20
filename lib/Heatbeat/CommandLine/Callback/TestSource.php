@@ -30,7 +30,7 @@ use Symfony\Component\Console\Input\InputArgument,
     Symfony\Component\Console,
     Symfony\Component\Console\Input\InputInterface,
     Symfony\Component\Console\Output\OutputInterface,
-    Heatbeat\Source\SourceInput as Input,
+    Heatbeat\Source\SourceInput,
     Heatbeat\Exception\SourceException;
 
 /**
@@ -62,31 +62,32 @@ class TestSource extends Shared {
         $instance = false;
         try {
             $instance = $this->getPluginInstance($input->getArgument('source'));
-        } catch (SourceException $e) {
-            $output->writeln($e->getMessage());
-            return false;
-        }
-        $arguments = $input->getArgument('args');
-        if ($arguments) {
-            $instance->setInput($this->prepareArgs($arguments));
-        }
-        try {
-            $instance->perform();
-            $output->writeLn('Status : Success');
-            $output->writeLn('Results :');
-            foreach ($instance->getOutput() as $key => $value) {
-                $output->writeLn(sprintf("Key : %s, Value : %s", $key, $value));
+            $arguments = $input->getArgument('args');
+            if ($arguments) {
+                $instance->setInput($this->prepareArgs($arguments));
+            } else {
+                $instance->setInput(new SourceInput());
             }
-        } catch (SourceException $e) {
-            $output->writeLn('Status : Failed');
-            $output->writeLn(sprintf('Error message : %s', $e->getMessage()));
+            $instance->perform();
+            $this->renderSuccess('Fetched', $output);
+            foreach ($instance->getOutput() as $key => $value) {
+                $output->writeLn(sprintf("Key : %s \t Value : %s", $key, $value));
+            }
+        } catch (\Exception $e) {
+            $this->renderError($e, $output);
             $output->writeLn('Input values :');
             foreach ($instance->getInput() as $key => $value) {
-                $output->writeLn(sprintf("Key : %s, Value : %s", $key, $value));
+                $output->writeLn(sprintf("Key : %s \t Value : %s", $key, $value));
             }
         }
     }
 
+    /**
+     * Prepares key:value values as SourceInput
+     *
+     * @param string $arguments
+     * @return SourceInput
+     */
     private function prepareArgs($arguments) {
         $sourceArray = array();
         $argumentsArray = explode("|", $arguments);
@@ -94,7 +95,7 @@ class TestSource extends Shared {
             $kv = explode(":", $argument);
             $sourceArray[$kv[0]] = $kv[1];
         }
-        return new Input($sourceArray);
+        return new SourceInput($sourceArray);
     }
 
 }
