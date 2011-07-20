@@ -2,7 +2,7 @@ template :
     options :
         name : System Load
         version : 1.0
-        source-name : System_Load
+        source-name : Unix_LoadAverages
 rrd:
     options :
         step : 300

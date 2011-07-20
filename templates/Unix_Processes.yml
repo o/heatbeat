@@ -2,7 +2,7 @@ template :
     options :
         name : Unix process count
         version : 1.0
-        source-name : System_Processes
+        source-name : Unix_Processes
 rrd:
     options :
         step : 300

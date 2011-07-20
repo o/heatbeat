@@ -2,7 +2,7 @@ template :
     options :
         name : Random
         version : 0.0.1
-        source-name : Foo_Random
+        source-name : Test_Random
 rrd:
     options :
         # 5 minute is minimum there
