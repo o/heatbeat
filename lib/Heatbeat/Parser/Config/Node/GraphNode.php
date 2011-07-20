@@ -50,7 +50,12 @@ class GraphNode extends AbstractNode implements NodeInterface {
     private function getHash() {
         return substr(md5($this->serialize()), 0, 8);
     }
-    
+
+    /**
+     * Returns the hash appended template name
+     *
+     * @return string
+     */
     public function getRRDFilename() {
         return $this->offsetGet('template') . self::FILENAME_SEPERATOR . $this->getHash();
     }
