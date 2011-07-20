@@ -22,13 +22,16 @@ class AbstractInputOutputTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals(5, $this->object->getValue('users'));
 
         $this->setExpectedException('Heatbeat\Exception\SourceException');
-        $this->object->setValue('', 'bogus');
+        $this->object->getValue('bogus');
     }
 
     public function testSetValue() {
         $this->assertFalse($this->object->offsetExists('bar'));
         $this->object->setValue('bar', 'baz');
         $this->assertEquals('baz', $this->object->getValue('bar'));
+
+        $this->setExpectedException('Heatbeat\Exception\SourceException');
+        $this->object->setValue('', 'bogus');
     }
 
 }
