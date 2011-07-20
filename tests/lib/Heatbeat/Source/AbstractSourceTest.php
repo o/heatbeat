@@ -46,18 +46,13 @@ class AbstractSourceTest extends \PHPUnit_Framework_TestCase {
         $this->object->setInput('bogus');
     }
 
-    /**
-     * @todo Implement testGetExternalFolderPath().
-     */
-    public function testGetExternalFolderPath() {
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
-    }
-
     public function testPerform() {
         $this->setExpectedException('\Heatbeat\Exception\SourceException');
         $this->object->perform();
+    }
+
+    public function testgetExternalFolderPath() {
+        $this->assertStringEndsWith('heatbeat/external', $this->object->getExternalFolderPath());
     }
 
 }
