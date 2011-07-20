@@ -16,36 +16,40 @@
  * limitations under the License. 
  *
  * @category    Heatbeat
- * @package     Heatbeat\Source\Plugin\System
+ * @package     Heatbeat\Source\Plugin\Unix
  * @author      Osman Ungur <osmanungur@gmail.com>
  * @copyright   2011 Osman Ungur
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  * @link        http://github.com/import/heatbeat
  */
 
-namespace Heatbeat\Source\Plugin\System;
+namespace Heatbeat\Source\Plugin\Unix;
 
 use Heatbeat\Source\AbstractSource,
     Heatbeat\Source\SourceOutput,
-    Heatbeat\Exception\SourceException,
-    Heatbeat\Util\CommandExecutor;
+    Heatbeat\Exception\SourceException;
 
 /**
- * Class for fetching currently logged user count
+ * Class for fetching Unix system load values
  *
  * @category    Heatbeat
- * @package     Heatbeat\Source\Plugin\System
+ * @package     Heatbeat\Source\Plugin\Unix
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class LoggedUsers extends AbstractSource {
+class LoadAverages extends AbstractSource {
 
     public function perform() {
-        $command = 'who | grep -c :';
-        $result = shell_exec($command);
+        $loads = false;
+        if (function_exists('sys_getloadavg')) {
+            $loads = sys_getloadavg();
+        } else {
+            throw new SourceException('Unable to fetch system load averages');
+        }
         $output = new SourceOutput();
-        $output->setValue('users', (int) $result);
+        $output->setValue('1min', $loads[0]);
+        $output->setValue('5min', $loads[1]);
+        $output->setValue('15min', $loads[2]);
         $this->setOutput($output);
-        return true;
     }
 
 }
