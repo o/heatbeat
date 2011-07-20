@@ -51,6 +51,12 @@ class Graph extends Shared {
                 ->setDescription('Creates graphs of RRD files');
     }
 
+    /**
+     * Executes command
+     *
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     */
     protected function execute(InputInterface $input, OutputInterface $output) {
         foreach ($this->getConfigObject()->getGraphEntities() as $entity) {
             try {

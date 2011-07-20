@@ -53,6 +53,12 @@ class Update extends Shared {
                 ->addOption('no-graph', null, InputOption::VALUE_NONE, 'If set, graphs not will be created.');
     }
 
+    /**
+     * Executes command
+     *
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     */
     protected function execute(InputInterface $input, OutputInterface $output) {
         foreach ($this->getConfigObject()->getGraphEntities() as $entity) {
             try {
@@ -78,6 +84,12 @@ class Update extends Shared {
         }
     }
 
+    /**
+     * Invokes heatbeat:graph command
+     *
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     */
     private function runGraphCommand(InputInterface $input, OutputInterface $output) {
         $command = $this->getApplication()->find('graph');
         $input = new Console\Input\ArrayInput(
