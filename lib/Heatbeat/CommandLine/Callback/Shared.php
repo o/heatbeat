@@ -120,11 +120,11 @@ class Shared extends Command {
     }
 
     protected function renderError($e, OutputInterface $output) {
-        $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
+        $output->writeln(sprintf("<error>Error\t</error> %s", $e->getMessage()));
     }
 
     protected function renderSuccess($message, OutputInterface $output) {
-        $output->writeln(sprintf('<info>%s</info>', $message));
+        $output->writeln(sprintf("<info>Success\t</info> %s", $message));
     }
 
 }

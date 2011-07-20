@@ -72,7 +72,7 @@ class Graph extends Shared {
                         $commandObject->setCdefs($template->getGraphCdefs($index));
                     if ($template->getGraphVdefs($index))
                         $commandObject->setVdefs($template->getGraphVdefs($index));
-                    $this->executeCommand($input, $output, $commandObject, sprintf("Success : '%s%s' created.", $entity->getRRDFilename() . $index, RRDTool::PNG_EXT));
+                    $this->executeCommand($input, $output, $commandObject, $entity->getRRDFilename() . $index, RRDTool::PNG_EXT);
                 }
             } catch (\Exception $e) {
                 Logger::getInstance()->log($e->getMessage());

@@ -40,7 +40,7 @@ class Runner extends Application {
         parent::__construct('Heatbeat (c) 2011, Osman Ungur', '1.1');
 
         $this->addCommands(array(
-            new Callback\Create,
+            new Callback\Create(),
             new Callback\Update(),
             new Callback\TestSource(),
             new Callback\Graph()
