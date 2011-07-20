@@ -52,6 +52,12 @@ class TestSource extends Shared {
                 ));
     }
 
+    /**
+     * Executes command
+     *
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     */
     protected function execute(InputInterface $input, OutputInterface $output) {
         $instance = false;
         try {

@@ -55,6 +55,12 @@ class Create extends Shared {
                 ->addOption('overwrite', null, InputOption::VALUE_NONE, "This option overwrites all created RRD's");
     }
 
+    /**
+     * Executes command
+     *
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     */
     protected function execute(InputInterface $input, OutputInterface $output) {
         foreach ($this->getConfigObject()->getGraphEntities() as $entity) {
             try {
