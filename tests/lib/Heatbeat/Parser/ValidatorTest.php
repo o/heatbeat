@@ -89,6 +89,8 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase {
         $this->assertFalse($this->object->isNotBlank(NULL));
         $this->assertTrue($this->object->isNotBlank(0));
         $this->assertTrue($this->object->isNotBlank('foo'));
+        $this->assertTrue($this->object->isNotBlank(FALSE));
+        $this->assertTrue($this->object->isNotBlank(TRUE));
     }
 
     public function validIntProvider() {
