@@ -16,33 +16,34 @@
  * limitations under the License. 
  *
  * @category    Heatbeat
- * @package     Heatbeat\Source\Plugin\System
+ * @package     Heatbeat\Source\Plugin\Unix
  * @author      Osman Ungur <osmanungur@gmail.com>
  * @copyright   2011 Osman Ungur
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  * @link        http://github.com/import/heatbeat
  */
 
-namespace Heatbeat\Source\Plugin\System;
+namespace Heatbeat\Source\Plugin\Unix;
 
 use Heatbeat\Source\AbstractSource,
     Heatbeat\Source\SourceOutput,
-    Heatbeat\Exception\SourceException;
+    Heatbeat\Exception\SourceException,
+    Heatbeat\Util\CommandExecutor;
 
 /**
- * Class for fetching current process count
+ * Class for fetching currently logged user count
  *
  * @category    Heatbeat
- * @package     Heatbeat\Source\Plugin\System
+ * @package     Heatbeat\Source\Plugin\Unix
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class Processes extends AbstractSource {
+class LoggedUsers extends AbstractSource {
 
     public function perform() {
-        $command = 'ps ax | grep -c : ';
+        $command = 'who | grep -c :';
         $result = shell_exec($command);
         $output = new SourceOutput();
-        $output->setValue('processes', (int) $result);
+        $output->setValue('users', (int) $result);
         $this->setOutput($output);
         return true;
     }
