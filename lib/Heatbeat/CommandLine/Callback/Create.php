@@ -64,7 +64,7 @@ class Create extends Shared {
                 $commandObject->setOverwrite($input->getOption('overwrite'));
                 $commandObject->setDatastores($template->getRrdDatastores());
                 $commandObject->setRras($template->getRrdRras());
-                $this->executeCommand($input, $output, $commandObject, sprintf("Success : '%s%s' created", $entity->getRRDFilename(), RRDTool::RRD_EXT));
+                $this->executeCommand($input, $output, $commandObject, $entity->getRRDFilename() . RRDTool::RRD_EXT);
             } catch (\Exception $e) {
                 Logger::getInstance()->log($e->getMessage());
                 $this->renderError($e, $output);

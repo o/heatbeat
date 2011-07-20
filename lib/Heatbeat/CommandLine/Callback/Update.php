@@ -65,7 +65,7 @@ class Update extends Shared {
                 $commandObject = new RRDUpdate();
                 $commandObject->setFilename($entity->getRRDFilename());
                 $commandObject->setValues($pluginInstance->getOutput());
-                $this->executeCommand($input, $output, $commandObject, sprintf("Success : '%s%s' updated", $entity->getRRDFilename(), RRDTool::RRD_EXT));
+                $this->executeCommand($input, $output, $commandObject, $entity->getRRDFilename() . RRDTool::RRD_EXT);
             } catch (\Exception $e) {
                 Logger::getInstance()->log($e->getMessage());
                 $this->renderError($e, $output);
