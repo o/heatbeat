@@ -26,7 +26,8 @@
 namespace Heatbeat\Parser\Template\Node;
 
 use Heatbeat\Exception\NodeValidationException,
-    Heatbeat\Util\Command\RRDTool\GraphCommand;
+    Heatbeat\Util\Command\RRDTool\GraphCommand,
+    Heatbeat\Parser\Validator;
 
 /**
  * Abstract class for template nodes
@@ -66,7 +67,7 @@ abstract class AbstractNode extends \ArrayObject {
     
     public function __construct($input) {
         parent::__construct($input);
-        $this->validator = new \Heatbeat\Parser\Validator();
+        $this->validator = new Validator();
     }
 
     /**
