@@ -38,10 +38,11 @@ graphs :
             upper : auto
             start : -1day
           items :
-              - type : LINE2
+              - type : AREA
                 definition-name: current
-                color : E8515B
+                color : CC3118
                 legend : Temperature
+                stack : false
           defs:
               - name: current
                 datastore-name: current
