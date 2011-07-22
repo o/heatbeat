@@ -7,23 +7,33 @@ graphs :
     - template : Test_Random
       enabled : true
       arguments :
+          # Minimum number
           min : 5
+          # Maximum number
           max : 10
 
     - template : Unix_LoadAverages
-      enabled : true
+      enabled : false
 
     - template : Unix_LoggedUsers
-      enabled : true
+      enabled : false
 
     - template : Unix_TcpConnections
-      enabled : true
+      enabled : false
 
     - template : Unix_Processes
-      enabled : true
+      enabled : false
+
+    - template : Unix_DiskStats
+      enabled : false
+      arguments :
+          # Filesystem name
+          disk : /dev/*
 
     - template : Weather_Google
-      enabled : true
+      enabled : false
       arguments :
-          location : Istanbul,Turkey
+          # Location, ex : Istanbul, Turkey
+          location : Place
+          # Type of unit (c/f)
           type : c
