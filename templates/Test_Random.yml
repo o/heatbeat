@@ -53,6 +53,7 @@ graphs :
                 definition-name: rand1
                 color : C1D6C3
                 legend : Random 1
+                stack : false
           defs:
               - name: rand1
                 datastore-name: rand1
@@ -69,6 +70,7 @@ graphs :
                 definition-name: rand2
                 color : 78A689
                 legend : Random 2
+                stack : false
           defs:
               - name: rand2
                 datastore-name: rand2

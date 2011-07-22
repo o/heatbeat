@@ -52,14 +52,17 @@ graphs :
                 definition-name: 1min
                 color : CFF09E
                 legend : 1 Minute
-              - type : STACK
+                stack : false
+              - type : AREA
                 definition-name: 5min
                 color : A8DBA8
                 legend : 5 Minute
-              - type : STACK
+                stack : true
+              - type : AREA
                 definition-name: 15min
                 color : 79BD9A
                 legend : 15 Minute
+                stack : true
           defs:
               - name: 1min
                 datastore-name: 1min
