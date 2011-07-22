@@ -55,8 +55,7 @@ abstract class AbstractNode extends \ArrayObject {
         'LINE',
         'LINE1',
         'LINE2',
-        'LINE3',
-        'STACK'
+        'LINE3'
     );
 
     /**

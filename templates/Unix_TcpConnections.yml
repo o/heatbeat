@@ -40,8 +40,9 @@ graphs :
           items :
               - type : AREA
                 definition-name: connections
-                color : B49E79
+                color : DE48EC
                 legend : Connections
+                stack : false
           defs:
               - name: connections
                 datastore-name: connections
