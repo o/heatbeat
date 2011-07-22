@@ -40,7 +40,7 @@ graphs :
           items :
               - type : AREA
                 definition-name: connections
-                color : DE48EC
+                color : 1598C3
                 legend : Connections
                 stack : false
           defs:

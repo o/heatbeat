@@ -38,7 +38,7 @@ graphs :
             upper : auto
             start : -1day
           items :
-              - type : AREA
+              - type : LINE2
                 definition-name: current
                 color : CC3118
                 legend : Temperature
