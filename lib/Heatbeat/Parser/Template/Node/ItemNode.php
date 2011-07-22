@@ -34,12 +34,17 @@ namespace Heatbeat\Parser\Template\Node;
  */
 class ItemNode extends AbstractNode implements NodeInterface {
 
+    const STACK = 'STACK';
+
     public function getAsString() {
-        return implode(self::SEPERATOR, array(
+        $item = array(
             $this->offsetGet('type'),
-            $this->offsetGet('definition-name') . '#' . $this->offsetGet('color'),
-            sprintf('%s', $this->offsetGet('legend'))
-        ));
+            $this->offsetGet('definition-name') . chr(35) . $this->offsetGet('color'),
+            $this->offsetGet('legend')
+        );
+        if ($this->offsetGet('stack') == true)
+            array_push($item, self::STACK);
+        return implode(self::SEPERATOR, $item);
     }
 
     public function validate() {
@@ -50,6 +55,7 @@ class ItemNode extends AbstractNode implements NodeInterface {
         $this->isDefined('color');
         $this->isValidColor('color');
         $this->isDefined('legend');
+        $this->isDefined('stack');
         return true;
     }
 
