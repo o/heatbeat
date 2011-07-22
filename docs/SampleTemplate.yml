@@ -51,7 +51,9 @@ graphs :
                 # Hex color value
                 color :
                 # String is printed in the legend section
-                legend :      
+                legend :    
+                # If true this line is stacked on top of the previous element which can be a LINE or an AREA.  
+                stack :
           gprints :
               # Name of definition for use as value
               - definition-name :
