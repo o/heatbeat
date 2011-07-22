@@ -34,7 +34,8 @@ use Symfony\Component\Console\Input\InputArgument,
     Heatbeat\Util\CommandExecutor as Executor,
     Heatbeat\Parser\Template\TemplateParser as Template,
     Heatbeat\Parser\Config\ConfigParser as Config,
-    Heatbeat\Util\AbstractCommand;
+    Heatbeat\Util\AbstractCommand,
+    Heatbeat\Exception\SourceException;
 
 /**
  * Shared methods for commands
