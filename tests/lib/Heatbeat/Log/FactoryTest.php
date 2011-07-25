@@ -51,6 +51,10 @@ class FactoryTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testSetConfigObject() {
+        $configObject = $this->getLogDisabledConfig();
+        $object = new Factory($configObject, Factory::FILE_HANDLER);
+        $this->assertEquals($configObject, $object->getConfigObject());
+
         $this->setExpectedException('\ErrorException');
         new Factory(new \stdClass(), Factory::DUMMY_HANDLER);
     }
