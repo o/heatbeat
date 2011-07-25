@@ -34,21 +34,21 @@ use Heatbeat\Autoloader;
  * @package     Heatbeat\Log\Handler
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class RotatingFileHandler extends AbstractLogHandler {
+class RotatingFileHandler extends AbstractLogHandler implements LogHandlerInterface {
 
-    protected function handle($message) {
-        return file_put_contents($this->getFilename(), $message, FILE_APPEND | LOCK_EX);
+    protected function handle() {
+        return file_put_contents($this->getFilename(), $this->getMessage(), FILE_APPEND | LOCK_EX);
     }
 
     protected function isHandling() {
         return \is_writable($this->getLogFolder() . \DIRECTORY_SEPARATOR);
     }
 
-    protected function format($message) {
-        return sprintf("%s %s \r\n", time(), (string) $message);
+    protected function format() {
+        return $this->setMessage(sprintf("%s %s \r\n", time(), (string) $this->getMessage()));
     }
 
-    private function getFilename() {
+    protected function getFilename() {
         return $this->getLogFolder() . \DIRECTORY_SEPARATOR . strftime('%Y-%m-%d') . '.log';
     }
 

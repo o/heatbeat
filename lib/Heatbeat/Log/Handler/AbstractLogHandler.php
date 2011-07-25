@@ -37,15 +37,21 @@ use Heatbeat\Exception\LoggingException;
 abstract class AbstractLogHandler {
 
     final public function log($message) {
+        $this->setMessage();
         if ($this->isHandling()) {
-            return $this->handle($this->format($message));
+            $this->format();
+            $this->handle();
+            return true;
         }
         throw new LoggingException('A problem occured when logging message.');
     }
 
-    abstract protected function handle($message);
+    protected function getMessage() {
+        return $this->message;
+    }
 
-    abstract protected function isHandling();
+    protected function setMessage($message) {
+        $this->message = $message;
+    }
 
-    abstract protected function format($message);
 }

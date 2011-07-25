@@ -34,9 +34,9 @@ use Heatbeat\Autoloader;
  * @package     Heatbeat\Log\Handler
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class DummyHandler extends AbstractLogHandler {
+class DummyHandler extends AbstractLogHandler implements LogHandlerInterface {
 
-    protected function handle($message) {
+    protected function handle() {
         return true;
     }
 
@@ -44,8 +44,8 @@ class DummyHandler extends AbstractLogHandler {
         return true;
     }
 
-    protected function format($message) {
-        return $message;
+    protected function format() {
+        return $this->getMessage();
     }
 
 }
