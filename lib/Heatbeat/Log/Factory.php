@@ -58,8 +58,9 @@ class Factory {
      */
     private function setHandler($handler) {
         $configValues = $this->getConfigObject()->getConfigurationOptions()->offsetGet('log');
+        var_dump($configValues);
         if ($configValues['enabled'] == false) {
-            $this->handler = self::DUMMY_HANDLER;
+            $this->setHandlerObject(new DummyHandler());
             return true;
         }
         switch ($handler) {
@@ -74,7 +75,7 @@ class Factory {
                 break;
 
             default:
-                throw new LoggingException(sprintf('Logging handler not found : %s', $this->getHandler()));
+                throw new LoggingException(sprintf('Logging handler not found : %s', $handler));
                 break;
         }
     }
@@ -84,7 +85,7 @@ class Factory {
      *
      * @return Config
      */
-    protected function getConfigObject() {
+    public function getConfigObject() {
         return $this->configObject;
     }
 
@@ -102,7 +103,7 @@ class Factory {
      *
      * @return LogHandlerInterface
      */
-    protected function getHandlerObject() {
+    public function getHandlerObject() {
         return $this->handlerObject;
     }
 
