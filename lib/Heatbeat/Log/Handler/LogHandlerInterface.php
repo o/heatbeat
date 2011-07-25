@@ -36,9 +36,9 @@ use Heatbeat\Autoloader;
  */
 interface LogHandlerInterface {
 
-    protected function handle($message);
+    public function handle();
 
-    protected function isHandling();
+    public function isHandling();
 
-    protected function format($message);
+    public function format();
 }

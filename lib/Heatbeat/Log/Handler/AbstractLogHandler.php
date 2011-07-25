@@ -46,11 +46,11 @@ abstract class AbstractLogHandler {
         throw new LoggingException('A problem occured when logging message.');
     }
 
-    protected function getMessage() {
+    public function getMessage() {
         return $this->message;
     }
 
-    protected function setMessage($message) {
+    public function setMessage($message) {
         $this->message = $message;
     }
 

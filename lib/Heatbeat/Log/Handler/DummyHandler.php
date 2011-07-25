@@ -36,15 +36,15 @@ use Heatbeat\Autoloader;
  */
 class DummyHandler extends AbstractLogHandler implements LogHandlerInterface {
 
-    protected function handle() {
+    public function handle() {
         return true;
     }
 
-    protected function isHandling() {
+    public function isHandling() {
         return true;
     }
 
-    protected function format() {
+    public function format() {
         return $this->getMessage();
     }
 

@@ -36,15 +36,15 @@ use Heatbeat\Autoloader;
  */
 class RotatingFileHandler extends AbstractLogHandler implements LogHandlerInterface {
 
-    protected function handle() {
-        return file_put_contents($this->getFilename(), $this->getMessage(), FILE_APPEND | LOCK_EX);
+    public function handle() {
+        return (bool) file_put_contents($this->getFilename(), $this->getMessage(), FILE_APPEND | LOCK_EX);
     }
 
-    protected function isHandling() {
+    public function isHandling() {
         return \is_writable($this->getLogFolder() . \DIRECTORY_SEPARATOR);
     }
 
-    protected function format() {
+    public function format() {
         return $this->setMessage(sprintf("%s %s \r\n", time(), (string) $this->getMessage()));
     }
 
