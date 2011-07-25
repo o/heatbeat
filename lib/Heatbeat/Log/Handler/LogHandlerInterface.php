@@ -32,10 +32,9 @@ namespace Heatbeat\Log\Handler;
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
 interface LogHandlerInterface {
-    public function init();
+    private function handle($message);
 
-    public function handle($data);
+    private function isHandling();
 
-    public function isHandling();
-    
+    private function format();
 }

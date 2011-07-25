@@ -26,73 +26,53 @@
 namespace Heatbeat\Log;
 
 use Heatbeat\Autoloader,
-    Heatbeat\Log\Handler,
+    Heatbeat\Log\Handler\RotatingFileHandler,
+    Heatbeat\Log\Handler\DummyHandler,
     Heatbeat\Exception\LoggingException,
     Heatbeat\Parser\Config\ConfigParser as Config;
 
 /**
- * Config file parser
+ * Factory for logging
  *
  * @category    Heatbeat
  * @package     Heatbeat\Log
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class BaseLogger {
+class Factory {
+    const FILE_HANDLER = 'RotatingFileHandler';
+    const DUMMY_HANDLER = 'DummyHandler';
 
-    private static $instance;
-    private $isEnabled;
     private $handler;
 
-    public static function getInstance() {
-        if (null === self::$instance) {
-            self::$instance = new self();
-        }
-        return self::$instance;
-    }
-
-    public function __construct() {
+    public function __construct($handler) {
         $config = new Config();
         $config->setFilepath(Autoloader::getInstance()->getPath(Autoloader::FOLDER_ROOT));
         $config->setFilename(Config::FILENAME);
         $config->parse();
         $values = $config->getConfigurationOptions()->offsetGet('log');
-        $this->setHandler($values['handler']);
-        $this->setIsEnabled($values['enabled']);
+        $this->setHandler($handler);
+        if ($values['enabled'] == false)
+            $this->setHandler(self::DUMMY_HANDLER);
     }
 
-    public function log($message) {
-        if ($this->getIsEnabled()) {
-            if ($this->getHandler()->isHandling()) {
-                $this->getHandler()->handle($message);
-                return true;
-            }
-            throw new LoggingException("A logging problem occured, please check your logs is writable.");
+    public function getHandler() {
+        switch ($this->handler) {
+            case self::FILE_HANDLER:
+                return new RotatingFileHandler();
+                break;
+
+            case self::DUMMY_HANDLER:
+                return new DummyHandler();
+                break;
+
+            default:
+                throw new LoggingException(sprintf('Logging handler not found : %s', $this->handler));
+                break;
         }
-        return false;
     }
 
-    private function getIsEnabled() {
-        return $this->isEnabled;
-    }
-
-    public function setIsEnabled($isEnabled) {
-        $this->isEnabled = $isEnabled;
-    }
-
-    private function getHandler() {
-        return $this->handler;
-    }
-
-    public function setHandler($handler) {
-        $class_name = "\\Heatbeat\\Log\\Handler\\" . $handler . "Handler";
-        if (class_exists($class_name)) {
-            $instance = new $class_name;
-            $instance->init();
-            $this->handler = $instance;
-            return true;
-        } else {
-            throw new LoggingException(sprintf("Unable to load log handler class %s", $handler));
-        }
+    private function setHandler($handler) {
+        $this->handler = $handler;
     }
 
 }
