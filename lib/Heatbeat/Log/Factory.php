@@ -39,24 +39,25 @@ use Heatbeat\Autoloader,
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
 class Factory {
-    const FILE_HANDLER = 'RotatingFileHandler';
-    const DUMMY_HANDLER = 'DummyHandler';
+
+    const FILE_HANDLER = 1;
+    const DUMMY_HANDLER = 2;
 
     private $handler;
+    private $configObject;
 
-    public function __construct($handler) {
-        $config = new Config();
-        $config->setFilepath(Autoloader::getInstance()->getPath(Autoloader::FOLDER_ROOT));
-        $config->setFilename(Config::FILENAME);
-        $config->parse();
-        $values = $config->getConfigurationOptions()->offsetGet('log');
+    public function __construct($config, $handler) {
+        $this->setConfigObject($config);
         $this->setHandler($handler);
-        if ($values['enabled'] == false)
-            $this->setHandler(self::DUMMY_HANDLER);
     }
 
-    public function getHandler() {
-        switch ($this->handler) {
+    /**
+     * Returns log handler interface
+     *
+     * @return LogHandlerInterface
+     */
+    public function getHandlerObject() {
+        switch ($this->getHandler()) {
             case self::FILE_HANDLER:
                 return new RotatingFileHandler();
                 break;
@@ -66,13 +67,47 @@ class Factory {
                 break;
 
             default:
-                throw new LoggingException(sprintf('Logging handler not found : %s', $this->handler));
+                throw new LoggingException(sprintf('Logging handler not found : %s', $this->getHandler()));
                 break;
         }
     }
 
+    /**
+     * Sets handler interface object
+     *
+     * @param string $handler
+     */
     private function setHandler($handler) {
         $this->handler = $handler;
+        $configValues = $this->getConfigObject()->getConfigurationOptions()->offsetGet('log');
+        if ($configValues['enabled'] == false)
+            $this->handler = self::DUMMY_HANDLER;
+    }
+
+    /**
+     *
+     * @return LogHandlerInterface
+     */
+    private function getHandler() {
+        return $this->handler;
+    }
+
+    /**
+     * Returns config object
+     *
+     * @return Config
+     */
+    public function getConfigObject() {
+        return $this->configObject;
+    }
+
+    /**
+     * Sets prepared config object
+     *
+     * @param Config $configObject
+     */
+    public function setConfigObject(Config $configObject) {
+        $this->configObject = $configObject;
     }
 
 }
