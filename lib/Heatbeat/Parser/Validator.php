@@ -65,7 +65,7 @@ class Validator {
      * @return bool 
      */
     public function isNotBlank($value) {
-        return!(empty($value) AND !is_numeric($value));
+        return (empty($value) AND !is_numeric($value) AND !is_bool($value)) == false;
     }
 
     /**

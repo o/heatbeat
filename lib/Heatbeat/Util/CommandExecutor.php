@@ -117,6 +117,7 @@ class CommandExecutor {
     public function execute() {
         $process = new Process($this->getCommandString());
         $process->setEnv(explode(PATH_SEPARATOR, \getenv('PATH')));
+        $process->setTimeout(5);
         $process->run();
         if (!$process->isSuccessful()) {
             throw new ExecutionException($process->getErrorOutput());

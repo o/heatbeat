@@ -2,7 +2,7 @@ template :
     options :
         name : Unix logged in user count
         version : 1.0
-        source-name : System_LoggedUsers
+        source-name : Unix_LoggedUsers
 rrd:
     options :
         step : 300
@@ -38,10 +38,11 @@ graphs :
             upper : auto
             start : -1day
           items :
-              - type : LINE3
+              - type : LINE
                 definition-name: users
-                color : 69D2E7
+                color : C9B215
                 legend : Users
+                stack : false               
           defs:
               - name: users
                 datastore-name: users

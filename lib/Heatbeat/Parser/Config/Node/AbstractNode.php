@@ -25,7 +25,8 @@
 
 namespace Heatbeat\Parser\Config\Node;
 
-use Heatbeat\Exception\NodeValidationException;
+use Heatbeat\Exception\NodeValidationException,
+    Heatbeat\Parser\Validator;
 
 /**
  * Abstract class for config nodes
@@ -40,9 +41,14 @@ abstract class AbstractNode extends \ArrayObject {
 
     public function __construct($input) {
         parent::__construct($input);
-        $this->validator = new \Heatbeat\Parser\Validator();
+        $this->validator = new Validator();
     }
 
+    /**
+     * Returns validator object
+     *
+     * @return Validator
+     */
     public function getValidator() {
         return $this->validator;
     }

@@ -1,17 +1,17 @@
 template :
     options :
-        name : Google Weather Api
+        name : Unix active tcp connection count
         version : 1.0
-        source-name : Weather_Google
+        source-name : Unix_TcpConnections 
 rrd:
     options :
         step : 300
     datastores:
-        - name: current
+        - name: connections
           type: GAUGE
           heartbeat: 600
           min: 0
-          max: 273
+          max: 10000
     rras:
         - cf: ['AVERAGE', 'MAX']
           xff: 0.5
@@ -29,20 +29,21 @@ rrd:
           xff: 0.5
           steps: 288
           rows: 797
-graphs :          
+graphs :
         - options :
-            name : Current Temperature - 1 day
-            label : Degree
+            name : Active TCP connections - 1 day
+            label : Connections
             base : 1000
-            lower : auto
+            lower : 0
             upper : auto
             start : -1day
           items :
-              - type : LINE2
-                definition-name: current
-                color : E8515B
-                legend : Temperature
+              - type : AREA
+                definition-name: connections
+                color : 1598C3
+                legend : Connections
+                stack : false
           defs:
-              - name: current
-                datastore-name: current
+              - name: connections
+                datastore-name: connections
                 cf: AVERAGE

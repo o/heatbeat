@@ -16,40 +16,35 @@
  * limitations under the License. 
  *
  * @category    Heatbeat
- * @package     Heatbeat\Source\Plugin\System
+ * @package     Heatbeat\Source\Plugin\Unix
  * @author      Osman Ungur <osmanungur@gmail.com>
  * @copyright   2011 Osman Ungur
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  * @link        http://github.com/import/heatbeat
  */
 
-namespace Heatbeat\Source\Plugin\System;
+namespace Heatbeat\Source\Plugin\Unix;
 
 use Heatbeat\Source\AbstractSource,
     Heatbeat\Source\SourceOutput,
     Heatbeat\Exception\SourceException;
 
 /**
- * Class for fetching Unix system load values
+ * Class for fetching active tcp connection count
  *
  * @category    Heatbeat
- * @package     Heatbeat\Source\Plugin\System
+ * @package     Heatbeat\Source\Plugin\Unix
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class Load extends AbstractSource {
+class TcpConnections extends AbstractSource {
 
     public function perform() {
-        $loads = false;
-        if (function_exists('sys_getloadavg')) {
-            $loads = sys_getloadavg();
-        } else {
-            throw new SourceException('Unable to fetch system load averages');
-        }
+        $command = 'netstat -n | grep -c tcp';
+        $result = shell_exec($command);
         $output = new SourceOutput();
-        $output->setValue('1min', $loads[0]);
-        $output->setValue('5min', $loads[1]);
-        $output->setValue('15min', $loads[2]);
+        $output->setValue('connections', (int) $result);
         $this->setOutput($output);
+        return true;
     }
 
 }

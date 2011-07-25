@@ -47,13 +47,11 @@ class Google extends AbstractSource {
         switch ($this->getInput()->getValue('type')) {
             case 'c':
                 $degree = (int) $current[0]->temp_c['data'];
-
                 break;
+
             case 'f':
                 $degree = (int) $current[0]->temp_f['data'];
-
                 break;
-
 
             default:
                 throw new SourceException('Wrong type provided, must be c or f');

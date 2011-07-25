@@ -4,26 +4,36 @@ configuration :
         handler : RotatingFile
 
 graphs :
-    - template : random
+    - template : Test_Random
       enabled : true
       arguments :
+          # Minimum number
           min : 5
+          # Maximum number
           max : 10
-          
-    - template : system_load
-      enabled : true
-      
-    - template : weather_google
-      enabled : true
-      arguments :
-          location : Istanbul,Turkey
-          type : c
 
-    - template : system_loggedusers
-      enabled : true
-      
-    - template : network_tcpconnections
-      enabled : true
-      
-    - template : system_processes
-      enabled : true
+    - template : Unix_LoadAverages
+      enabled : false
+
+    - template : Unix_LoggedUsers
+      enabled : false
+
+    - template : Unix_TcpConnections
+      enabled : false
+
+    - template : Unix_Processes
+      enabled : false
+
+    - template : Unix_DiskStats
+      enabled : false
+      arguments :
+          # Filesystem name
+          disk : /dev/*
+
+    - template : Weather_Google
+      enabled : false
+      arguments :
+          # Location, ex : Istanbul, Turkey
+          location : Place
+          # Type of unit (c/f)
+          type : c
