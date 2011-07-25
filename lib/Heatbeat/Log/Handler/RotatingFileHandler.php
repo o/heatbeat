@@ -41,7 +41,7 @@ class RotatingFileHandler extends AbstractLogHandler {
     }
 
     protected function isHandling() {
-        return \is_writable(Autoloader::getInstance()->getPath(Autoloader::FOLDER_LOG) . \DIRECTORY_SEPARATOR);
+        return \is_writable($this->getLogFolder() . \DIRECTORY_SEPARATOR);
     }
 
     protected function format($message) {
@@ -49,7 +49,11 @@ class RotatingFileHandler extends AbstractLogHandler {
     }
 
     private function getFilename() {
-        return Autoloader::getInstance()->getPath(Autoloader::FOLDER_LOG) . \DIRECTORY_SEPARATOR . strftime('%Y-%m-%d') . '.log';
+        return $this->getLogFolder() . \DIRECTORY_SEPARATOR . strftime('%Y-%m-%d') . '.log';
+    }
+
+    protected function getLogFolder() {
+        return Autoloader::getInstance()->getPath(Autoloader::FOLDER_LOG);
     }
 
 }
