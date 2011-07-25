@@ -43,4 +43,9 @@ abstract class AbstractLogHandler {
         throw new LoggingException('A problem occured when logging message.');
     }
 
+    abstract protected function handle($message);
+
+    abstract protected function isHandling();
+
+    abstract protected function format($message);
 }

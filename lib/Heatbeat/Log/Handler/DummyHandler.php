@@ -34,17 +34,17 @@ use Heatbeat\Autoloader;
  * @package     Heatbeat\Log\Handler
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class DummyHandler extends AbstractLogHandler implements LogHandlerInterface {
+class DummyHandler extends AbstractLogHandler {
 
-    private function handle($message) {
+    protected function handle($message) {
         return true;
     }
 
-    private function isHandling() {
+    protected function isHandling() {
         return true;
     }
 
-    private function format($message) {
+    protected function format($message) {
         return $message;
     }
 
