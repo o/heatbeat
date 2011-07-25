@@ -32,7 +32,7 @@ class DummyHandlerTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testLog() {
-        $this->assertTrue($this->object->log());
+        $this->assertTrue($this->object->log('foo'));
     }
 
 }
