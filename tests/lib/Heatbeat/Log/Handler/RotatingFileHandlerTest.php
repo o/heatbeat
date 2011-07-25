@@ -15,31 +15,24 @@ class RotatingFileHandlerTest extends \PHPUnit_Framework_TestCase {
     protected function setUp() {
         $factory = new \Heatbeat\Log\Factory(\Heatbeat\Log\FactoryTest::getLogEnabledConfig(), \Heatbeat\Log\Factory::FILE_HANDLER);
         $this->object = $factory->getHandlerObject();
+        $this->object->setMessage('foo');
     }
 
     public function testHandle() {
-        $method = new \ReflectionMethod($this->object, 'handle');
-        $method->setAccessible(TRUE);
-
-        $this->assertEquals(3, $method->invoke($this->object, 'OK '));
+        $this->assertTrue($this->object->handle());
     }
 
     public function testIsHandling() {
-        $method = new \ReflectionMethod($this->object, 'isHandling');
-        $method->setAccessible(TRUE);
-
-        $this->assertTrue($method->invoke($this->object));
+        $this->assertTrue($this->object->isHandling());
     }
 
     public function testFormat() {
-        $method = new \ReflectionMethod($this->object, 'format');
-        $method->setAccessible(TRUE);
-
-        $this->assertContains('foo', $method->invoke($this->object, 'foo'));
+        $this->object->format();
+        $this->assertContains('foo', $this->object->getMessage());
     }
 
     public function testLog() {
-        $this->assertEquals(20, $this->object->log("Passed"));
+        $this->assertTrue($this->object->log());
     }
 
 }

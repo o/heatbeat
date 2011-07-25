@@ -11,40 +11,28 @@ class DummyHandlerTest extends \PHPUnit_Framework_TestCase {
      * @var DummyHandler
      */
     protected $object;
-    /**
-     *
-     * @var Factory
-     */
-    protected $factory;
 
     protected function setUp() {
-        $this->factory = new \Heatbeat\Log\Factory(\Heatbeat\Log\FactoryTest::getLogEnabledConfig(), \Heatbeat\Log\Factory::DUMMY_HANDLER);
-        $this->object = $this->factory->getHandlerObject();
+        $factory = new \Heatbeat\Log\Factory(\Heatbeat\Log\FactoryTest::getLogEnabledConfig(), \Heatbeat\Log\Factory::DUMMY_HANDLER);
+        $this->object = $factory->getHandlerObject();
+        $this->object->setMessage('foo');
     }
 
     public function testHandle() {
-        $method = new \ReflectionMethod($this->object, 'handle');
-        $method->setAccessible(TRUE);
-
-        $this->assertTrue($method->invoke($this->object, 'test'));
+        $this->assertTrue($this->object->handle());
     }
 
     public function testIsHandling() {
-        $method = new \ReflectionMethod($this->object, 'isHandling');
-        $method->setAccessible(TRUE);
-
-        $this->assertTrue($method->invoke($this->object));
+        $this->assertTrue($this->object->isHandling());
     }
 
     public function testFormat() {
-        $method = new \ReflectionMethod($this->object, 'isHandling');
-        $method->setAccessible(TRUE);
-
-        $this->assertEquals('foo', $method->invoke($this->object, 'foo'));
+        $this->object->format();
+        $this->assertContains('foo', $this->object->getMessage());
     }
 
     public function testLog() {
-        $this->assertTrue($this->object->log('foo'));
+        $this->assertTrue($this->object->log());
     }
 
 }

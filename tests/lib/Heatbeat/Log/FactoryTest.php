@@ -18,7 +18,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase {
     public static function getLogDisabledConfig() {
         $configObject = new \Heatbeat\Parser\Config\ConfigParser();
         $configObject->setFilepath(__DIR__ . '/fixtures');
-        $configObject->setFilename('logenabledconfig');
+        $configObject->setFilename('logdisabledconfig');
         $configObject->parse();
         return $configObject;
     }
@@ -34,7 +34,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testGetHandlerObjectWithDisabledConfig() {
-        $factory = new Factory($this->getLogDisabledConfig(), Factory::DUMMY_HANDLER);
+        $factory = new Factory($this->getLogDisabledConfig(), Factory::FILE_HANDLER);
         $this->assertInstanceOf('Heatbeat\Log\Handler\DummyHandler', $factory->getHandlerObject());
     }
 
@@ -58,7 +58,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase {
         $this->setExpectedException('\ErrorException');
         new Factory(new \stdClass(), Factory::DUMMY_HANDLER);
     }
-
+    
 }
 
 ?>
