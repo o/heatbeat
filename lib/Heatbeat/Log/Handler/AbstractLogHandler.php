@@ -37,7 +37,7 @@ use Heatbeat\Exception\LoggingException;
 abstract class AbstractLogHandler {
 
     final public function log($message) {
-        $this->setMessage();
+        $this->setMessage($message);
         if ($this->isHandling()) {
             $this->format();
             $this->handle();
