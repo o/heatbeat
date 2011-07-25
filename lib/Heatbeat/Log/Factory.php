@@ -29,7 +29,8 @@ use Heatbeat\Autoloader,
     Heatbeat\Log\Handler\RotatingFileHandler,
     Heatbeat\Log\Handler\DummyHandler,
     Heatbeat\Exception\LoggingException,
-    Heatbeat\Parser\Config\ConfigParser as Config;
+    Heatbeat\Parser\Config\ConfigParser as Config,
+    Heatbeat\Log\Handler\LogHandlerInterface;
 
 /**
  * Factory for logging
@@ -39,11 +40,10 @@ use Heatbeat\Autoloader,
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
 class Factory {
-
     const FILE_HANDLER = 1;
     const DUMMY_HANDLER = 2;
 
-    private $handler;
+    private $handlerObject;
     private $configObject;
 
     public function __construct($config, $handler) {
@@ -52,18 +52,25 @@ class Factory {
     }
 
     /**
-     * Returns log handler interface
+     * Sets handler interface object
      *
-     * @return LogHandlerInterface
+     * @param string $handler
      */
-    public function getHandlerObject() {
-        switch ($this->getHandler()) {
+    private function setHandler($handler) {
+        $configValues = $this->getConfigObject()->getConfigurationOptions()->offsetGet('log');
+        if ($configValues['enabled'] == false) {
+            $this->handler = self::DUMMY_HANDLER;
+            return true;
+        }
+        switch ($handler) {
             case self::FILE_HANDLER:
-                return new RotatingFileHandler();
+                $this->setHandlerObject(new RotatingFileHandler());
+                return true;
                 break;
 
             case self::DUMMY_HANDLER:
-                return new DummyHandler();
+                $this->setHandlerObject(new DummyHandler());
+                return true;
                 break;
 
             default:
@@ -73,31 +80,11 @@ class Factory {
     }
 
     /**
-     * Sets handler interface object
-     *
-     * @param string $handler
-     */
-    private function setHandler($handler) {
-        $this->handler = $handler;
-        $configValues = $this->getConfigObject()->getConfigurationOptions()->offsetGet('log');
-        if ($configValues['enabled'] == false)
-            $this->handler = self::DUMMY_HANDLER;
-    }
-
-    /**
-     *
-     * @return LogHandlerInterface
-     */
-    private function getHandler() {
-        return $this->handler;
-    }
-
-    /**
      * Returns config object
      *
      * @return Config
      */
-    public function getConfigObject() {
+    protected function getConfigObject() {
         return $this->configObject;
     }
 
@@ -106,8 +93,26 @@ class Factory {
      *
      * @param Config $configObject
      */
-    public function setConfigObject(Config $configObject) {
+    protected function setConfigObject(Config $configObject) {
         $this->configObject = $configObject;
+    }
+
+    /**
+     * Returns log handler interface
+     *
+     * @return LogHandlerInterface
+     */
+    protected function getHandlerObject() {
+        return $this->handlerObject;
+    }
+
+    /**
+     * Sets log handler object
+     *
+     * @param AbstractLogHandler $handlerObject
+     */
+    protected function setHandlerObject(LogHandlerInterface $handlerObject) {
+        $this->handlerObject = $handlerObject;
     }
 
 }
