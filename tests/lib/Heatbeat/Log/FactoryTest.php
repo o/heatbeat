@@ -7,7 +7,7 @@ namespace Heatbeat\Log;
  */
 class FactoryTest extends \PHPUnit_Framework_TestCase {
 
-    public function getLogEnabledConfig() {
+    public static function getLogEnabledConfig() {
         $configObject = new \Heatbeat\Parser\Config\ConfigParser();
         $configObject->setFilepath(__DIR__ . '/fixtures');
         $configObject->setFilename('logenabledconfig');
@@ -15,7 +15,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase {
         return $configObject;
     }
 
-    public function getLogDisabledConfig() {
+    public static function getLogDisabledConfig() {
         $configObject = new \Heatbeat\Parser\Config\ConfigParser();
         $configObject->setFilepath(__DIR__ . '/fixtures');
         $configObject->setFilename('logenabledconfig');
