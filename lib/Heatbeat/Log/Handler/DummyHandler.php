@@ -45,7 +45,7 @@ class DummyHandler extends AbstractLogHandler implements LogHandlerInterface {
     }
 
     public function format() {
-        return $this->getMessage();
+        return $this->setMessage($this->getMessage());
     }
 
 }
