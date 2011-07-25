@@ -58,7 +58,6 @@ class Factory {
      */
     private function setHandler($handler) {
         $configValues = $this->getConfigObject()->getConfigurationOptions()->offsetGet('log');
-        var_dump($configValues);
         if ($configValues['enabled'] == false) {
             $this->setHandlerObject(new DummyHandler());
             return true;
