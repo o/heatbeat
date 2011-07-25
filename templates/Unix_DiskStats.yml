@@ -51,12 +51,12 @@ graphs :
               - type : AREA
                 definition-name: used
                 color : 63A1B0
-                legend : 1 Minute
+                legend : Used
                 stack : false
               - type : LINE
                 definition-name: total
                 color : 214E54
-                legend : 15 Minute
+                legend : Total
                 stack : false
           defs:
               - name: used
