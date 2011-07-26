@@ -1,7 +1,6 @@
 configuration :
     log :
         enabled : true
-        handler : RotatingFile
 
 graphs :
     - template : Test_Random

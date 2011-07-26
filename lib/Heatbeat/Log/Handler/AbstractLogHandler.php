@@ -25,6 +25,8 @@
 
 namespace Heatbeat\Log\Handler;
 
+use Heatbeat\Exception\LoggingException;
+
 /**
  * Abstract class for log handlers
  *
@@ -34,12 +36,22 @@ namespace Heatbeat\Log\Handler;
  */
 abstract class AbstractLogHandler {
 
-    public function __construct() {
-        $this->init();
+    final public function log($message) {
+        $this->setMessage($message);
+        if ($this->isHandling()) {
+            $this->format();
+            $this->handle();
+            return true;
+        }
+        throw new LoggingException('A problem occured when logging message.');
     }
-    
-    protected function format($data) {
-        return sprintf("%s %s \r\n", time(), (string) $data);
+
+    public function getMessage() {
+        return $this->message;
+    }
+
+    public function setMessage($message) {
+        $this->message = $message;
     }
 
 }
