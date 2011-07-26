@@ -39,6 +39,7 @@ class GPrintNode extends AbstractNode implements NodeInterface {
         return implode(self::SEPERATOR, array(
             self::PREFIX,
             $this->offsetGet('definition-name'),
+            $this->offsetGet('cf'),
             $this->offsetGet('format'),
         ));
     }
@@ -46,6 +47,8 @@ class GPrintNode extends AbstractNode implements NodeInterface {
     public function validate() {
         $this->isDefined('definition-name');
         $this->isValidName('definition-name');
+        $this->isDefined('cf');
+        $this->isValidCf('cf');
         $this->isDefined('format');
         return true;
     }
