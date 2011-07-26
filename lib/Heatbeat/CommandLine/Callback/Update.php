@@ -33,7 +33,6 @@ use Symfony\Component\Console\Input\InputArgument,
     Heatbeat\Autoloader,
     Heatbeat\Util\Command\RRDTool\RRDToolCommand as RRDTool,
     Heatbeat\Util\Command\RRDTool\UpdateCommand as RRDUpdate,
-    Heatbeat\Log\BaseLogger as Logger,
     Heatbeat\Source\SourceInput as Input,
     Heatbeat\Exception\SourceException;
 
@@ -75,7 +74,7 @@ class Update extends Shared {
                 $commandObject->setValues($pluginInstance->getOutput());
                 $this->executeCommand($input, $output, $commandObject, $entity->getRRDFilename() . RRDTool::RRD_EXT);
             } catch (\Exception $e) {
-                Logger::getInstance()->log($e->getMessage());
+                $this->logError($e, $this->getConfigObject());
                 $this->renderError($e, $output);
                 continue;
             }

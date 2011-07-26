@@ -33,7 +33,6 @@ use Symfony\Component\Console\Input\InputArgument,
     Heatbeat\Autoloader,
     Heatbeat\Util\Command\RRDTool\RRDToolCommand as RRDTool,
     Heatbeat\Util\Command\RRDTool\GraphCommand as RRDGraph,
-    Heatbeat\Log\BaseLogger as Logger,
     Heatbeat\Exception\SourceException;
 
 /**
@@ -83,7 +82,7 @@ class Graph extends Shared {
                     $this->executeCommand($input, $output, $commandObject, $entity->getRRDFilename() . $index . RRDTool::PNG_EXT);
                 }
             } catch (\Exception $e) {
-                Logger::getInstance()->log($e->getMessage());
+                $this->logError($e, $this->getConfigObject());
                 $this->renderError($e, $output);
                 continue;
             }

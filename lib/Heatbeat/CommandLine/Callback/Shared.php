@@ -35,6 +35,7 @@ use Symfony\Component\Console\Input\InputArgument,
     Heatbeat\Parser\Template\TemplateParser as Template,
     Heatbeat\Parser\Config\ConfigParser as Config,
     Heatbeat\Util\AbstractCommand,
+    Heatbeat\Log\Factory as Logger,    
     Heatbeat\Exception\SourceException;
 
 /**
@@ -198,6 +199,12 @@ class Shared extends Command {
      */
     protected function renderSuccess($message, OutputInterface $output) {
         $output->writeln(sprintf("<info>Success\t</info> %s", $message));
+    }
+    
+    protected function logError($e, $configObject)
+    {
+        $factory = new Logger($configObject, Logger::FILE_HANDLER);
+        $factory->getHandlerObject()->log($e->getMessage());
     }
 
 }
