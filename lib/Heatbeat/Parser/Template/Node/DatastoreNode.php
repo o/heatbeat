@@ -54,7 +54,7 @@ class DatastoreNode extends AbstractNode implements NodeInterface {
         $this->isDefined('min');
         $this->isValidInt('min');
         $this->isDefined('max');
-        $this->isValidInt('max');
+        $this->isValidMax('max');
         $this->isDefined('heartbeat');
         $this->isValidInt('heartbeat');
         return true;

@@ -52,6 +52,7 @@ class GraphCommand extends RRDToolCommand {
     const PARAMETER_AUTOSCALE_MIN = 'alt-autoscale-min';
     const PARAMETER_AUTOSCALE_MAX = 'alt-autoscale-max';
     const TEMPLATE_PARAMETER_AUTO = 'auto';
+    const TEMPLATE_PARAMETER_UNLIMITED = 'U';
 
     /**
      * Adds graph filename as argument
