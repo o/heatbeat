@@ -11,17 +11,17 @@ rrd:
           type: GAUGE
           heartbeat: 600
           min: 0
-          max: 100000000000
+          max: U
         - name: used
           type: GAUGE
           heartbeat: 600
           min: 0
-          max: 100000000000
+          max: U
         - name: available
           type: GAUGE
           heartbeat: 600
           min: 0
-          max: 100000000000          
+          max: U          
     rras:
         - cf: ['AVERAGE', 'MAX']
           xff: 0.5
