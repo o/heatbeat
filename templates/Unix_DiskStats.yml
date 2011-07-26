@@ -50,12 +50,12 @@ graphs :
           items :
               - type : AREA
                 definition-name: used
-                color : 63A1B0
+                color : 75978E
                 legend : Used
                 stack : false
               - type : LINE
                 definition-name: total
-                color : 214E54
+                color : 800130
                 legend : Total
                 stack : false
           defs:
