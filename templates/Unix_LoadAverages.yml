@@ -68,8 +68,8 @@ graphs :
                 datastore-name: 1min
                 cf: AVERAGE
               - name: 5min
-                datastore-name: 1min
+                datastore-name: 5min
                 cf: AVERAGE
               - name: 15min
-                datastore-name: 1min
+                datastore-name: 15min
                 cf: AVERAGE
