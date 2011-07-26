@@ -34,21 +34,23 @@ class GPrintNodeTest extends \PHPUnit_Framework_TestCase {
 
     public function validDataProvider() {
         return array(
-            array(array('definition-name' => 'foo', 'format' => '%6.2lf %Sbps'), 'GPRINT:foo:%6.2lf %Sbps'),
-            array(array('definition-name' => 'temp', 'format' => 'Bar %lf%s'), 'GPRINT:temp:Bar %lf%s'),
-            array(array('definition-name' => 'disk1', 'format' => 'Avg %5.2lf'), 'GPRINT:disk1:Avg %5.2lf'),
-            array(array('definition-name' => 'cpu', 'format' => 'Cur %5.2lf'), 'GPRINT:cpu:Cur %5.2lf')
+            array(array('definition-name' => 'foo', 'cf' => 'AVERAGE', 'format' => '%6.2lf %Sbps'), 'GPRINT:foo:AVERAGE:%6.2lf %Sbps'),
+            array(array('definition-name' => 'temp',  'cf' => 'MAX', 'format' => 'Bar %lf%s'), 'GPRINT:temp:MAX:Bar %lf%s'),
+            array(array('definition-name' => 'disk1',  'cf' => 'MIN', 'format' => 'Avg %5.2lf'), 'GPRINT:disk1:MIN:Avg %5.2lf'),
+            array(array('definition-name' => 'cpu',  'cf' => 'LAST', 'format' => 'Cur %5.2lf'), 'GPRINT:cpu:LAST:Cur %5.2lf')
         );
     }
 
     public function nonValidDataProvider() {
         return array(
-            array(array('definition-name' => 'foo!', 'format' => '%6.2lf %Sbps')),
-            array(array('definition-name' => '', 'format' => '%lf%s')),
-            array(array('definition-name' => 'disk1', 'frmat' => 'Avg %5.2lf')),
-            array(array('definitionname' => 'cpu', 'format' => 'Cur %5.2lf')),
-            array(array('definitionname' => 'cpu', 'format' => ''))
-        );
+            array(array('definition-name' => 'foo!', 'cf' => 'AVERAGE', 'format' => '%6.2lf %Sbps')),
+            array(array('definition-name' => '', 'cf' => 'AVERAGE', 'format' => '%lf%s')),
+            array(array('definition-name' => 'disk1', 'cf' => 'AVERAGE', 'frmat' => 'Avg %5.2lf')),
+            array(array('definitionname' => 'cpu', 'cf' => 'AVERAGE', 'format' => 'Cur %5.2lf')),
+            array(array('definitionname' => 'cpu', 'cf' => 'AVERAGE', 'format' => '')),
+            array(array('definition-name' => 'disk1',  '' => 'MIN', 'format' => 'Avg %5.2lf')),
+            array(array('definition-name' => 'cpu',  'cf' => 'MORE', 'format' => 'Cur %5.2lf'))
+            );
     }
 
 }
