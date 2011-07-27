@@ -11,17 +11,17 @@ rrd:
           type: GAUGE
           heartbeat: 600
           min: 0
-          max: 100000000000
+          max: U
         - name: used
           type: GAUGE
           heartbeat: 600
           min: 0
-          max: 100000000000
+          max: U
         - name: available
           type: GAUGE
           heartbeat: 600
           min: 0
-          max: 100000000000          
+          max: U          
     rras:
         - cf: ['AVERAGE', 'MAX']
           xff: 0.5
@@ -50,13 +50,13 @@ graphs :
           items :
               - type : AREA
                 definition-name: used
-                color : 63A1B0
-                legend : 1 Minute
+                color : 75978E
+                legend : Used
                 stack : false
               - type : LINE
                 definition-name: total
-                color : 214E54
-                legend : 15 Minute
+                color : 800130
+                legend : Total
                 stack : false
           defs:
               - name: used

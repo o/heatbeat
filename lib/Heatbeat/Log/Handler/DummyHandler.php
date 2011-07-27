@@ -28,32 +28,24 @@ namespace Heatbeat\Log\Handler;
 use Heatbeat\Autoloader;
 
 /**
- * Handler for daily rotating file
+ * Dummy handler, logs nothing
  *
  * @category    Heatbeat
  * @package     Heatbeat\Log\Handler
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class RotatingFileHandler extends AbstractLogHandler implements LogHandlerInterface {
+class DummyHandler extends AbstractLogHandler implements LogHandlerInterface {
 
     public function handle() {
-        return (bool) file_put_contents($this->getFilename(), $this->getMessage(), FILE_APPEND | LOCK_EX);
+        return true;
     }
 
     public function isHandling() {
-        return \is_writable($this->getLogFolder() . \DIRECTORY_SEPARATOR);
+        return true;
     }
 
     public function format() {
-        return $this->setMessage(sprintf("%s %s \r\n", time(), (string) $this->getMessage()));
-    }
-
-    protected function getFilename() {
-        return $this->getLogFolder() . \DIRECTORY_SEPARATOR . strftime('%Y-%m-%d') . '.log';
-    }
-
-    protected function getLogFolder() {
-        return Autoloader::getInstance()->getPath(Autoloader::FOLDER_LOG);
+        return $this->setMessage($this->getMessage());
     }
 
 }

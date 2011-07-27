@@ -40,7 +40,6 @@ class AbstractParserTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals('/path/to/bar', $this->object->getFilepath());
     }
 
-
     public function testGetFullPath() {
         $this->object->setFilepath('/home/osman/devel/heatbeat');
         $this->object->setFilename('test');
@@ -87,14 +86,14 @@ class AbstractParserTest extends \PHPUnit_Framework_TestCase {
 
     public function testGetValues() {
         $this->assertNull($this->object->getValues());
-        $this->object->setValues(array(1,2,3));
-        $this->assertEquals(new \ArrayIterator(array(1,2,3)), $this->object->getValues());
+        $this->object->setValues(array(1, 2, 3));
+        $this->assertEquals(new \ArrayIterator(array(1, 2, 3)), $this->object->getValues());
     }
 
     public function testSetValues() {
         $this->assertNull($this->object->getValues());
-        $this->object->setValues(array(4,5,6));
-        $this->assertEquals(new \ArrayIterator(array(4,5,6)), $this->object->getValues());
+        $this->object->setValues(array(4, 5, 6));
+        $this->assertEquals(new \ArrayIterator(array(4, 5, 6)), $this->object->getValues());
     }
 
 }

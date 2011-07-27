@@ -38,7 +38,8 @@ class DatastoreNodeTest extends \PHPUnit_Framework_TestCase {
             array(array('name' => 'ifOutOctets', 'type' => 'COUNTER', 'heartbeat' => 1200, 'min' => 10, 'max' => 100), 'DS:ifOutOctets:COUNTER:1200:10:100'),
             array(array('name' => 'foo', 'type' => 'DERIVE', 'heartbeat' => 30, 'min' => 100, 'max' => 1000), 'DS:foo:DERIVE:30:100:1000'),
             array(array('name' => 'bar', 'type' => 'ABSOLUTE', 'heartbeat' => 600, 'min' => 0, 'max' => 100000), 'DS:bar:ABSOLUTE:600:0:100000'),
-            array(array('name' => 'baz', 'type' => 'GAUGE', 'heartbeat' => 60, 'min' => 50, 'max' => 80), 'DS:baz:GAUGE:60:50:80')
+            array(array('name' => 'baz', 'type' => 'GAUGE', 'heartbeat' => 60, 'min' => 50, 'max' => 80), 'DS:baz:GAUGE:60:50:80'),
+            array(array('name' => 'heat', 'type' => 'GAUGE', 'heartbeat' => 120, 'min' => 0, 'max' => 'U'), 'DS:heat:GAUGE:120:0:U')
         );
     }
 

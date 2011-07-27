@@ -176,6 +176,19 @@ abstract class AbstractNode extends \ArrayObject {
     }
 
     /**
+     * Checks given parameter is a valid max argument
+     *
+     * @param string $key
+     * @return bool
+     */
+    protected function isValidMax($key) {
+        if (!$this->getValidator()->isInt($this->offsetGet($key)) AND $this->offsetGet($key) != GraphCommand::TEMPLATE_PARAMETER_UNLIMITED) {
+            throw new NodeValidationException(sprintf('%s, %s argument is not valid, it must be an integer or "U".', $this->getClassName(), $key));
+        }
+        return true;
+    }
+
+    /**
      * Checks given parameter is a valid XFiles factor
      * 
      * @param string $key

@@ -36,7 +36,6 @@ use Symfony\Component\Console\Input\InputArgument,
     Heatbeat\Util\Command\RRDTool\RRDToolCommand as RRDTool,
     Heatbeat\Util\Command\RRDTool\CreateCommand as RRDCreate,
     Heatbeat\Util\CommandExecutor as Executor,
-    Heatbeat\Log\BaseLogger as Logger,
     Heatbeat\Exception\SourceException;
 
 /**
@@ -74,7 +73,7 @@ class Create extends Shared {
                 $commandObject->setRras($template->getRrdRras());
                 $this->executeCommand($input, $output, $commandObject, $entity->getRRDFilename() . RRDTool::RRD_EXT);
             } catch (\Exception $e) {
-                Logger::getInstance()->log($e->getMessage());
+                $this->logError($e, $this->getConfigObject());
                 $this->renderError($e, $output);
                 continue;
             }

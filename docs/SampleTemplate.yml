@@ -57,6 +57,8 @@ graphs :
           gprints :
               # Name of definition for use as value
               - definition-name :
+                # Consolidation function for definition, allowed values : AVERAGE, MIN, MAX, LAST
+                - cf:                  
                 # Format of string
                 format:
           defs:
