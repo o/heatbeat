@@ -42,9 +42,6 @@ class DiskStats extends AbstractSource {
     const KB_MULTIPLIER = 1024;
 
     public function perform() {
-        $total = false;
-        $used = false;
-        $available = false;
         $command = sprintf("df -k | grep %s | awk '{print $2 \"|\" $3 \"|\" $4}'", $this->getInput()->getValue('disk'));
         $result = shell_exec($command);
         if (strpos($result, self::PIPE)) {
