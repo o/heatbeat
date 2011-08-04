@@ -43,20 +43,22 @@ class Google extends AbstractSource {
         if (!$xml) {
             throw new SourceException('Unable to fetch data from Google API');
         }
-        $current = $xml->xpath("/xml_api_reply/weather/current_conditions");
+
         switch ($this->getInput()->getValue('type')) {
             case 'c':
-                $degree = (int) $current[0]->temp_c['data'];
+                $xpath = "/xml_api_reply/weather/current_conditions/temp_c/@data";
                 break;
 
             case 'f':
-                $degree = (int) $current[0]->temp_f['data'];
+                $xpath = "/xml_api_reply/weather/current_conditions/temp_f/@data";
                 break;
 
             default:
                 throw new SourceException('Wrong type provided, must be c or f');
                 break;
         }
+
+        $degree = $xml->xpath($xpath);
         $output = new SourceOutput();
         $output->setValue('current', $degree);
         $this->setOutput($output);
