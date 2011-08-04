@@ -7,11 +7,16 @@ rrd:
     options :
         step : 300
     datastores:
-        - name: current
+        - name: temp
           type: GAUGE
           heartbeat: 600
           min: 0
           max: 273
+        - name: humidity
+          type: GAUGE
+          heartbeat: 600
+          min: 0
+          max: 100
     rras:
         - cf: ['AVERAGE', 'MAX']
           xff: 0.5
@@ -31,19 +36,27 @@ rrd:
           rows: 797
 graphs :          
         - options :
-            name : Current Temperature - 1 day
-            label : Degree
+            name : Temperature and humidity - 1 day
+            label : degree/percentage
             base : 1000
             lower : auto
             upper : auto
             start : -1day
           items :
-              - type : LINE2
+              - type : LINE
                 definition-name: current
-                color : CC3118
+                color : C03018
                 legend : Temperature
                 stack : false
+              - type : LINE
+                definition-name: humidity
+                color : 607878
+                legend : Humidity
+                stack : false
           defs:
-              - name: current
+              - name: temp
+                datastore-name: current
+                cf: AVERAGE
+              - name: humidity
                 datastore-name: current
                 cf: AVERAGE

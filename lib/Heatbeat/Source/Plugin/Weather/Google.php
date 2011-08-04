@@ -44,13 +44,14 @@ class Google extends AbstractSource {
             throw new SourceException('Unable to fetch data from Google API');
         }
 
+        $humidityXPath = '/xml_api_reply/weather/current_conditions/humidity';
         switch ($this->getInput()->getValue('type')) {
             case 'c':
-                $xpath = "/xml_api_reply/weather/current_conditions/temp_c/@data";
+                $tempXPath = '/xml_api_reply/weather/current_conditions/temp_c';
                 break;
 
             case 'f':
-                $xpath = "/xml_api_reply/weather/current_conditions/temp_f/@data";
+                $tempXPath = '/xml_api_reply/weather/current_conditions/temp_f';
                 break;
 
             default:
@@ -58,9 +59,12 @@ class Google extends AbstractSource {
                 break;
         }
 
-        $degree = $xml->xpath($xpath);
+        $temp = $xml->xpath($tempXPath);
+        $humidity = $xml->xpath($humidityXPath);
+
         $output = new SourceOutput();
-        $output->setValue('current', $degree);
+        $output->setValue('temp', $temp[0]['data']);
+        $output->setValue('humidity', preg_replace("/[^0-9]/", '', $humidity[0]['data']));
         $this->setOutput($output);
         return true;
     }
