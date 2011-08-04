@@ -44,7 +44,7 @@ graphs :
             start : -1day
           items :
               - type : LINE
-                definition-name: current
+                definition-name: temp
                 color : C03018
                 legend : Temperature
                 stack : false
@@ -55,8 +55,8 @@ graphs :
                 stack : false
           defs:
               - name: temp
-                datastore-name: current
+                datastore-name: temp
                 cf: AVERAGE
               - name: humidity
-                datastore-name: current
+                datastore-name: humidity
                 cf: AVERAGE
