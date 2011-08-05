@@ -61,7 +61,7 @@ graphs :
           # Name of definition for use as value
           - definition-name :
             # Consolidation function for definition, allowed values : AVERAGE, MIN, MAX, LAST
-            - cf:                  
+            cf:                  
             # Format of string
             format:
       # Definitions for fetching data from an RRD file
