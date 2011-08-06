@@ -51,8 +51,8 @@ class TemplateParser extends AbstractParser {
 
     public function getTemplateOptions() {
         $values = $this->getValues();
-        if ($values->offsetExists('template') AND array_key_exists('options', $values['template'])) {
-            $templateOptions = new TemplateOptions($values['template']['options']);
+        if ($values->offsetExists('template')) {
+            $templateOptions = new TemplateOptions($values->offsetGet('template'));
             $templateOptions->validate();
             return $templateOptions;
         } else {
@@ -60,35 +60,24 @@ class TemplateParser extends AbstractParser {
         }
     }
 
-    public function getRrdOptions() {
+    public function getDatastores() {
         $values = $this->getValues();
-        if ($values->offsetExists('rrd') AND array_key_exists('options', $values['rrd'])) {
-            $rrdOptions = new RrdOptions($values['rrd']['options']);
-            $rrdOptions->validate();
-            return $rrdOptions;
-        } else {
-            throw new TemplateException(sprintf('RRD options is not defined in template %s', $this->getFullPath()));
-        }
-    }
-
-    public function getRrdDatastores() {
-        $values = $this->getValues();
-        if ($values->offsetExists('rrd') AND array_key_exists('datastores', $values['rrd']) AND count($values['rrd']['datastores'])) {
+        if ($values->offsetExists('datastores')) {
             return array_map(function($datastore) {
                         $object = new Datastore($datastore);
                         $object->validate();
                         return $object;
-                    }, $values['rrd']['datastores']);
+                    }, $values->offsetGet('datastores'));
         } else {
             throw new TemplateException(sprintf('You must define at least one datastore in template %s', $this->getFullPath()));
         }
     }
 
-    public function getRrdRras() {
+    public function getRras() {
         $values = $this->getValues();
-        if ($values->offsetExists('rrd') AND array_key_exists('rras', $values['rrd']) AND count($values['rrd']['rras'])) {
+        if ($values->offsetExists('rras')) {
             $newValues = array();
-            foreach ($values['rrd']['rras'] as $rra) {
+            foreach ($values->offsetExists('rras') as $rra) {
                 $consolidationFunctions = $rra['cf'];
                 if (is_array($consolidationFunctions)) {
                     foreach ($consolidationFunctions as $consolidationFunction) {
@@ -133,7 +122,7 @@ class TemplateParser extends AbstractParser {
 
     public function getGraphOptions($index) {
         $values = $this->getGraphIndex($index);
-        if ($values->offsetExists('options') AND count($values->offsetGet('options'))) {
+        if ($values->offsetExists('options')) {
             $graphOptions = new GraphOptions($values->offsetGet('options'));
             $graphOptions->validate();
             return $graphOptions;
@@ -144,7 +133,7 @@ class TemplateParser extends AbstractParser {
 
     public function getGraphItems($index) {
         $values = $this->getGraphIndex($index);
-        if ($values->offsetExists('items') AND count($values->offsetGet('items'))) {
+        if ($values->offsetExists('items')) {
             return array_map(function($item) {
                         $object = new Item($item);
                         $object->validate();
@@ -157,7 +146,7 @@ class TemplateParser extends AbstractParser {
 
     public function getGraphGprints($index) {
         $values = $this->getGraphIndex($index);
-        if ($values->offsetExists('gprints') AND count($values->offsetGet('gprints'))) {
+        if ($values->offsetExists('gprints')) {
             return array_map(function($gprint) {
                         $object = new GPrint($gprint);
                         $object->validate();
@@ -170,7 +159,7 @@ class TemplateParser extends AbstractParser {
 
     public function getGraphDefs($index, $filename) {
         $values = $this->getGraphIndex($index);
-        if ($values->offsetExists('defs') AND count($values->offsetGet('defs'))) {
+        if ($values->offsetExists('defs')) {
             return array_map(function($def, $filename) {
                         $object = new Def($def);
                         $object->offsetSet('filename', RRDTool::getRRDFilePath($filename));
