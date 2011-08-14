@@ -77,7 +77,7 @@ class TemplateParser extends AbstractParser {
         $values = $this->getValues();
         if ($values->offsetExists('rras')) {
             $newValues = array();
-            foreach ($values->offsetExists('rras') as $rra) {
+            foreach ($values->offsetGet('rras') as $rra) {
                 $consolidationFunctions = $rra['cf'];
                 if (is_array($consolidationFunctions)) {
                     foreach ($consolidationFunctions as $consolidationFunction) {
