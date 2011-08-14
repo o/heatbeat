@@ -1,80 +1,86 @@
 template :
-    options :
-        # Name of template
-        name :
-        # Version of template
-        version :
-        # Name of the source for gathering data
-        source-name :
-rrd:
-    options :
-        # Specifies the base interval in seconds with which data will be fed into the RRD, defaults to 300
-        step :
-    datastores:
-        # Name you will use to reference this particular data source from an RRD. Must be 1 to 19 and [a-zA-Z0-9_]. 
-        - name:   
-          # Data Source Type, allowed types : GAUGE, COUNTER, DERIVE, and ABSOLUTE
-          type:
-          # Maximum acceptable interval between samples/updates
-          heartbeat:
-          # Expected range values for data supplied by a data source.
-          min:  
-          max: 
-    rras:
-        # Consolidation function for RRA archives, allowed values : AVERAGE, MIN, MAX, LAST
-        - cf:
-          # XFiles factor, it ranges from 0 to 1. 
-          xff:
-          # How many of these primary data points are used to build a consolidated data point which then goes into the archive.
-          steps:
-          # how many generations of data values are kept in an RRA.
-          rows: 
+      # Name of template
+      name :
+      # Version of template
+      version :
+      # Name of the source plugin class name for gathering data, class Heatbeat\Source\Plugin\Test\Random becomes as Test_Random there.
+      source-name :
+      # Specifies the base interval in seconds with which data will be fed into the RRD, defaults to 300 (5 minutes)
+      step :
+
+# Data source declerations
+datastores:
+    # Name you will use to reference this particular data source from an RRD. Must be 1 to 19 and [a-zA-Z0-9_]. 
+    - name:   
+      # Data Source Type, allowed types : GAUGE, COUNTER, DERIVE, and ABSOLUTE
+      type:
+      # Maximum acceptable interval between samples/updates. If exceeded, the value will be stored as UNKNOWN
+      heartbeat:
+      # Expected range values for data supplied by a data source, If exceeded, the value will be stored as UNKNOWN. Specify "U" (unknown) to not set a min/max 
+      min:  
+      max: 
+
+# Round robin archive declerations        
+rras:
+    # Essentially a function applied to the bracket of collected data before it is consolidated, allowed values : AVERAGE, MIN, MAX, LAST
+    - cf:
+      # Determines how many of the samples can be UNKNOWN for the consolidated sample is considered UNKNOWN. 0.5 is usually fine, it ranges from 0 to 1. 
+      xff:
+      # How many of these primary data points are used to build a consolidated data point which then goes into the archive.
+      steps:
+      # How many generations of data values are kept in an RRA. 
+      rows: 
+
 graphs :
-        - options :
-            # Name of graph, it will be show in top of graph
-            name :
-            # Vertical label of graph
-            label :
-            # Base multiplier for values. For graphing memory this should be set to 1024, for other common things it can be 1000
-            base :
-            # Lower an upper limit for graphs, allowed values auto or [0-9]
-            lower : 
-            upper : 
-            # Start time of graph. You can use "at-style" time specification (Unix command at(1), look at the "man at"). Examples : -1month, -3weeks, -6hours.
-            start :             
-          # Graph elements
-          items :
-              # Type of element, allowed values are AREA, LINE[1,2,3] and STACK
-              - type :
-                # Name of definition for use as value
-                definition-name:
-                # Hex color value
-                color :
-                # String is printed in the legend section
-                legend :    
-                # If true this line is stacked on top of the previous element which can be a LINE or an AREA.  
-                stack :
-          gprints :
-              # Name of definition for use as value
-              - definition-name :
-                # Consolidation function for definition, allowed values : AVERAGE, MIN, MAX, LAST
-                - cf:                  
-                # Format of string
-                format:
-          defs:
-                # Name of definition 
-              - name:
-                # Base data store name
-                datastore-name:
-                # Consolidation function for RRA archives, allowed values : AVERAGE, MIN, MAX, LAST    
-                cf:
-          cdefs:
-                # Name of defitinition
-              - name:
-                # RPN expression for calculating result value
-                rpn:
-          vdefs:
-                # Name of definition
-              - name:
-                # RPN expression for calculating result value  
-                rpn:
+    - options :
+        # Name of graph, it will be show in top of graph
+        name :
+        # Vertical label of graph
+        label :
+        # Base multiplier for values. For graphing memory this should be set to 1024, for other common things it can be 1000
+        base :
+        # Lower an upper limit for graphs, allowed values auto or [0-9]
+        lower : 
+        upper : 
+        # Start time of graph. You can use "at-style" time specification (Unix command at(1), look at the "man at"). Examples : -1month, -3weeks, -6hours.
+        start :             
+      # Graph elements
+      items :
+          # Type of element, allowed values are AREA, LINE[1,2,3] and STACK
+          - type :
+            # Name of definition for use as value
+            definition-name:
+            # Hex color value
+            color :
+            # String is printed in the legend section
+            legend :    
+            # If true this line is stacked on top of the previous element which can be a LINE or an AREA.  
+            stack :
+      # Text is printed inside the graph.
+      gprints :
+          # Name of definition for use as value
+          - definition-name :
+            # Consolidation function for definition, allowed values : AVERAGE, MIN, MAX, LAST
+            cf:                  
+            # Format of string
+            format:
+      # Definitions for fetching data from an RRD file
+      defs:
+            # Name of definition 
+          - name:
+            # Base data store name
+            datastore-name:
+            # Consolidation function for RRA archives, allowed values : AVERAGE, MIN, MAX, LAST    
+            cf:
+      # This creates a new set of data points (in memory only, not in the RRD file) out of one or more other data series.        
+      cdefs:
+            # Name of definition
+          - name:
+            # RPN expression for calculating result value
+            rpn:
+      # This returns a value and/or a time according to the RPN statements used.        
+      vdefs:
+            # Name of definition
+          - name:
+            # RPN expression for calculating result value  
+            rpn:

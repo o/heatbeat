@@ -1,49 +1,46 @@
 template :
-    options :
-        name : Unix process count
-        version : 1.0
-        source-name : Unix_Processes
-rrd:
-    options :
-        step : 300
-    datastores:
-        - name: processes
-          type: GAUGE
-          heartbeat: 600
-          min: 0
-          max: U
-    rras:
-        - cf: ['AVERAGE', 'MAX']
-          xff: 0.5
-          steps: 1
-          rows: 51840
-        - cf: ['AVERAGE', 'MAX']
-          xff: 0.5
-          steps: 6
-          rows: 8736
-        - cf: ['AVERAGE', 'MAX']
-          xff: 0.5
-          steps: 24
-          rows: 2160
-        - cf: ['AVERAGE', 'MAX']
-          xff: 0.5
-          steps: 288
-          rows: 797
+      name : Unix process count
+      version : 1.0
+      source-name : Unix_Processes
+      step : 300
+datastores:
+    - name: processes
+      type: GAUGE
+      heartbeat: 600
+      min: 0
+      max: U
+rras:
+    - cf: ['AVERAGE', 'MAX']
+      xff: 0.5
+      steps: 1
+      rows: 51840
+    - cf: ['AVERAGE', 'MAX']
+      xff: 0.5
+      steps: 6
+      rows: 8736
+    - cf: ['AVERAGE', 'MAX']
+      xff: 0.5
+      steps: 24
+      rows: 2160
+    - cf: ['AVERAGE', 'MAX']
+      xff: 0.5
+      steps: 288
+      rows: 797
 graphs :
-        - options :
-            name : Processes - 1 day
-            label : process count
-            base : 1000
-            lower : 0
-            upper : auto
-            start : -1day
-          items :
-              - type : AREA
-                definition-name: processes
-                color : EC9D48
-                legend : Processes
-                stack : false
-          defs:
-              - name: processes
-                datastore-name: processes
-                cf: AVERAGE
+    - options :
+        name : Processes - 1 day
+        label : process count
+        base : 1000
+        lower : 0
+        upper : auto
+        start : -1day
+      items :
+          - type : AREA
+            definition-name: processes
+            color : EC9D48
+            legend : Processes
+            stack : false
+      defs:
+          - name: processes
+            datastore-name: processes
+            cf: AVERAGE

@@ -1,62 +1,59 @@
 template :
-    options :
-        name : Google Weather Api
-        version : 1.0
-        source-name : Weather_Google
-rrd:
-    options :
-        step : 300
-    datastores:
-        - name: temp
-          type: GAUGE
-          heartbeat: 600
-          min: 0
-          max: 273
-        - name: humidity
-          type: GAUGE
-          heartbeat: 600
-          min: 0
-          max: 100
-    rras:
-        - cf: ['AVERAGE', 'MAX']
-          xff: 0.5
-          steps: 1
-          rows: 51840
-        - cf: ['AVERAGE', 'MAX']
-          xff: 0.5
-          steps: 6
-          rows: 8736
-        - cf: ['AVERAGE', 'MAX']
-          xff: 0.5
-          steps: 24
-          rows: 2160
-        - cf: ['AVERAGE', 'MAX']
-          xff: 0.5
-          steps: 288
-          rows: 797
+      name : Google Weather Api
+      version : 1.0
+      source-name : Weather_Google
+      step : 300
+datastores:
+    - name: temp
+      type: GAUGE
+      heartbeat: 600
+      min: 0
+      max: 273
+    - name: humidity
+      type: GAUGE
+      heartbeat: 600
+      min: 0
+      max: 100
+rras:
+    - cf: ['AVERAGE', 'MAX']
+      xff: 0.5
+      steps: 1
+      rows: 51840
+    - cf: ['AVERAGE', 'MAX']
+      xff: 0.5
+      steps: 6
+      rows: 8736
+    - cf: ['AVERAGE', 'MAX']
+      xff: 0.5
+      steps: 24
+      rows: 2160
+    - cf: ['AVERAGE', 'MAX']
+      xff: 0.5
+      steps: 288
+      rows: 797
 graphs :          
-        - options :
-            name : Temperature and humidity - 1 day
-            label : degree/percentage
-            base : 1000
-            lower : auto
-            upper : auto
-            start : -1day
-          items :
-              - type : LINE
-                definition-name: temp
-                color : C03018
-                legend : Temperature
-                stack : false
-              - type : LINE
-                definition-name: humidity
-                color : 607878
-                legend : Humidity
-                stack : false
-          defs:
-              - name: temp
-                datastore-name: temp
-                cf: AVERAGE
-              - name: humidity
-                datastore-name: humidity
-                cf: AVERAGE
+    - options :
+        name : Temperature and humidity - 1 day
+        label : degree/percentage
+        base : 1000
+        lower : auto
+        upper : auto
+        start : -1day
+      items :
+          - type : LINE
+            definition-name: temp
+            color : C03018
+            legend : Temperature
+            stack : false
+          - type : LINE
+            definition-name: humidity
+            color : 607878
+            legend : Humidity
+            stack : false
+      defs:
+          - name: temp
+            datastore-name: temp
+            cf: AVERAGE
+          - name: humidity
+            datastore-name: humidity
+            cf: AVERAGE

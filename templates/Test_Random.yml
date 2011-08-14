@@ -1,77 +1,73 @@
 template :
-    options :
-        name : Random
-        version : 0.0.1
-        source-name : Test_Random
-rrd:
-    options :
-        # 5 minute is minimum there
-        step : 300
-    datastores:
-        - name: rand1   
-          type: GAUGE
-          heartbeat: 600
-          min: 0
-          max: 100
-        - name: rand2   
-          type: GAUGE
-          heartbeat: 600
-          min: 0
-          max: 100
-    rras:
-        # I'm only adding AVERAGE data archives now.
-        # Daily (300*1*288 = 1 Day)
-        - cf: AVERAGE
-          xff: 0.5
-          steps: 1
-          rows: 288
-        # Weekly (300*6*336 = 1 Week)
-        - cf: AVERAGE
-          xff: 0.5
-          steps: 6
-          rows: 336
-        # Monthly (300*24*372 = 1 Month)
-        - cf: AVERAGE
-          xff: 0.5
-          steps: 24
-          rows: 372
-        # Yearly (300*380*288 = 1 Year)
-        - cf: AVERAGE
-          xff: 0.5
-          steps: 288
-          rows: 380
+      name : Random
+      version : 0.0.1
+      source-name : Test_Random
+      step : 300
+datastores:
+    - name: rand1   
+      type: GAUGE
+      heartbeat: 600
+      min: 0
+      max: 100
+    - name: rand2   
+      type: GAUGE
+      heartbeat: 600
+      min: 0
+      max: 100
+rras:
+    # I'm only adding AVERAGE data archives now.
+    # Daily (300*1*288 = 1 Day)
+    - cf: AVERAGE
+      xff: 0.5
+      steps: 1
+      rows: 288
+    # Weekly (300*6*336 = 1 Week)
+    - cf: AVERAGE
+      xff: 0.5
+      steps: 6
+      rows: 336
+    # Monthly (300*24*372 = 1 Month)
+    - cf: AVERAGE
+      xff: 0.5
+      steps: 24
+      rows: 372
+    # Yearly (300*380*288 = 1 Year)
+    - cf: AVERAGE
+      xff: 0.5
+      steps: 288
+      rows: 380
 graphs :
-        - options :
-            name : Random Values
-            label : Values
-            base : 1000
-            lower : 0
-            upper : auto
-            start : -1d
-          items :
-              - type : LINE
-                definition-name: rand1
-                color : C1D6C3
-                legend : Random 1
-                stack : false
-          defs:
-              - name: rand1
-                datastore-name: rand1
-                cf: AVERAGE
-        - options :
-            name : Another Random Values
-            label : Values
-            base : 1000
-            lower : 0
-            upper : auto
-            start : -1d
-          items :
-              - type : LINE
-                definition-name: rand2
-                color : 78A689
-                legend : Random 2
-                stack : false
-          defs:
-              - name: rand2
-                datastore-name: rand2
-                cf: AVERAGE                     
+    - options :
+        name : Random Values
+        label : Values
+        base : 1000
+        lower : 0
+        upper : auto
+        start : -1d
+      items :
+          - type : LINE
+            definition-name: rand1
+            color : C1D6C3
+            legend : Random 1
+            stack : false
+      defs:
+          - name: rand1
+            datastore-name: rand1
+            cf: AVERAGE
+    - options :
+        name : Another Random Values
+        label : Values
+        base : 1000
+        lower : 0
+        upper : auto
+        start : -1d
+      items :
+          - type : LINE
+            definition-name: rand2
+            color : 78A689
+            legend : Random 2
+            stack : false
+      defs:
+          - name: rand2
+            datastore-name: rand2
+            cf: AVERAGE                     
