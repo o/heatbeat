@@ -1,67 +1,64 @@
 template :
-    options :
-        name : Disk Stats
-        version : 1.0
-        source-name : Unix_DiskStats
-rrd:
-    options :
-        step : 300
-    datastores:
-        - name: total
-          type: GAUGE
-          heartbeat: 600
-          min: 0
-          max: U
-        - name: used
-          type: GAUGE
-          heartbeat: 600
-          min: 0
-          max: U
-        - name: available
-          type: GAUGE
-          heartbeat: 600
-          min: 0
-          max: U          
-    rras:
-        - cf: ['AVERAGE', 'MAX']
-          xff: 0.5
-          steps: 1
-          rows: 51840
-        - cf: ['AVERAGE', 'MAX']
-          xff: 0.5
-          steps: 6
-          rows: 8736
-        - cf: ['AVERAGE', 'MAX']
-          xff: 0.5
-          steps: 24
-          rows: 2160
-        - cf: ['AVERAGE', 'MAX']
-          xff: 0.5
-          steps: 288
-          rows: 797
+      name : Disk Stats
+      version : 1.0
+      source-name : Unix_DiskStats
+      step : 300
+datastores:
+    - name: total
+      type: GAUGE
+      heartbeat: 600
+      min: 0
+      max: U
+    - name: used
+      type: GAUGE
+      heartbeat: 600
+      min: 0
+      max: U
+    - name: available
+      type: GAUGE
+      heartbeat: 600
+      min: 0
+      max: U          
+rras:
+    - cf: ['AVERAGE', 'MAX']
+      xff: 0.5
+      steps: 1
+      rows: 51840
+    - cf: ['AVERAGE', 'MAX']
+      xff: 0.5
+      steps: 6
+      rows: 8736
+    - cf: ['AVERAGE', 'MAX']
+      xff: 0.5
+      steps: 24
+      rows: 2160
+    - cf: ['AVERAGE', 'MAX']
+      xff: 0.5
+      steps: 288
+      rows: 797
 graphs :
-        - options :
-            name : Disk Usage - 1 day
-            label : bytes
-            base : 1000
-            lower : 0
-            upper : auto
-            start : -1day
-          items :
-              - type : AREA
-                definition-name: used
-                color : 75978E
-                legend : Used
-                stack : false
-              - type : LINE
-                definition-name: total
-                color : 800130
-                legend : Total
-                stack : false
-          defs:
-              - name: used
-                datastore-name: used
-                cf: AVERAGE
-              - name: total
-                datastore-name: total
-                cf: AVERAGE
+    - options :
+        name : Disk Usage - 1 day
+        label : bytes
+        base : 1000
+        lower : 0
+        upper : auto
+        start : -1day
+      items :
+          - type : AREA
+            definition-name: used
+            color : 75978E
+            legend : Used
+            stack : false
+          - type : LINE
+            definition-name: total
+            color : 800130
+            legend : Total
+            stack : false
+      defs:
+          - name: used
+            datastore-name: used
+            cf: AVERAGE
+          - name: total
+            datastore-name: total
+            cf: AVERAGE

@@ -1,75 +1,72 @@
 template :
-    options :
-        name : System Load
-        version : 1.0
-        source-name : Unix_LoadAverages
-rrd:
-    options :
-        step : 300
-    datastores:
-        - name: 1min
-          type: GAUGE
-          heartbeat: 600
-          min: 0
-          max: 100
-        - name: 5min
-          type: GAUGE
-          heartbeat: 600
-          min: 0
-          max: 100
-        - name: 15min
-          type: GAUGE
-          heartbeat: 600
-          min: 0
-          max: 100                    
-    rras:
-        - cf: ['AVERAGE', 'MAX']
-          xff: 0.5
-          steps: 1
-          rows: 51840
-        - cf: ['AVERAGE', 'MAX']
-          xff: 0.5
-          steps: 6
-          rows: 8736
-        - cf: ['AVERAGE', 'MAX']
-          xff: 0.5
-          steps: 24
-          rows: 2160
-        - cf: ['AVERAGE', 'MAX']
-          xff: 0.5
-          steps: 288
-          rows: 797
+      name : System Load
+      version : 1.0
+      source-name : Unix_LoadAverages
+      step : 300
+datastores:
+    - name: 1min
+      type: GAUGE
+      heartbeat: 600
+      min: 0
+      max: 100
+    - name: 5min
+      type: GAUGE
+      heartbeat: 600
+      min: 0
+      max: 100
+    - name: 15min
+      type: GAUGE
+      heartbeat: 600
+      min: 0
+      max: 100                    
+rras:
+    - cf: ['AVERAGE', 'MAX']
+      xff: 0.5
+      steps: 1
+      rows: 51840
+    - cf: ['AVERAGE', 'MAX']
+      xff: 0.5
+      steps: 6
+      rows: 8736
+    - cf: ['AVERAGE', 'MAX']
+      xff: 0.5
+      steps: 24
+      rows: 2160
+    - cf: ['AVERAGE', 'MAX']
+      xff: 0.5
+      steps: 288
+      rows: 797
 graphs :
-        - options :
-            name : Load Averages - 1 day
-            label : processes in the run queue
-            base : 1000
-            lower : 0
-            upper : auto
-            start : -1day
-          items :
-              - type : AREA
-                definition-name: 1min
-                color : CFF09E
-                legend : 1 Minute
-                stack : false
-              - type : AREA
-                definition-name: 5min
-                color : A8DBA8
-                legend : 5 Minute
-                stack : true
-              - type : AREA
-                definition-name: 15min
-                color : 79BD9A
-                legend : 15 Minute
-                stack : true
-          defs:
-              - name: 1min
-                datastore-name: 1min
-                cf: AVERAGE
-              - name: 5min
-                datastore-name: 5min
-                cf: AVERAGE
-              - name: 15min
-                datastore-name: 15min
-                cf: AVERAGE
+    - options :
+        name : Load Averages - 1 day
+        label : processes in the run queue
+        base : 1000
+        lower : 0
+        upper : auto
+        start : -1day
+      items :
+          - type : AREA
+            definition-name: 1min
+            color : CFF09E
+            legend : 1 Minute
+            stack : false
+          - type : AREA
+            definition-name: 5min
+            color : A8DBA8
+            legend : 5 Minute
+            stack : true
+          - type : AREA
+            definition-name: 15min
+            color : 79BD9A
+            legend : 15 Minute
+            stack : true
+      defs:
+          - name: 1min
+            datastore-name: 1min
+            cf: AVERAGE
+          - name: 5min
+            datastore-name: 5min
+            cf: AVERAGE
+          - name: 15min
+            datastore-name: 15min
+            cf: AVERAGE

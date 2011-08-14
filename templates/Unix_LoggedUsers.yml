@@ -1,49 +1,46 @@
 template :
-    options :
-        name : Unix logged in user count
-        version : 1.0
-        source-name : Unix_LoggedUsers
-rrd:
-    options :
-        step : 300
-    datastores:
-        - name: users
-          type: GAUGE
-          heartbeat: 600
-          min: 0
-          max: 100
-    rras:
-        - cf: ['AVERAGE', 'MAX']
-          xff: 0.5
-          steps: 1
-          rows: 51840
-        - cf: ['AVERAGE', 'MAX']
-          xff: 0.5
-          steps: 6
-          rows: 8736
-        - cf: ['AVERAGE', 'MAX']
-          xff: 0.5
-          steps: 24
-          rows: 2160
-        - cf: ['AVERAGE', 'MAX']
-          xff: 0.5
-          steps: 288
-          rows: 797
+      name : Unix logged in user count
+      version : 1.0
+      source-name : Unix_LoggedUsers
+      step : 300
+datastores:
+    - name: users
+      type: GAUGE
+      heartbeat: 600
+      min: 0
+      max: 100
+rras:
+    - cf: ['AVERAGE', 'MAX']
+      xff: 0.5
+      steps: 1
+      rows: 51840
+    - cf: ['AVERAGE', 'MAX']
+      xff: 0.5
+      steps: 6
+      rows: 8736
+    - cf: ['AVERAGE', 'MAX']
+      xff: 0.5
+      steps: 24
+      rows: 2160
+    - cf: ['AVERAGE', 'MAX']
+      xff: 0.5
+      steps: 288
+      rows: 797
 graphs :
-        - options :
-            name : Logged in users - 1 day
-            label : users
-            base : 1000
-            lower : 0
-            upper : auto
-            start : -1day
-          items :
-              - type : LINE
-                definition-name: users
-                color : C9B215
-                legend : Users
-                stack : false               
-          defs:
-              - name: users
-                datastore-name: users
-                cf: AVERAGE
+    - options :
+        name : Logged in users - 1 day
+        label : users
+        base : 1000
+        lower : 0
+        upper : auto
+        start : -1day
+      items :
+          - type : LINE
+            definition-name: users
+            color : C9B215
+            legend : Users
+            stack : false               
+      defs:
+          - name: users
+            datastore-name: users
+            cf: AVERAGE
