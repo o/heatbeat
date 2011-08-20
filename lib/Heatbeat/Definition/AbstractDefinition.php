@@ -65,6 +65,10 @@ class AbstractDefinition implements \Iterator, \Countable {
         return count($this->storage);
     }
 
+    public function push($value) {
+        return array_push($this->storage, $value); 
+    }
+
 }
 
 ?>
