@@ -28,7 +28,7 @@ namespace Heatbeat\Definition\Template;
 use Heatbeat\Definition\AbstractDefinition;
 
 /**
- * Abstracts template definition iterators
+ * Iterator for datastore definition
  *
  * @category    Heatbeat
  * @package     Heatbeat\Definition
