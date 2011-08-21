@@ -43,5 +43,3 @@ class DatastoreDefinition extends AbstractDefinition {
     }
 
 }
-
-?>
