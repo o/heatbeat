@@ -26,13 +26,13 @@
 namespace Heatbeat\Definition;
 
 /**
- * Abstracts template definition iterators
+ * Zero-index based simple iterator used for traversing nodes in definitions
  *
  * @category    Heatbeat
  * @package     Heatbeat\Definition
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class AbstractDefinition implements \Iterator, \Countable {
+class Iterator implements \Iterator, \Countable {
 
     private $storage = array();
     private $index = 0;

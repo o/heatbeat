@@ -25,7 +25,7 @@
 
 namespace Heatbeat\Definition\Template;
 
-use Heatbeat\Definition\AbstractDefinition;
+use Heatbeat\Definition\Iterator;
 
 /**
  * Iterator for datastore definition
@@ -34,7 +34,7 @@ use Heatbeat\Definition\AbstractDefinition;
  * @package     Heatbeat\Definition
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class DatastoreDefinition extends AbstractDefinition {
+class DatastoreDefinition extends Iterator {
 
     public function current() {
         $node = new \Heatbeat\Parser\Template\Node\DatastoreNode(parent::current());

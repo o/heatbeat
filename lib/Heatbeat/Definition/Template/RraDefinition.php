@@ -25,7 +25,7 @@
 
 namespace Heatbeat\Definition\Template;
 
-use Heatbeat\Definition\AbstractDefinition;
+use Heatbeat\Definition\Iterator;
 
 /**
  * Iterator for RRA definition
@@ -34,7 +34,7 @@ use Heatbeat\Definition\AbstractDefinition;
  * @package     Heatbeat\Definition
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class RraDefinition extends AbstractDefinition {
+class RraDefinition extends Iterator {
 
     const CF = 'cf';
     
