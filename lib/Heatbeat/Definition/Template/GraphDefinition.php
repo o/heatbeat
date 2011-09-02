@@ -35,5 +35,29 @@ use Heatbeat\Definition\Iterator;
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
 class GraphDefinition extends Iterator {
-    
+
+    public function getOptions() {
+        
+    }
+
+    public function getItems() {
+        
+    }
+
+    public function getGprints() {
+        
+    }
+
+    public function getDefs() {
+        
+    }
+
+    public function getCdefs() {
+        
+    }
+
+    public function getVdefs() {
+        
+    }
+
 }
