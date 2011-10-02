@@ -16,7 +16,7 @@
  * limitations under the License. 
  *
  * @category    Heatbeat
- * @package     Heatbeat\Definition
+ * @package     Heatbeat\Definition\Template
  * @author      Osman Ungur <osmanungur@gmail.com>
  * @copyright   2011 Osman Ungur
  * @license     http://www.apache.org/licenses/LICENSE-2.0
@@ -31,7 +31,7 @@ use Heatbeat\Definition\Iterator;
  * Iterator for RRA definition
  *
  * @category    Heatbeat
- * @package     Heatbeat\Definition
+ * @package     Heatbeat\Definition\Template
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
 class RraDefinition extends Iterator {

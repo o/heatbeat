@@ -27,17 +27,10 @@ namespace Heatbeat\Parser\Template;
 
 use Heatbeat\Parser\AbstractParser,
     Heatbeat\Autoloader,
-    Heatbeat\Parser\Template\Node\TemplateOptionNode as TemplateOptions,
-    Heatbeat\Parser\Template\Node\RrdOptionNode as RrdOptions,
-    Heatbeat\Parser\Template\Node\DatastoreNode as Datastore,
-    Heatbeat\Parser\Template\Node\GraphOptionNode as GraphOptions,
-    Heatbeat\Parser\Template\Node\ItemNode as Item,
-    Heatbeat\Parser\Template\Node\DefNode as Def,
-    Heatbeat\Parser\Template\Node\CDefNode as CDef,
-    Heatbeat\Parser\Template\Node\CDefNode as VDef,
-    Heatbeat\Parser\Template\Node\GPrintNode as GPrint,
-    Heatbeat\Parser\Template\Node\RRANode as Rra,
-    Heatbeat\Util\Command\RRDTool\RRDToolCommand as RRDTool,
+    Heatbeat\Definition\Template\DatastoreDefinition,
+    Heatbeat\Definition\Template\RraDefinition,
+    Heatbeat\Definition\Template\GraphDefinition,
+    Heatbeat\Parser\Template\Node\TemplateOptionNode,
     Heatbeat\Exception\TemplateException;
 
 /**
@@ -50,152 +43,21 @@ use Heatbeat\Parser\AbstractParser,
 class TemplateParser extends AbstractParser {
 
     public function getTemplateOptions() {
-        $values = $this->getValues();
-        if ($values->offsetExists('template')) {
-            $templateOptions = new TemplateOptions($values->offsetGet('template'));
-            $templateOptions->validate();
-            return $templateOptions;
-        } else {
-            throw new TemplateException(sprintf('Template options is not defined in template %s', $this->getFullPath()));
-        }
+        $templateOptions = new TemplateOptionNode($values->offsetGet('template'));
+        $templateOptions->validate();
+        return $templateOptions;
     }
 
     public function getDatastores() {
-        $values = $this->getValues();
-        if ($values->offsetExists('datastores')) {
-            return array_map(function($datastore) {
-                        $object = new Datastore($datastore);
-                        $object->validate();
-                        return $object;
-                    }, $values->offsetGet('datastores'));
-        } else {
-            throw new TemplateException(sprintf('You must define at least one datastore in template %s', $this->getFullPath()));
-        }
+        return new \Heatbeat\Definition\Template\DatastoreDefinition($this->getValues()->offsetGet('datastores'));
     }
 
     public function getRras() {
-        $values = $this->getValues();
-        if ($values->offsetExists('rras')) {
-            $newValues = array();
-            foreach ($values->offsetGet('rras') as $rra) {
-                $consolidationFunctions = $rra['cf'];
-                if (is_array($consolidationFunctions)) {
-                    foreach ($consolidationFunctions as $consolidationFunction) {
-                        $newRra = array();
-                        $newRra['cf'] = $consolidationFunction;
-                        $newRra['xff'] = $rra['xff'];
-                        $newRra['steps'] = $rra['steps'];
-                        $newRra['rows'] = $rra['rows'];
-                        $object = new Rra($newRra);
-                        $object->validate();
-                        array_push($newValues, $object);
-                    }
-                } else {
-                    $object = new Rra($rra);
-                    $object->validate();
-                    array_push($newValues, $object);
-                }
-            }
-            return $newValues;
-        } else {
-            throw new TemplateException(sprintf('You must define at least one Round Robin Archive in template %s', $this->getFullPath()));
-        }
+        return new \Heatbeat\Definition\Template\RraDefinition($this->getValues()->offsetGet('rras'));
     }
 
-    public function getGraphEntityCount() {
-        $values = $this->getValues();
-        if ($values->offsetExists('graphs') AND $values->offsetGet('graphs')) {
-            return count($values->offsetGet('graphs'));
-        } else {
-            throw new TemplateException(sprintf('No graphs defined in template %s', $this->getFullPath()));
-        }
+    public function getGraphDefinitions() {
+        return new \Heatbeat\Definition\Template\GraphDefinition($this->getValues()->offsetGet('graphs'));
     }
-
-    private function getGraphIndex($index) {
-        $values = $this->getValues();
-        if (array_key_exists($index, $values['graphs'])) {
-            return new \ArrayObject($values['graphs'][$index]);
-        } else {
-            throw new TemplateException(sprintf('No graph definition found in template %s with index %s', $this->getFullPath(), $index));
-        }
-    }
-
-    public function getGraphOptions($index) {
-        $values = $this->getGraphIndex($index);
-        if ($values->offsetExists('options')) {
-            $graphOptions = new GraphOptions($values->offsetGet('options'));
-            $graphOptions->validate();
-            return $graphOptions;
-        } else {
-            throw new TemplateException(sprintf('Graph options is not defined in template %s', $this->getFullPath()));
-        }
-    }
-
-    public function getGraphItems($index) {
-        $values = $this->getGraphIndex($index);
-        if ($values->offsetExists('items')) {
-            return array_map(function($item) {
-                        $object = new Item($item);
-                        $object->validate();
-                        return $object;
-                    }, $values->offsetGet('items'));
-        } else {
-            throw new TemplateException(sprintf('Graph items is not defined in template %s', $this->getFullPath()));
-        }
-    }
-
-    public function getGraphGprints($index) {
-        $values = $this->getGraphIndex($index);
-        if ($values->offsetExists('gprints')) {
-            return array_map(function($gprint) {
-                        $object = new GPrint($gprint);
-                        $object->validate();
-                        return $object;
-                    }, $values->offsetGet('gprints'));
-        } else {
-            return false;
-        }
-    }
-
-    public function getGraphDefs($index, $filename) {
-        $values = $this->getGraphIndex($index);
-        if ($values->offsetExists('defs')) {
-            return array_map(function($def, $filename) {
-                        $object = new Def($def);
-                        $object->offsetSet('filename', RRDTool::getRRDFilePath($filename));
-                        $object->validate();
-                        return $object;
-                    }, $values->offsetGet('defs'), array_fill(0, count($values->offsetGet('defs')), $filename));
-        } else {
-            throw new TemplateException(sprintf('Graph definitions is not defined in template %s', $this->getFullPath()));
-        }
-    }
-
-    public function getGraphCdefs($index) {
-        $values = $this->getGraphIndex($index);
-        if ($values->offsetExists('cdefs') AND count($values->offsetGet('cdefs'))) {
-            return array_map(function($cdef) {
-                        $object = new CDef($cdef);
-                        $object->validate();
-                        return $object;
-                    }, $values->offsetGet('cdefs'));
-        } else {
-            return false;
-        }
-    }
-
-    public function getGraphVdefs($index) {
-        $values = $this->getGraphIndex($index);
-        if ($values->offsetExists('vdefs') AND count($values->offsetGet('vdefs'))) {
-            return array_map(function($vdef) {
-                        $object = new VDef($vdef);
-                        $object->validate();
-                        return $object;
-                    }, $values->offsetGet('vdefs'));
-        } else {
-            return false;
-        }
-    }
-
 }
 

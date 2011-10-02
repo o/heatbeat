@@ -28,36 +28,18 @@ namespace Heatbeat\Definition\Template;
 use Heatbeat\Definition\Iterator;
 
 /**
- * Iterator for graph definitions
+ * Iterator for graph item definition
  *
  * @category    Heatbeat
  * @package     Heatbeat\Definition\Template
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class GraphDefinition extends Iterator {
+class ItemDefinition extends Iterator {
 
-    public function getOptions() {
-        
-    }
-
-    public function getItems() {
-        return new ItemDefinition(parent::current());
-    }
-
-    public function getGprints() {
-        return new GprintDefinition(parent::current());
-    }
-
-    public function getDefs() {
-        return new DefDefinition(parent::current());
-    }
-
-    public function getCdefs() {
-        return new CdefDefinition(parent::current());
-    }
-
-    public function getVdefs() {
-        return new VdefDefinition(parent::current());
+    public function current() {
+        $node = new \Heatbeat\Parser\Template\Node\ItemNode(parent::current());
+        $node->validate();
+        return $node;
     }
 
 }
