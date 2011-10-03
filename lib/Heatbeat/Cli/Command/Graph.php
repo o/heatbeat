@@ -42,7 +42,7 @@ use Symfony\Component\Console\Input\InputArgument,
  * @package     Heatbeat\Cli\Command
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class Graph extends Shared {
+class Graph extends HeatbeatCommand {
 
     public function configure() {
         $this

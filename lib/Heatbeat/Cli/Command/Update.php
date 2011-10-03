@@ -43,7 +43,7 @@ use Symfony\Component\Console\Input\InputArgument,
  * @package     Heatbeat\Cli\Command
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class Update extends Shared {
+class Update extends HeatbeatCommand {
 
     public function configure() {
         $this
