@@ -16,14 +16,14 @@
  * limitations under the License. 
  *
  * @category    Heatbeat
- * @package     Heatbeat\CommandLine\Callback
+ * @package     Heatbeat\Cli\Command
  * @author      Osman Ungur <osmanungur@gmail.com>
  * @copyright   2011 Osman Ungur
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  * @link        http://github.com/import/heatbeat
  */
 
-namespace Heatbeat\CommandLine\Callback;
+namespace Heatbeat\Cli\Command;
 
 use Symfony\Component\Console\Input\InputArgument,
     Symfony\Component\Console\Input\InputOption,
@@ -42,7 +42,7 @@ use Symfony\Component\Console\Input\InputArgument,
  * Callback for CLI Tool create command
  *
  * @category    Heatbeat
- * @package     Heatbeat\CommandLine\Callback
+ * @package     Heatbeat\Cli\Command
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
 class Create extends Shared {
@@ -73,7 +73,7 @@ class Create extends Shared {
                 $commandObject->setRras($template->getRras());
                 $this->executeCommand($input, $output, $commandObject, $entity->getRRDFilename() . RRDTool::RRD_EXT);
             } catch (\Exception $e) {
-                $this->logError($e, $this->getConfigObject());
+                $this->logError($e);
                 $this->renderError($e, $output);
                 continue;
             }

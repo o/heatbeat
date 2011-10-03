@@ -16,14 +16,14 @@
  * limitations under the License.
  *
  * @category    Heatbeat
- * @package     Heatbeat\CommandLine\Callback
+ * @package     Heatbeat\Cli\Command
  * @author      Osman Ungur <osmanungur@gmail.com>
  * @copyright   2011 Osman Ungur
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  * @link        http://github.com/import/heatbeat
  */
 
-namespace Heatbeat\CommandLine\Callback;
+namespace Heatbeat\Cli\Command;
 
 use Symfony\Component\Console\Input\InputArgument,
     Symfony\Component\Console\Input\InputOption,
@@ -42,41 +42,38 @@ use Symfony\Component\Console\Input\InputArgument,
  * Shared methods for commands
  *
  * @category    Heatbeat
- * @package     Heatbeat\CommandLine\Callback
+ * @package     Heatbeat\Cli\Command
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class Shared extends Command {
+class HeatbeatCommand extends Command {
 
-    private $configObject;
-    private $templateObject;
     private $processStartTime;
 
     /**
      * Initializes template and command object
      *
-     * @param InputInterface $input
-     * @param OutputInterface $output
      */
-    protected function initialize(InputInterface $input, OutputInterface $output) {
+    protected function initialize() {
         $this->setProcessStartTime();
+    }
+
+	public function getConfig()
+	{
         $configObject = new Config();
         $configObject->setFilepath(Autoloader::getInstance()->getPath(Autoloader::FOLDER_ROOT));
         $configObject->setFilename(Config::FILENAME);
         $configObject->parse();
-        $this->setConfigObject($configObject);
+		return $configObject;
+	}
+	
+	public function getTemplate($name)
+	{
         $templateObject = new Template();
         $templateObject->setFilepath(Autoloader::getInstance()->getPath(Autoloader::FOLDER_TEMPLATE));
-        $this->setTemplateObject($templateObject);
-    }
-
-    /**
-     * Returns command execution time
-     *
-     * @return float
-     */
-    private function getExecutionTime() {
-        return microtime(true) - $this->processStartTime;
-    }
+		$templateObject->setFilename($name);
+		$templateObject->parse();
+		return $templateObject;
+	}
 
     /**
      * Sets actual time as float
@@ -86,52 +83,12 @@ class Shared extends Command {
     }
 
     /**
-     * Returns config object
+     * Returns command execution time
      *
-     * @return Config
+     * @return float
      */
-    public function getConfigObject() {
-        return $this->configObject;
-    }
-
-    /**
-     * Sets prepared config object
-     *
-     * @param Config $configObject
-     */
-    public function setConfigObject(Config $configObject) {
-        $this->configObject = $configObject;
-    }
-
-    /**
-     * Returns template object
-     *
-     * @return Template
-     */
-    public function getTemplateObject() {
-        return $this->templateObject;
-    }
-
-    /**
-     * Sets prepared template object
-     *
-     * @param Template $templateObject
-     */
-    public function setTemplateObject(Template $templateObject) {
-        $this->templateObject = $templateObject;
-    }
-
-    /**
-     * Returns parsed template 
-     *
-     * @param string $filename
-     * @return ArrayIterator
-     */
-    public function getTemplate($filename) {
-        $templateObject = $this->getTemplateObject();
-        $templateObject->setFilename($filename);
-        $templateObject->parse();
-        return $templateObject;
+    private function getExecutionTime() {
+        return microtime(true) - $this->processStartTime;
     }
 
     /**
@@ -200,11 +157,17 @@ class Shared extends Command {
     protected function renderSuccess($message, OutputInterface $output) {
         $output->writeln(sprintf("<info>Success\t</info> %s", $message));
     }
-    
-    protected function logError($e, $configObject)
+
+    /**
+     * Logs message of exception to rotating file 
+     *
+     * @param Exception $e 
+     * @return bool
+     */
+    protected function logError($e)
     {
-        $factory = new Logger($configObject, Logger::FILE_HANDLER);
-        $factory->getHandlerObject()->log($e->getMessage());
+        $factory = new Logger(Logger::FILE_HANDLER);
+        return $factory->getHandlerObject()->log($e->getMessage());
     }
 
 }

@@ -16,34 +16,34 @@
  * limitations under the License. 
  *
  * @category    Heatbeat
- * @package     Heatbeat\CommandLine
+ * @package     Heatbeat\Cli
  * @author      Osman Ungur <osmanungur@gmail.com>
  * @copyright   2011 Osman Ungur
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  * @link        http://github.com/import/heatbeat
  */
 
-namespace Heatbeat\CommandLine;
+namespace Heatbeat\Cli;
 
-use Symfony\Component\Console\Application;
+use Symfony\Component\Console;
 
 /**
  * Application class for Heatbeat CLI interface.
  *
  * @category    Heatbeat
- * @package     Heatbeat\CommandLine
+ * @package     Heatbeat\Cli
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class Runner extends Application {
+class Application extends Console\Application {
 
     public function __construct() {
-        parent::__construct('Heatbeat (c) 2011, Osman Ungur', '1.1');
+        parent::__construct('Heatbeat (c) 2011, Osman Ungur', '0.20-dev');
 
         $this->addCommands(array(
-            new Callback\Create(),
-            new Callback\Update(),
-            new Callback\TestSource(),
-            new Callback\Graph()
+            new Command\Create(),
+            new Command\Update(),
+            new Command\TestSource(),
+            new Command\Graph()
         ));
     }
 
