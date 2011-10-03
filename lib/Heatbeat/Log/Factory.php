@@ -44,10 +44,8 @@ class Factory {
     const DUMMY_HANDLER = 2;
 
     private $handlerObject;
-    private $configObject;
 
-    public function __construct($config, $handler) {
-        $this->setConfigObject($config);
+    public function __construct($handler) {
         $this->setHandler($handler);
     }
 
@@ -57,11 +55,6 @@ class Factory {
      * @param string $handler
      */
     private function setHandler($handler) {
-        $configValues = $this->getConfigObject()->getConfigurationOptions()->offsetGet('log');
-        if ($configValues['enabled'] == false) {
-            $this->setHandlerObject(new DummyHandler());
-            return true;
-        }
         switch ($handler) {
             case self::FILE_HANDLER:
                 $this->setHandlerObject(new RotatingFileHandler());
@@ -77,24 +70,6 @@ class Factory {
                 throw new LoggingException(sprintf('Logging handler not found : %s', $handler));
                 break;
         }
-    }
-
-    /**
-     * Returns config object
-     *
-     * @return Config
-     */
-    public function getConfigObject() {
-        return $this->configObject;
-    }
-
-    /**
-     * Sets prepared config object
-     *
-     * @param Config $configObject
-     */
-    protected function setConfigObject(Config $configObject) {
-        $this->configObject = $configObject;
     }
 
     /**
