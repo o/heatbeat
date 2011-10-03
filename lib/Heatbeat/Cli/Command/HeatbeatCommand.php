@@ -53,7 +53,7 @@ class HeatbeatCommand extends Command {
      * Initializes template and command object
      *
      */
-    protected function initialize() {
+    protected function initialize(InputInterface $input, OutputInterface $output) {
         $this->setProcessStartTime();
     }
 
