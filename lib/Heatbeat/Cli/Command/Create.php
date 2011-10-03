@@ -61,7 +61,7 @@ class Create extends HeatbeatCommand {
      * @param OutputInterface $output
      */
     protected function execute(InputInterface $input, OutputInterface $output) {
-        foreach ($this->getConfigObject()->getGraphEntities() as $entity) {
+        foreach ($this->getConfig()->getGraphEntities() as $entity) {
             try {
                 if ($entity->offsetGet('enabled') === false)
                     continue;
