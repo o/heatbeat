@@ -106,8 +106,8 @@ class HeatbeatCommand extends Command {
         if ($input->getOption('verbose')) {
             $output->writeln($executor->getCommandString());
         }
-        $process = $executor->execute();
-        if ($process->isSuccessful()) {
+        $isSuccessful = $executor->execute();
+        if ($isSuccessful) {
             $this->renderSuccess($message, $output);
         }
     }

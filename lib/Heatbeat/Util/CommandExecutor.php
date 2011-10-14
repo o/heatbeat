@@ -111,18 +111,15 @@ class CommandExecutor {
     /**
      * Executes prepared command string
      * 
-     * @return Process 
+     * @return bool 
      * @throws ExecutionException
      */
     public function execute() {
-        $process = new Process($this->getCommandString());
-        $process->setEnv(explode(PATH_SEPARATOR, \getenv('PATH')));
-        $process->setTimeout(5);
-        $process->run();
-        if (!$process->isSuccessful()) {
-            throw new ExecutionException($process->getErrorOutput());
-        }
-        return $process;
+		exec($this->getCommandString(), $output, $return_value);
+		if ($return_value ==! 0) {
+            throw new ExecutionException(sprintf('Execution Error %s', implode(PHP_EOL, $output)));
+		}
+		return true;
     }
 
 }
