@@ -31,11 +31,11 @@ use Symfony\Component\Console\Input\InputArgument,
     Symfony\Component\Console\Input\InputInterface,
     Symfony\Component\Console\Output\OutputInterface,
     Heatbeat\Autoloader,
-    Heatbeat\Util\CommandExecutor as Executor,
+    Heatbeat\Executor\Executor,
     Heatbeat\Parser\Template\TemplateParser as Template,
     Heatbeat\Parser\Config\ConfigParser as Config,
-    Heatbeat\Util\AbstractCommand,
-    Heatbeat\Log\Factory as Logger,    
+    Heatbeat\Command\AbstractCommand,
+    Heatbeat\Log\Factory as Logger,
     Heatbeat\Exception\SourceException;
 
 /**
@@ -57,23 +57,21 @@ class HeatbeatCommand extends Command {
         $this->setProcessStartTime();
     }
 
-	public function getConfig()
-	{
+    public function getConfig() {
         $configObject = new Config();
         $configObject->setFilepath(Autoloader::getInstance()->getPath(Autoloader::FOLDER_ROOT));
         $configObject->setFilename(Config::FILENAME);
         $configObject->parse();
-		return $configObject;
-	}
-	
-	public function getTemplate($name)
-	{
+        return $configObject;
+    }
+
+    public function getTemplate($name) {
         $templateObject = new Template();
         $templateObject->setFilepath(Autoloader::getInstance()->getPath(Autoloader::FOLDER_TEMPLATE));
-		$templateObject->setFilename($name);
-		$templateObject->parse();
-		return $templateObject;
-	}
+        $templateObject->setFilename($name);
+        $templateObject->parse();
+        return $templateObject;
+    }
 
     /**
      * Sets actual time as float
@@ -100,15 +98,22 @@ class HeatbeatCommand extends Command {
      * @param string $message
      */
     public function executeCommand(InputInterface $input, OutputInterface $output, AbstractCommand $commandObject, $message) {
-        $executor = new Executor();
-        $executor->setCommandObject($commandObject);
-        $executor->prepare();
+        $commandString = $commandObject->prepare()
+                ->getCommandString();
+
         if ($input->getOption('verbose')) {
-            $output->writeln($executor->getCommandString());
+            $output->writeln($commandString);
         }
-        $isSuccessful = $executor->execute();
-        if ($isSuccessful) {
+
+        $executor = new Executor();
+        $executor->setCommand($commandString)
+                ->setEnv(array(getenv('PATH')))
+                ->run();
+
+        if ($executor->isSuccess()) {
             $this->renderSuccess($message, $output);
+        } else {
+            $this->renderError($executor->getErrorOutput(), $output);
         }
     }
 
@@ -134,7 +139,7 @@ class HeatbeatCommand extends Command {
      */
     public function getSummary() {
         return sprintf(
-                '<comment>Time: %4.2f sec, Memory: %4.2fMb</comment>', number_format($this->getExecutionTime(), 2), memory_get_peak_usage(TRUE) / 1048576
+                        '<comment>Time: %4.2f sec, Memory: %4.2fMb</comment>', number_format($this->getExecutionTime(), 2), memory_get_peak_usage(TRUE) / 1048576
         );
     }
 
@@ -144,8 +149,8 @@ class HeatbeatCommand extends Command {
      * @param \Exception $e
      * @param OutputInterface $output 
      */
-    protected function renderError(\Exception $e, OutputInterface $output) {
-        $output->writeln(sprintf("<error>Error\t</error> %s", $e->getMessage()));
+    protected function renderError($message, OutputInterface $output) {
+        $output->writeln(sprintf("<error>Error\t</error> %s", $message));
     }
 
     /**
@@ -164,8 +169,7 @@ class HeatbeatCommand extends Command {
      * @param Exception $e 
      * @return bool
      */
-    protected function logError($e)
-    {
+    protected function logError($e) {
         $factory = new Logger(Logger::FILE_HANDLER);
         return $factory->getHandlerObject()->log($e->getMessage());
     }
