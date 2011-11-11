@@ -31,8 +31,8 @@ use Symfony\Component\Console\Input\InputArgument,
     Symfony\Component\Console\Input\InputInterface,
     Symfony\Component\Console\Output\OutputInterface,
     Heatbeat\Autoloader,
-    Heatbeat\Util\Command\RRDTool\RRDToolCommand as RRDTool,
-    Heatbeat\Util\Command\RRDTool\UpdateCommand as RRDUpdate,
+    Heatbeat\Command\RRDTool\RRDToolCommand as RRDTool,
+    Heatbeat\Command\RRDTool\UpdateCommand as RRDUpdate,
     Heatbeat\Source\SourceInput as Input,
     Heatbeat\Exception\SourceException;
 
