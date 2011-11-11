@@ -16,14 +16,14 @@
  * limitations under the License. 
  *
  * @category    Heatbeat
- * @package     Heatbeat\Util\Command\RRDTool
+ * @package     Heatbeat\Command\RRDTool
  * @author      Osman Ungur <osmanungur@gmail.com>
  * @copyright   2011 Osman Ungur
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  * @link        http://github.com/import/heatbeat
  */
 
-namespace Heatbeat\Util\Command\RRDTool;
+namespace Heatbeat\Command\RRDTool;
 
 use Heatbeat\Source\SourceOutput;
 
@@ -31,7 +31,7 @@ use Heatbeat\Source\SourceOutput;
  * Implementation for RRDTool update command
  *
  * @category    Heatbeat
- * @package     Heatbeat\Util\Command\RRDTool
+ * @package     Heatbeat\Command\RRDTool
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
 class UpdateCommand extends RRDToolCommand {
