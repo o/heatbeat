@@ -16,14 +16,14 @@
  * limitations under the License.
  *
  * @category    Heatbeat
- * @package     Heatbeat\CommandLine\Callback
+ * @package     Heatbeat\Cli\Command
  * @author      Osman Ungur <osmanungur@gmail.com>
  * @copyright   2011 Osman Ungur
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  * @link        http://github.com/import/heatbeat
  */
 
-namespace Heatbeat\CommandLine\Callback;
+namespace Heatbeat\Cli\Command;
 
 use Symfony\Component\Console\Input\InputArgument,
     Symfony\Component\Console\Input\InputOption,
@@ -31,42 +31,53 @@ use Symfony\Component\Console\Input\InputArgument,
     Symfony\Component\Console\Input\InputInterface,
     Symfony\Component\Console\Output\OutputInterface,
     Heatbeat\Autoloader,
-    Heatbeat\Util\CommandExecutor as Executor,
+    Heatbeat\Executor\Executor,
     Heatbeat\Parser\Template\TemplateParser as Template,
     Heatbeat\Parser\Config\ConfigParser as Config,
-    Heatbeat\Util\AbstractCommand,
-    Heatbeat\Log\Factory as Logger,    
+    Heatbeat\Command\AbstractCommand,
+    Heatbeat\Log\Factory as Logger,
     Heatbeat\Exception\SourceException;
 
 /**
  * Shared methods for commands
  *
  * @category    Heatbeat
- * @package     Heatbeat\CommandLine\Callback
+ * @package     Heatbeat\Cli\Command
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class Shared extends Command {
+class HeatbeatCommand extends Command {
 
-    private $configObject;
-    private $templateObject;
     private $processStartTime;
 
     /**
      * Initializes template and command object
      *
-     * @param InputInterface $input
-     * @param OutputInterface $output
      */
     protected function initialize(InputInterface $input, OutputInterface $output) {
         $this->setProcessStartTime();
+    }
+
+    public function getConfig() {
         $configObject = new Config();
         $configObject->setFilepath(Autoloader::getInstance()->getPath(Autoloader::FOLDER_ROOT));
         $configObject->setFilename(Config::FILENAME);
         $configObject->parse();
-        $this->setConfigObject($configObject);
+        return $configObject;
+    }
+
+    public function getTemplate($name) {
         $templateObject = new Template();
         $templateObject->setFilepath(Autoloader::getInstance()->getPath(Autoloader::FOLDER_TEMPLATE));
-        $this->setTemplateObject($templateObject);
+        $templateObject->setFilename($name);
+        $templateObject->parse();
+        return $templateObject;
+    }
+
+    /**
+     * Sets actual time as float
+     */
+    private function setProcessStartTime() {
+        $this->processStartTime = microtime(true);
     }
 
     /**
@@ -79,62 +90,6 @@ class Shared extends Command {
     }
 
     /**
-     * Sets actual time as float
-     */
-    private function setProcessStartTime() {
-        $this->processStartTime = microtime(true);
-    }
-
-    /**
-     * Returns config object
-     *
-     * @return Config
-     */
-    public function getConfigObject() {
-        return $this->configObject;
-    }
-
-    /**
-     * Sets prepared config object
-     *
-     * @param Config $configObject
-     */
-    public function setConfigObject(Config $configObject) {
-        $this->configObject = $configObject;
-    }
-
-    /**
-     * Returns template object
-     *
-     * @return Template
-     */
-    public function getTemplateObject() {
-        return $this->templateObject;
-    }
-
-    /**
-     * Sets prepared template object
-     *
-     * @param Template $templateObject
-     */
-    public function setTemplateObject(Template $templateObject) {
-        $this->templateObject = $templateObject;
-    }
-
-    /**
-     * Returns parsed template 
-     *
-     * @param string $filename
-     * @return ArrayIterator
-     */
-    public function getTemplate($filename) {
-        $templateObject = $this->getTemplateObject();
-        $templateObject->setFilename($filename);
-        $templateObject->parse();
-        return $templateObject;
-    }
-
-    /**
      * Executes given command object and sends output to console
      *
      * @param InputInterface $input
@@ -143,15 +98,21 @@ class Shared extends Command {
      * @param string $message
      */
     public function executeCommand(InputInterface $input, OutputInterface $output, AbstractCommand $commandObject, $message) {
-        $executor = new Executor();
-        $executor->setCommandObject($commandObject);
-        $executor->prepare();
+        $commandString = $commandObject->prepare()
+                ->getCommandString();
+
         if ($input->getOption('verbose')) {
-            $output->writeln($executor->getCommandString());
+            $output->writeln($commandString);
         }
-        $process = $executor->execute();
-        if ($process->isSuccessful()) {
+
+        $executor = new Executor();
+        $executor->setCommand($commandString)
+                ->run();
+
+        if ($executor->isSuccess()) {
             $this->renderSuccess($message, $output);
+        } else {
+            $this->renderError($executor->getErrorOutput(), $output);
         }
     }
 
@@ -177,7 +138,7 @@ class Shared extends Command {
      */
     public function getSummary() {
         return sprintf(
-                '<comment>Time: %4.2f sec, Memory: %4.2fMb</comment>', number_format($this->getExecutionTime(), 2), memory_get_peak_usage(TRUE) / 1048576
+                        '<comment>Time: %4.2f sec, Memory: %4.2fMb</comment>', number_format($this->getExecutionTime(), 2), memory_get_peak_usage(TRUE) / 1048576
         );
     }
 
@@ -187,8 +148,8 @@ class Shared extends Command {
      * @param \Exception $e
      * @param OutputInterface $output 
      */
-    protected function renderError(\Exception $e, OutputInterface $output) {
-        $output->writeln(sprintf("<error>Error\t</error> %s", $e->getMessage()));
+    protected function renderError($message, OutputInterface $output) {
+        $output->writeln(sprintf("<error>Error\t</error> %s", $message));
     }
 
     /**
@@ -200,11 +161,16 @@ class Shared extends Command {
     protected function renderSuccess($message, OutputInterface $output) {
         $output->writeln(sprintf("<info>Success\t</info> %s", $message));
     }
-    
-    protected function logError($e, $configObject)
-    {
-        $factory = new Logger($configObject, Logger::FILE_HANDLER);
-        $factory->getHandlerObject()->log($e->getMessage());
+
+    /**
+     * Logs message of exception to rotating file 
+     *
+     * @param Exception $e 
+     * @return bool
+     */
+    protected function logError($e) {
+        $factory = new Logger(Logger::FILE_HANDLER);
+        return $factory->getHandlerObject()->log($e->getMessage());
     }
 
 }

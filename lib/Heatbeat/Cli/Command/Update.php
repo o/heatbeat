@@ -16,14 +16,14 @@
  * limitations under the License. 
  *
  * @category    Heatbeat
- * @package     Heatbeat\CommandLine\Callback
+ * @package     Heatbeat\Cli\Command
  * @author      Osman Ungur <osmanungur@gmail.com>
  * @copyright   2011 Osman Ungur
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  * @link        http://github.com/import/heatbeat
  */
 
-namespace Heatbeat\CommandLine\Callback;
+namespace Heatbeat\Cli\Command;
 
 use Symfony\Component\Console\Input\InputArgument,
     Symfony\Component\Console\Input\InputOption,
@@ -31,27 +31,25 @@ use Symfony\Component\Console\Input\InputArgument,
     Symfony\Component\Console\Input\InputInterface,
     Symfony\Component\Console\Output\OutputInterface,
     Heatbeat\Autoloader,
-    Heatbeat\Parser\Config\ConfigParser as Config,
-    Heatbeat\Parser\Template\TemplateParser as Template,
-    Heatbeat\Util\Command\RRDTool\RRDToolCommand as RRDTool,
-    Heatbeat\Util\Command\RRDTool\CreateCommand as RRDCreate,
-    Heatbeat\Util\CommandExecutor as Executor,
+    Heatbeat\Command\RRDTool\RRDToolCommand as RRDTool,
+    Heatbeat\Command\RRDTool\UpdateCommand as RRDUpdate,
+    Heatbeat\Source\SourceInput as Input,
     Heatbeat\Exception\SourceException;
 
 /**
- * Callback for CLI Tool create command
+ * Callback for CLI Tool update command
  *
  * @category    Heatbeat
- * @package     Heatbeat\CommandLine\Callback
+ * @package     Heatbeat\Cli\Command
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class Create extends Shared {
+class Update extends HeatbeatCommand {
 
     public function configure() {
         $this
-                ->setName('create')
-                ->setDescription('Creates RRD files')
-                ->addOption('overwrite', null, InputOption::VALUE_NONE, "This option overwrites all created RRD's");
+                ->setName('update')
+                ->setDescription('Updates all RRD files')
+                ->addOption('no-graph', null, InputOption::VALUE_NONE, 'If set, graphs not will be created.');
     }
 
     /**
@@ -61,24 +59,47 @@ class Create extends Shared {
      * @param OutputInterface $output
      */
     protected function execute(InputInterface $input, OutputInterface $output) {
-        foreach ($this->getConfigObject()->getGraphEntities() as $entity) {
+        foreach ($this->getConfig()->getGraphEntities() as $entity) {
             try {
                 if ($entity->offsetGet('enabled') === false)
                     continue;
                 $template = $this->getTemplate($entity->offsetGet('template'));
-                $commandObject = new RRDCreate();
+                $pluginInstance = $this->getPluginInstance($template->getTemplateOptions()->offsetGet('source-name'));
+                if ($entity->offsetExists('arguments') AND count($entity->offsetGet('arguments'))) {
+                    $pluginInstance->setInput(new Input($entity->offsetGet('arguments')));
+                }
+                $pluginInstance->perform();
+                $commandObject = new RRDUpdate();
                 $commandObject->setFilename($entity->getRRDFilename());
-                $commandObject->setOverwrite($input->getOption('overwrite'));
-                $commandObject->setDatastores($template->getDatastores());
-                $commandObject->setRras($template->getRras());
+                $commandObject->setValues($pluginInstance->getOutput());
                 $this->executeCommand($input, $output, $commandObject, $entity->getRRDFilename() . RRDTool::RRD_EXT);
             } catch (\Exception $e) {
-                $this->logError($e, $this->getConfigObject());
+                $this->logError($e);
                 $this->renderError($e, $output);
                 continue;
             }
         }
         $output->writeln($this->getSummary());
+        if ($input->getOption('no-graph') === false) {
+            $this->runGraphCommand($input, $output);
+        }
+    }
+
+    /**
+     * Invokes heatbeat:graph command
+     *
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     */
+    private function runGraphCommand(InputInterface $input, OutputInterface $output) {
+        $command = $this->getApplication()->find('graph');
+        $input = new Console\Input\ArrayInput(
+                        array(
+                            'command' => 'graph',
+                            '--verbose' => $input->getOption('verbose')
+                        )
+        );
+        $command->run($input, $output);
     }
 
 }

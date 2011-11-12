@@ -16,14 +16,14 @@
  * limitations under the License. 
  *
  * @category    Heatbeat
- * @package     Heatbeat\Util\Command\RRDTool
+ * @package     Heatbeat\Command\RRDTool
  * @author      Osman Ungur <osmanungur@gmail.com>
  * @copyright   2011 Osman Ungur
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  * @link        http://github.com/import/heatbeat
  */
 
-namespace Heatbeat\Util\Command\RRDTool;
+namespace Heatbeat\Command\RRDTool;
 
 use Heatbeat\Parser\Template\Node\DatastoreNode as Datastore,
     Heatbeat\Parser\Template\Node\RraNode as RRA;
@@ -32,7 +32,7 @@ use Heatbeat\Parser\Template\Node\DatastoreNode as Datastore,
  * Implementation for RRDTool create command
  *
  * @category    Heatbeat
- * @package     Heatbeat\Util\Command\RRDTool
+ * @package     Heatbeat\Command\RRDTool
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
 class CreateCommand extends RRDToolCommand {
