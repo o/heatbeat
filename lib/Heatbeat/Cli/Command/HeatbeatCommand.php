@@ -107,7 +107,6 @@ class HeatbeatCommand extends Command {
 
         $executor = new Executor();
         $executor->setCommand($commandString)
-                ->setEnv(array(getenv('PATH')))
                 ->run();
 
         if ($executor->isSuccess()) {
