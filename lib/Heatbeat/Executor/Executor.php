@@ -45,7 +45,7 @@ class Executor {
     private $exitcode;
 
     public function run() {
-        $process = proc_open($this->command, array(array('pipe', 'r'), array('pipe', 'w'), array('pipe', 'w')), $pipes, $this->cwd, $this->env);
+        $process = proc_open($this->command, array(array('pipe', 'r'), array('pipe', 'w'), array('pipe', 'w')), $pipes, $this->cwd, $this->env, $this->options);
         if (!is_resource($process)) {
             throw new ExecutionException('Unable to start a new process.');
         }
