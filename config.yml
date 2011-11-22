@@ -1,7 +1,3 @@
-configuration :
-    log :
-        enabled : true
-
 graphs :
     - template : Test_Random
       enabled : true

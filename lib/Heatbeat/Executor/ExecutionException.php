@@ -16,22 +16,22 @@
  * limitations under the License. 
  *
  * @category    Heatbeat
- * @package     Heatbeat\Exception
+ * @package     Heatbeat\Executor
  * @author      Osman Ungur <osmanungur@gmail.com>
  * @copyright   2011 Osman Ungur
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  * @link        http://github.com/import/heatbeat
  */
 
-namespace Heatbeat\Exception;
+namespace Heatbeat\Executor;
 
 /**
  * Execution exception class
  *
  * @category    Heatbeat
- * @package     Heatbeat\Exception
+ * @package     Heatbeat\Executor
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class ExecutionException extends HeatbeatException {
+class ExecutionException extends \RuntimeException {
     
 }

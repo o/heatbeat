@@ -16,14 +16,14 @@
  * limitations under the License. 
  *
  * @category    Heatbeat
- * @package     Heatbeat\CommandLine\Callback
+ * @package     Heatbeat\Cli\Command
  * @author      Osman Ungur <osmanungur@gmail.com>
  * @copyright   2011 Osman Ungur
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  * @link        http://github.com/import/heatbeat
  */
 
-namespace Heatbeat\CommandLine\Callback;
+namespace Heatbeat\Cli\Command;
 
 use Symfony\Component\Console\Input\InputArgument,
     Symfony\Component\Console\Input\InputOption,
@@ -37,10 +37,10 @@ use Symfony\Component\Console\Input\InputArgument,
  * Callback for CLI Tool test command
  *
  * @category    Heatbeat
- * @package     Heatbeat\CommandLine\Callback
+ * @package     Heatbeat\Cli\Command
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class TestSource extends Shared {
+class TestSource extends HeatbeatCommand {
 
     public function configure() {
         $this

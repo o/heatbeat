@@ -165,7 +165,8 @@ class Autoloader {
      */
     public static function handleExceptions(\Exception $exc) {
         $message = sprintf('[%s] %s', get_class($exc), $exc->getMessage());
-        \Heatbeat\Log\BaseLogger::getInstance()->log($message);
+        $factory = new \Heatbeat\Log\Factory(\Heatbeat\Log\Factory::FILE_HANDLER);
+        return $factory->getHandlerObject()->log($exc->getMessage());
     }
 
 }

@@ -3,7 +3,7 @@
 
 namespace Heatbeat;
 
-use Heatbeat\CommandLine\Runner as Cli;
+use Heatbeat\Cli\Application as Cli;
 
 require realpath(dirname(__FILE__) . \DIRECTORY_SEPARATOR . '..') .'/lib/Heatbeat/Autoloader.php';
 Autoloader::getInstance();
