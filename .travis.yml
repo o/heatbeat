@@ -1,13 +1,11 @@
 language: php
 
-php:
-  - 5.3
-  - 5.4
+php: 5.3
 
 branches:
   only:
     - master
-    - stable
+    - develop
 
-sudo apt-get install -y rrdtool
-
+before_script:
+    - sudo apt-get install -y rrdtool
