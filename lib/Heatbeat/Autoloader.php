@@ -52,12 +52,6 @@ class Autoloader {
 
     /**
      *
-     * @var UniversalClassLoader
-     */
-    private $loader;
-
-    /**
-     *
      * @var array
      */
     private $paths;
@@ -110,7 +104,6 @@ class Autoloader {
         );
 
         $loader->register();
-        $this->setLoader($loader);
     }
 
     /**
@@ -118,17 +111,19 @@ class Autoloader {
      */
     private function setErrorExceptionHandling() {
         error_reporting(E_ALL | E_STRICT);
-        set_error_handler(array($this, 'handleErrors'));
-        set_exception_handler(array($this, 'handleExceptions'));
-    }
 
-    /**
-     * Sets autoloader
-     *
-     * @param UniversalClassLoader $loader
-     */
-    private function setLoader(UniversalClassLoader $loader) {
-        $this->loader = $loader;
+        set_error_handler(function ($errno, $errstr, $errfile, $errline) {
+                    if (0 == error_reporting()) {
+                        return false;
+                    }
+                    throw new \ErrorException($errstr, 0, $errno, $errfile, $errline);
+                });
+
+        set_exception_handler(function ($e) {
+                    $message = sprintf('[%s] %s', get_class($e), $e->getMessage());
+                    $factory = new \Heatbeat\Log\Factory(\Heatbeat\Log\Factory::FILE_HANDLER);
+                    return $factory->getHandlerObject()->log($message);
+                });
     }
 
     /**
@@ -141,34 +136,4 @@ class Autoloader {
         return $this->paths[$path];
     }
 
-    /**
-     * Handles standard php errors
-     *
-     * @param int $errno
-     * @param string $errstr
-     * @param string $errfile
-     * @param int $errline
-     * @return bool
-     * @throws \ErrorException
-     */
-    public static function handleErrors($errno, $errstr = '', $errfile = '', $errline = '') {
-        if (0 == error_reporting()) {
-            return false;
-        }
-        throw new \ErrorException($errstr, 0, $errno, $errfile, $errline);
-    }
-
-    /**
-     * Handles and logs exceptions
-     *
-     * @param \Exception $exc
-     */
-    public static function handleExceptions(\Exception $exc) {
-        $message = sprintf('[%s] %s', get_class($exc), $exc->getMessage());
-        $factory = new \Heatbeat\Log\Factory(\Heatbeat\Log\Factory::FILE_HANDLER);
-        return $factory->getHandlerObject()->log($exc->getMessage());
-    }
-
 }
-
-?>
