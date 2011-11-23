@@ -1,11 +1,11 @@
 <?php
 
-namespace Heatbeat\Util\Command\RRDTool;
+namespace Heatbeat\Command\RRDTool;
 
 /**
  * Test class for CreateCommand.
  */
-class CreateCommandTest extends \PHPUnit_Framework_TestCase {
+class CreateTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * @var CreateCommand
@@ -13,7 +13,7 @@ class CreateCommandTest extends \PHPUnit_Framework_TestCase {
     protected $object;
 
     protected function setUp() {
-        $this->object = new CreateCommand;
+        $this->object = new Create;
     }
 
     public function testInitializedObject() {
