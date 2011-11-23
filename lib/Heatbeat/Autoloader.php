@@ -120,9 +120,11 @@ class Autoloader {
                 });
 
         set_exception_handler(function ($e) {
-                    $message = sprintf('[%s] %s', get_class($e), $e->getMessage());
-                    $factory = new \Heatbeat\Log\Factory(\Heatbeat\Log\Factory::FILE_HANDLER);
-                    return $factory->getHandlerObject()->log($message);
+                    $logger = new \Heatbeat\Log\Logger();
+                    $logger->setMessage($e->getMessage())
+                            ->log();
+                    
+                    fwrite(STDERR, 'An error occured, please check your log files!.');
                 });
     }
 
