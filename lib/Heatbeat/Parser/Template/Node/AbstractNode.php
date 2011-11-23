@@ -26,7 +26,7 @@
 namespace Heatbeat\Parser\Template\Node;
 
 use Heatbeat\Exception\NodeValidationException,
-    Heatbeat\Command\RRDTool\GraphCommand,
+    Heatbeat\Command\RRDTool\Graph,
     Heatbeat\Parser\Validator;
 
 /**
@@ -169,7 +169,7 @@ abstract class AbstractNode extends \ArrayObject {
      * @return bool 
      */
     protected function isValidLimit($key) {
-        if (!$this->getValidator()->isInt($this->offsetGet($key)) AND $this->offsetGet($key) != GraphCommand::TEMPLATE_PARAMETER_AUTO) {
+        if (!$this->getValidator()->isInt($this->offsetGet($key)) AND $this->offsetGet($key) != Graph::TEMPLATE_PARAMETER_AUTO) {
             throw new NodeValidationException(sprintf('%s, %s argument is not valid, it must be an integer or "auto".', $this->getClassName(), $key));
         }
         return true;
@@ -182,7 +182,7 @@ abstract class AbstractNode extends \ArrayObject {
      * @return bool
      */
     protected function isValidMax($key) {
-        if (!$this->getValidator()->isInt($this->offsetGet($key)) AND $this->offsetGet($key) != GraphCommand::TEMPLATE_PARAMETER_UNLIMITED) {
+        if (!$this->getValidator()->isInt($this->offsetGet($key)) AND $this->offsetGet($key) != Graph::TEMPLATE_PARAMETER_UNLIMITED) {
             throw new NodeValidationException(sprintf('%s, %s argument is not valid, it must be an integer or "U".', $this->getClassName(), $key));
         }
         return true;

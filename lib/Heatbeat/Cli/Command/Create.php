@@ -34,7 +34,7 @@ use Symfony\Component\Console\Input\InputArgument,
     Heatbeat\Parser\Config\ConfigParser as Config,
     Heatbeat\Parser\Template\TemplateParser as Template,
     Heatbeat\Command\RRDTool\RRDToolCommand as RRDTool,
-    Heatbeat\Command\RRDTool\CreateCommand as RRDCreate,
+    Heatbeat\Command\RRDTool\Create as RRDCreate,
     Heatbeat\Executor\Executor,
     Heatbeat\Exception\SourceException;
 
