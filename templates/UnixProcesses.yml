@@ -1,6 +1,6 @@
 template :
-      name : Unix process count
-      version : 1.0
+      name : Unix processes
+      description : Process count of local Unix system
       step : 300
 datastores:
     - name: processes

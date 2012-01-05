@@ -1,10 +1,8 @@
 template :
       # Name of template
       name :
-      # Version of template
-      version :
-      # Name of the source plugin class name for gathering data, class Heatbeat\Source\Plugin\Test\Random becomes as Test_Random there.
-      source-name :
+      # Description of template
+      description :
       # Specifies the base interval in seconds with which data will be fed into the RRD, defaults to 300 (5 minutes)
       step :
 

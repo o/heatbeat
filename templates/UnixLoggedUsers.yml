@@ -1,6 +1,6 @@
 template :
-      name : Unix logged in user count
-      version : 1.0
+      name : Unix logged users
+      description : How many user logged in an Unix box
       step : 300
 datastores:
     - name: users

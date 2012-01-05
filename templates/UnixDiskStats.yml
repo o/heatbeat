@@ -1,6 +1,6 @@
 template :
       name : Disk Stats
-      version : 1.0
+      description : Total, available and used area statistics of local disks
       step : 300
 datastores:
     - name: total

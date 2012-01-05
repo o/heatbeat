@@ -1,6 +1,6 @@
 template :
-      name : System Load
-      version : 1.0
+      name : Unix Load Averages
+      description : one-, five-, and fifteen-minute Unix load averages 
       step : 300
 datastores:
     - name: 1min

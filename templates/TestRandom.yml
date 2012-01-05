@@ -1,6 +1,6 @@
 template :
-      name : Random
-      version : 0.0.1
+      name : Test Random
+      description : Test for graphs with random numbers 
       step : 300
 datastores:
     - name: rand1   

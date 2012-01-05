@@ -1,6 +1,6 @@
 template :
-      name : Google Weather Api
-      version : 1.0
+      name : Google weather
+      description : Humidity and temperature values of location from Google Weather API
       step : 300
 datastores:
     - name: temp
