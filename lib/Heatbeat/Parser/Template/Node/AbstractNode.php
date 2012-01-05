@@ -217,22 +217,6 @@ abstract class AbstractNode extends \ArrayObject {
     }
 
     /**
-     * Checks given parameter is a valid source plugin name
-     * 
-     * @param string $key
-     * @return bool 
-     * @throws NodeValidationException
-     */
-    protected function isValidSource($key) {
-        $namespaced = str_replace('_', "\\", $this->offsetGet($key));
-        $class_name = '\\Heatbeat\\Source\\Plugin\\' . $namespaced;
-        if (!class_exists($class_name)) {
-            throw new NodeValidationException(sprintf("%s, %s is not valid.", $this->getClassName(), $key));
-        }
-        return true;
-    }
-
-    /**
      * Returns class name without namespace
      * @return string
      */
