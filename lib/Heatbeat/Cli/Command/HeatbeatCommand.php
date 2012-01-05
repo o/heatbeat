@@ -35,7 +35,7 @@ use Symfony\Component\Console\Input\InputArgument,
     Heatbeat\Parser\Template\TemplateParser as Template,
     Heatbeat\Parser\Config\ConfigParser as Config,
     Heatbeat\Command\AbstractCommand,
-    Heatbeat\Log\Factory as Logger,
+    Heatbeat\Log\Logger as Logger,
     Heatbeat\Exception\SourceException;
 
 /**
