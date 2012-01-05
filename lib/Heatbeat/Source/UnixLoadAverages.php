@@ -16,27 +16,26 @@
  * limitations under the License. 
  *
  * @category    Heatbeat
- * @package     Heatbeat\Source\Plugin\Unix
+ * @package     Heatbeat\Source
  * @author      Osman Ungur <osmanungur@gmail.com>
  * @copyright   2011 Osman Ungur
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  * @link        http://github.com/import/heatbeat
  */
 
-namespace Heatbeat\Source\Plugin\Unix;
+namespace Heatbeat\Source;
 
 use Heatbeat\Source\AbstractSource,
-    Heatbeat\Source\SourceOutput,
-    Heatbeat\Exception\SourceException;
+    Heatbeat\InputOutput\SourceOutput;
 
 /**
  * Class for fetching Unix system load values
  *
  * @category    Heatbeat
- * @package     Heatbeat\Source\Plugin\Unix
+ * @package     Heatbeat\Source
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class LoadAverages extends AbstractSource {
+class UnixLoadAverages extends AbstractSource {
 
     public function perform() {
         if (function_exists('sys_getloadavg')) {
