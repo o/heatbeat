@@ -37,8 +37,6 @@ class TemplateOptionNode extends AbstractNode implements OptionNodeInterface {
     public function validate() {
         $this->isDefined('name');
         $this->isDefined('version');
-        $this->isDefined('source-name');
-        $this->isValidSource('source-name');
         return true;
     }
 
