@@ -1,11 +1,11 @@
 <?php
 
-namespace Heatbeat\Util\Command\RRDTool;
+namespace Heatbeat\Command\RRDTool;
 
 /**
  * Test class for GraphCommand.
  */
-class GraphCommandTest extends \PHPUnit_Framework_TestCase {
+class GraphTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * @var GraphCommand
@@ -13,7 +13,7 @@ class GraphCommandTest extends \PHPUnit_Framework_TestCase {
     protected $object;
 
     protected function setUp() {
-        $this->object = new GraphCommand;
+        $this->object = new Graph;
     }
 
     public function testInitializedObject() {

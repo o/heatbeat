@@ -1,11 +1,11 @@
 <?php
 
-namespace Heatbeat\Util\Command\RRDTool;
+namespace Heatbeat\Command\RRDTool;
 
 /**
  * Test class for UpdateCommand.
  */
-class UpdateCommandTest extends \PHPUnit_Framework_TestCase {
+class UpdateTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * @var UpdateCommand
@@ -13,7 +13,7 @@ class UpdateCommandTest extends \PHPUnit_Framework_TestCase {
     protected $object;
 
     protected function setUp() {
-        $this->object = new UpdateCommand;
+        $this->object = new Update;
     }
 
     public function testInitializedObject() {
