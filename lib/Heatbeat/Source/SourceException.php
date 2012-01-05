@@ -16,22 +16,22 @@
  * limitations under the License. 
  *
  * @category    Heatbeat
- * @package     Heatbeat\Exception
+ * @package     Heatbeat\Source
  * @author      Osman Ungur <osmanungur@gmail.com>
  * @copyright   2011 Osman Ungur
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  * @link        http://github.com/import/heatbeat
  */
 
-namespace Heatbeat\Exception;
+namespace Heatbeat\Source;
 
 /**
  * Source exception class
  *
  * @category    Heatbeat
- * @package     Heatbeat\Exception
+ * @package     Heatbeat\Source
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class SourceException extends HeatbeatException {
+class SourceException extends \Exception {
     
 }
