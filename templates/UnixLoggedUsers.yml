@@ -1,14 +1,13 @@
 template :
-      name : Unix active tcp connection count
+      name : Unix logged in user count
       version : 1.0
-      source-name : Unix_TcpConnections 
       step : 300
 datastores:
-    - name: connections
+    - name: users
       type: GAUGE
       heartbeat: 600
       min: 0
-      max: U
+      max: 100
 rras:
     - cf: ['AVERAGE', 'MAX']
       xff: 0.5
@@ -28,19 +27,19 @@ rras:
       rows: 797
 graphs :
     - options :
-        name : Active TCP connections - 1 day
-        label : Connections
+        name : Logged in users - 1 day
+        label : users
         base : 1000
         lower : 0
         upper : auto
         start : -1day
       items :
-          - type : AREA
-            definition-name: connections
-            color : 1598C3
-            legend : Connections
-            stack : false
+          - type : LINE
+            definition-name: users
+            color : C9B215
+            legend : Users
+            stack : false               
       defs:
-          - name: connections
-            datastore-name: connections
+          - name: users
+            datastore-name: users
             cf: AVERAGE

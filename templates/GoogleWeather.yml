@@ -1,7 +1,6 @@
 template :
       name : Google Weather Api
       version : 1.0
-      source-name : Weather_Google
       step : 300
 datastores:
     - name: temp

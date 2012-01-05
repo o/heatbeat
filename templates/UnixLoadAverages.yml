@@ -1,7 +1,6 @@
 template :
       name : System Load
       version : 1.0
-      source-name : Unix_LoadAverages
       step : 300
 datastores:
     - name: 1min

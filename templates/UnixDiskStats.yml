@@ -1,14 +1,23 @@
 template :
-      name : Unix process count
+      name : Disk Stats
       version : 1.0
-      source-name : Unix_Processes
       step : 300
 datastores:
-    - name: processes
+    - name: total
       type: GAUGE
       heartbeat: 600
       min: 0
       max: U
+    - name: used
+      type: GAUGE
+      heartbeat: 600
+      min: 0
+      max: U
+    - name: available
+      type: GAUGE
+      heartbeat: 600
+      min: 0
+      max: U          
 rras:
     - cf: ['AVERAGE', 'MAX']
       xff: 0.5
@@ -28,19 +37,27 @@ rras:
       rows: 797
 graphs :
     - options :
-        name : Processes - 1 day
-        label : process count
+        name : Disk Usage - 1 day
+        label : bytes
         base : 1000
         lower : 0
         upper : auto
         start : -1day
       items :
           - type : AREA
-            definition-name: processes
-            color : EC9D48
-            legend : Processes
+            definition-name: used
+            color : 75978E
+            legend : Used
+            stack : false
+          - type : LINE
+            definition-name: total
+            color : 800130
+            legend : Total
             stack : false
       defs:
-          - name: processes
-            datastore-name: processes
+          - name: used
+            datastore-name: used
+            cf: AVERAGE
+          - name: total
+            datastore-name: total
             cf: AVERAGE

@@ -1,7 +1,6 @@
 template :
       name : Random
       version : 0.0.1
-      source-name : Test_Random
       step : 300
 datastores:
     - name: rand1   
