@@ -169,8 +169,9 @@ class HeatbeatCommand extends Command {
      * @return bool
      */
     protected function logError($e) {
-        $factory = new Logger(Logger::FILE_HANDLER);
-        return $factory->getHandlerObject()->log($e->getMessage());
+        $logger = new Logger();
+        return $logger->setMessage($e->getMessage())
+                        ->log();
     }
 
 }
