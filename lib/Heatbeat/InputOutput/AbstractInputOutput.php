@@ -16,22 +16,41 @@
  * limitations under the License. 
  *
  * @category    Heatbeat
- * @package     Heatbeat\Source
+ * @package     Heatbeat\InputOutput
  * @author      Osman Ungur <osmanungur@gmail.com>
  * @copyright   2011 Osman Ungur
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  * @link        http://github.com/import/heatbeat
  */
 
-namespace Heatbeat\Source;
+namespace Heatbeat\InputOutput;
 
 /**
- * Class for storing input arguments for source plugins
+ * Abstract class for input/output
  *
  * @category    Heatbeat
- * @package     Heatbeat\Source
+ * @package     Heatbeat\InputOutput
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class SourceInput extends AbstractInputOutput {
+abstract class AbstractInputOutput {
+
+    /**
+     *
+     * @var \ArrayObject
+     */
+    protected $collection;
+
+
+    public function __construct(array $array = array()) {
+        $this->collection = new \ArrayObject($array);
+    }
+    
+    /**
+     *
+     * @return array
+     */
+    public function getAsArray() {
+        return $this->collection->getArrayCopy();
+    }
 
 }

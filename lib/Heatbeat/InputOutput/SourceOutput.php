@@ -16,51 +16,26 @@
  * limitations under the License. 
  *
  * @category    Heatbeat
- * @package     Heatbeat\Source
+ * @package     Heatbeat\InputOutput
  * @author      Osman Ungur <osmanungur@gmail.com>
  * @copyright   2011 Osman Ungur
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  * @link        http://github.com/import/heatbeat
  */
 
-namespace Heatbeat\Source;
-
-use Heatbeat\Exception\SourceException;
+namespace Heatbeat\InputOutput;
 
 /**
- * Abstract class for input/output
+ * Class for storing source plugin output
  *
  * @category    Heatbeat
- * @package     Heatbeat\Source
+ * @package     Heatbeat\InputOutput
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-abstract class AbstractInputOutput extends \ArrayObject {
+class SourceOutput extends AbstractInputOutput {
 
-    /**
-     *
-     * @param string $index
-     * @return mixed
-     * @throws SourceException
-     */
-    public function getValue($index) {
-        if (parent::offsetExists($index)) {
-            return parent::offsetGet($index);
-        }
-        throw new SourceException(sprintf('Undefined input/output parameter : %s', $index));
-    }
-
-    /**
-     *
-     * @param string|int $index
-     * @param mixed $newval
-     * @return bool
-     * @throws SourceException
-     */
-    public function setValue($index, $newval) {
-        if ($index) {
-            return parent::offsetSet($index, $newval);
-        }
-        throw new SourceException('You need to give an index to value');
+    public function setValue($index, $value) {
+        $this->collection->offsetSet($index, $value);
     }
 
 }
