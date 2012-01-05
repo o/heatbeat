@@ -61,7 +61,7 @@ class TestSource extends HeatbeatCommand {
     protected function execute(InputInterface $input, OutputInterface $output) {
         $instance = false;
         try {
-            $instance = $this->getPluginInstance($input->getArgument('source'));
+            $instance = $this->getSourceInstance($input->getArgument('source'));
             $arguments = $input->getArgument('args');
             if ($arguments) {
                 $instance->setInput($this->prepareArgs($arguments));
