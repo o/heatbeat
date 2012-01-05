@@ -25,7 +25,7 @@
 
 namespace Heatbeat\Command\RRDTool;
 
-use Heatbeat\Source\SourceOutput;
+use Heatbeat\InputOutput\SourceOutput;
 
 /**
  * Implementation for RRDTool update command
