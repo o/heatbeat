@@ -35,7 +35,7 @@ use Symfony\Component\Console\Input\InputArgument,
     Heatbeat\Parser\Template\TemplateParser as Template,
     Heatbeat\Parser\Config\ConfigParser as Config,
     Heatbeat\Command\AbstractCommand,
-    Heatbeat\Log\Factory as Logger,
+    Heatbeat\Log\Logger as Logger,
     Heatbeat\Exception\SourceException;
 
 /**
@@ -119,14 +119,14 @@ class HeatbeatCommand extends Command {
     /**
      * Returns instance of given plugin name
      *
-     * @param string $plugin
+     * @param string $source
      * @return AbstractSource
      */
-    public function getPluginInstance($plugin) {
-        $namespaced = str_replace('_', "\\", $plugin);
-        $class_name = '\\Heatbeat\\Source\\Plugin\\' . $namespaced;
+    public function getSourceInstance($source) {
+        $namespaced = str_replace('_', "\\", $source);
+        $class_name = '\\Heatbeat\\Source\\' . $namespaced;
         if (!class_exists($class_name)) {
-            throw new SourceException(sprintf('Unable to find source plugin %s', $plugin));
+            throw new SourceException(sprintf('Unable to find source %s', $source));
         }
         return new $class_name;
     }
@@ -169,8 +169,9 @@ class HeatbeatCommand extends Command {
      * @return bool
      */
     protected function logError($e) {
-        $factory = new Logger(Logger::FILE_HANDLER);
-        return $factory->getHandlerObject()->log($e->getMessage());
+        $logger = new Logger();
+        return $logger->setMessage($e->getMessage())
+                        ->log();
     }
 
 }

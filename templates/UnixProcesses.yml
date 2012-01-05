@@ -1,14 +1,13 @@
 template :
-      name : Unix logged in user count
-      version : 1.0
-      source-name : Unix_LoggedUsers
+      name : Unix processes
+      description : Process count of local Unix system
       step : 300
 datastores:
-    - name: users
+    - name: processes
       type: GAUGE
       heartbeat: 600
       min: 0
-      max: 100
+      max: U
 rras:
     - cf: ['AVERAGE', 'MAX']
       xff: 0.5
@@ -28,19 +27,19 @@ rras:
       rows: 797
 graphs :
     - options :
-        name : Logged in users - 1 day
-        label : users
+        name : Processes - 1 day
+        label : process count
         base : 1000
         lower : 0
         upper : auto
         start : -1day
       items :
-          - type : LINE
-            definition-name: users
-            color : C9B215
-            legend : Users
-            stack : false               
+          - type : AREA
+            definition-name: processes
+            color : EC9D48
+            legend : Processes
+            stack : false
       defs:
-          - name: users
-            datastore-name: users
+          - name: processes
+            datastore-name: processes
             cf: AVERAGE

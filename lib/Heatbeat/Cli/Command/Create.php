@@ -69,6 +69,7 @@ class Create extends HeatbeatCommand {
                 $commandObject = new RRDCreate();
                 $commandObject->setFilename($entity->getRRDFilename());
                 $commandObject->setOverwrite($input->getOption('overwrite'));
+                $commandObject->setStep($template->getTemplateOptions()->offsetGet('step'));
                 $commandObject->setDatastores($template->getDatastores());
                 $commandObject->setRras($template->getRras());
                 $this->executeCommand($input, $output, $commandObject, $entity->getRRDFilename() . RRDTool::RRD_EXT);

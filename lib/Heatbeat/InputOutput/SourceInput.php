@@ -16,36 +16,29 @@
  * limitations under the License. 
  *
  * @category    Heatbeat
- * @package     Heatbeat\Source\Plugin\Unix
+ * @package     Heatbeat\InputOutput
  * @author      Osman Ungur <osmanungur@gmail.com>
  * @copyright   2011 Osman Ungur
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  * @link        http://github.com/import/heatbeat
  */
 
-namespace Heatbeat\Source\Plugin\Unix;
-
-use Heatbeat\Source\AbstractSource,
-    Heatbeat\Source\SourceOutput,
-    Heatbeat\Exception\SourceException,
-    Heatbeat\Util\CommandExecutor;
+namespace Heatbeat\InputOutput;
 
 /**
- * Class for fetching currently logged user count
+ * Class for storing input arguments for source plugins
  *
  * @category    Heatbeat
- * @package     Heatbeat\Source\Plugin\Unix
+ * @package     Heatbeat\InputOutput
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class LoggedUsers extends AbstractSource {
+class SourceInput extends AbstractInputOutput {
 
-    public function perform() {
-        $command = 'who | grep -c :';
-        $result = shell_exec($command);
-        $output = new SourceOutput();
-        $output->setValue('users', (int) $result);
-        $this->setOutput($output);
-        return true;
+    public function getValue($index) {
+        if ($this->collection->offsetExists($index)) {
+            return $this->collection->offsetGet($index);
+        }
+        throw new \InvalidArgumentException(sprintf('Undefined input/output parameter : %s', $index));
     }
 
 }

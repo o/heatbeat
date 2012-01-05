@@ -1,5 +1,5 @@
 graphs :
-    - template : Test_Random
+    - template : TestRandom
       enabled : true
       arguments :
           # Minimum number
@@ -7,25 +7,25 @@ graphs :
           # Maximum number
           max : 10
 
-    - template : Unix_LoadAverages
+    - template : UnixLoadAverages
       enabled : false
 
-    - template : Unix_LoggedUsers
+    - template : UnixLoggedUsers
       enabled : false
 
-    - template : Unix_TcpConnections
+    - template : UnixTcpConnections
       enabled : false
 
-    - template : Unix_Processes
+    - template : UnixProcesses
       enabled : false
 
-    - template : Unix_DiskStats
+    - template : UnixDiskStats
       enabled : false
       arguments :
           # Filesystem name
           disk : /dev/*
 
-    - template : Weather_Google
+    - template : GoogleWeather
       enabled : false
       arguments :
           # Location, ex : Istanbul, Turkey
