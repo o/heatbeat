@@ -33,7 +33,7 @@ use Symfony\Component\Console\Input\InputArgument,
     Heatbeat\Autoloader,
     Heatbeat\Command\RRDTool\RRDToolCommand as RRDTool,
     Heatbeat\Command\RRDTool\Graph as RRDGraph,
-    Heatbeat\Exception\SourceException;
+    Heatbeat\Source\SourceException;
 
 /**
  * Callback for CLI Tool graph command

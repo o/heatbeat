@@ -33,8 +33,8 @@ use Symfony\Component\Console\Input\InputArgument,
     Heatbeat\Autoloader,
     Heatbeat\Command\RRDTool\RRDToolCommand as RRDTool,
     Heatbeat\Command\RRDTool\Update as RRDUpdate,
-    Heatbeat\Source\SourceInput as Input,
-    Heatbeat\Exception\SourceException;
+    Heatbeat\InputOutput\SourceInput as Input,
+    Heatbeat\Source\SourceException;
 
 /**
  * Callback for CLI Tool update command
