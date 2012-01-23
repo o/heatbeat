@@ -1,7 +1,6 @@
 template :
-      name : Unix active tcp connection count
-      version : 1.0
-      source-name : Unix_TcpConnections 
+      name : Unix TCP Connections
+      description : Active TCP connection count of local Unix system
       step : 300
 datastores:
     - name: connections

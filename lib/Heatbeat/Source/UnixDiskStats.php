@@ -16,27 +16,26 @@
  * limitations under the License.
  *
  * @category    Heatbeat
- * @package     Heatbeat\Source\Plugin\Unix
+ * @package     Heatbeat\Source
  * @author      Osman Ungur <osmanungur@gmail.com>
  * @copyright   2011 Osman Ungur
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  * @link        http://github.com/import/heatbeat
  */
 
-namespace Heatbeat\Source\Plugin\Unix;
+namespace Heatbeat\Source;
 
 use Heatbeat\Source\AbstractSource,
-    Heatbeat\Source\SourceOutput,
-    Heatbeat\Exception\SourceException;
+    Heatbeat\InputOutput\SourceOutput;
 
 /**
  * Class for fetching disk status
  *
  * @category    Heatbeat
- * @package     Heatbeat\Source\Plugin\Unix
+ * @package     Heatbeat\Source
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class DiskStats extends AbstractSource {
+class UnixDiskStats extends AbstractSource {
 
     const PIPE = '|';
     const KB_MULTIPLIER = 1024;
@@ -58,6 +57,7 @@ class DiskStats extends AbstractSource {
         $output->setValue('used', $used * self::KB_MULTIPLIER);
         $output->setValue('available', $available * self::KB_MULTIPLIER);
         $this->setOutput($output);
+        return true;
     }
 
 }

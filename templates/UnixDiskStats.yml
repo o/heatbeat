@@ -1,19 +1,23 @@
 template :
-      name : Google Weather Api
-      version : 1.0
-      source-name : Weather_Google
+      name : Disk Stats
+      description : Total, available and used area statistics of local disks
       step : 300
 datastores:
-    - name: temp
+    - name: total
       type: GAUGE
       heartbeat: 600
       min: 0
-      max: 273
-    - name: humidity
+      max: U
+    - name: used
       type: GAUGE
       heartbeat: 600
       min: 0
-      max: 100
+      max: U
+    - name: available
+      type: GAUGE
+      heartbeat: 600
+      min: 0
+      max: U          
 rras:
     - cf: ['AVERAGE', 'MAX']
       xff: 0.5
@@ -31,29 +35,29 @@ rras:
       xff: 0.5
       steps: 288
       rows: 797
-graphs :          
+graphs :
     - options :
-        name : Temperature and humidity - 1 day
-        label : degree/percentage
+        name : Disk Usage - 1 day
+        label : bytes
         base : 1000
-        lower : auto
+        lower : 0
         upper : auto
         start : -1day
       items :
-          - type : LINE
-            definition-name: temp
-            color : C03018
-            legend : Temperature
+          - type : AREA
+            definition-name: used
+            color : 75978E
+            legend : Used
             stack : false
           - type : LINE
-            definition-name: humidity
-            color : 607878
-            legend : Humidity
+            definition-name: total
+            color : 800130
+            legend : Total
             stack : false
       defs:
-          - name: temp
-            datastore-name: temp
+          - name: used
+            datastore-name: used
             cf: AVERAGE
-          - name: humidity
-            datastore-name: humidity
+          - name: total
+            datastore-name: total
             cf: AVERAGE

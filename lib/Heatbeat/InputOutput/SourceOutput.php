@@ -16,35 +16,26 @@
  * limitations under the License. 
  *
  * @category    Heatbeat
- * @package     Heatbeat\Source\Plugin\Unix
+ * @package     Heatbeat\InputOutput
  * @author      Osman Ungur <osmanungur@gmail.com>
  * @copyright   2011 Osman Ungur
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  * @link        http://github.com/import/heatbeat
  */
 
-namespace Heatbeat\Source\Plugin\Unix;
-
-use Heatbeat\Source\AbstractSource,
-    Heatbeat\Source\SourceOutput,
-    Heatbeat\Exception\SourceException;
+namespace Heatbeat\InputOutput;
 
 /**
- * Class for fetching active tcp connection count
+ * Class for storing source plugin output
  *
  * @category    Heatbeat
- * @package     Heatbeat\Source\Plugin\Unix
+ * @package     Heatbeat\InputOutput
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class TcpConnections extends AbstractSource {
+class SourceOutput extends AbstractInputOutput {
 
-    public function perform() {
-        $command = 'netstat -n | grep -c tcp';
-        $result = shell_exec($command);
-        $output = new SourceOutput();
-        $output->setValue('connections', (int) $result);
-        $this->setOutput($output);
-        return true;
+    public function setValue($index, $value) {
+        $this->collection->offsetSet($index, $value);
     }
 
 }

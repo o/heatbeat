@@ -16,39 +16,41 @@
  * limitations under the License. 
  *
  * @category    Heatbeat
- * @package     Heatbeat\Source\Plugin\Unix
+ * @package     Heatbeat\InputOutput
  * @author      Osman Ungur <osmanungur@gmail.com>
  * @copyright   2011 Osman Ungur
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  * @link        http://github.com/import/heatbeat
  */
 
-namespace Heatbeat\Source\Plugin\Unix;
-
-use Heatbeat\Source\AbstractSource,
-    Heatbeat\Source\SourceOutput,
-    Heatbeat\Exception\SourceException;
+namespace Heatbeat\InputOutput;
 
 /**
- * Class for fetching Unix system load values
+ * Abstract class for input/output
  *
  * @category    Heatbeat
- * @package     Heatbeat\Source\Plugin\Unix
+ * @package     Heatbeat\InputOutput
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class LoadAverages extends AbstractSource {
+abstract class AbstractInputOutput {
 
-    public function perform() {
-        if (function_exists('sys_getloadavg')) {
-            list ($load1min, $load5min, $load15min) = sys_getloadavg();
-        } else {
-            throw new SourceException('Unable to fetch system load averages');
-        }
-        $output = new SourceOutput();
-        $output->setValue('1min', $load1min);
-        $output->setValue('5min', $load5min);
-        $output->setValue('15min', $load15min);
-        $this->setOutput($output);
+    /**
+     *
+     * @var \ArrayObject
+     */
+    protected $collection;
+
+
+    public function __construct(array $array = array()) {
+        $this->collection = new \ArrayObject($array);
+    }
+    
+    /**
+     *
+     * @return array
+     */
+    public function getAsArray() {
+        return $this->collection->getArrayCopy();
     }
 
 }

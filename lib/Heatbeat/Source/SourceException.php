@@ -25,42 +25,13 @@
 
 namespace Heatbeat\Source;
 
-use Heatbeat\Exception\SourceException;
-
 /**
- * Abstract class for input/output
+ * Source exception class
  *
  * @category    Heatbeat
  * @package     Heatbeat\Source
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-abstract class AbstractInputOutput extends \ArrayObject {
-
-    /**
-     *
-     * @param string $index
-     * @return mixed
-     * @throws SourceException
-     */
-    public function getValue($index) {
-        if (parent::offsetExists($index)) {
-            return parent::offsetGet($index);
-        }
-        throw new SourceException(sprintf('Undefined input/output parameter : %s', $index));
-    }
-
-    /**
-     *
-     * @param string|int $index
-     * @param mixed $newval
-     * @return bool
-     * @throws SourceException
-     */
-    public function setValue($index, $newval) {
-        if ($index) {
-            return parent::offsetSet($index, $newval);
-        }
-        throw new SourceException('You need to give an index to value');
-    }
-
+class SourceException extends \Exception {
+    
 }

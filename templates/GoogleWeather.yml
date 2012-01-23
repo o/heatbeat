@@ -1,24 +1,18 @@
 template :
-      name : Disk Stats
-      version : 1.0
-      source-name : Unix_DiskStats
+      name : Google weather
+      description : Humidity and temperature values of location from Google Weather API
       step : 300
 datastores:
-    - name: total
+    - name: temp
       type: GAUGE
       heartbeat: 600
       min: 0
-      max: U
-    - name: used
+      max: 273
+    - name: humidity
       type: GAUGE
       heartbeat: 600
       min: 0
-      max: U
-    - name: available
-      type: GAUGE
-      heartbeat: 600
-      min: 0
-      max: U          
+      max: 100
 rras:
     - cf: ['AVERAGE', 'MAX']
       xff: 0.5
@@ -36,29 +30,29 @@ rras:
       xff: 0.5
       steps: 288
       rows: 797
-graphs :
+graphs :          
     - options :
-        name : Disk Usage - 1 day
-        label : bytes
+        name : Temperature and humidity - 1 day
+        label : degree/percentage
         base : 1000
-        lower : 0
+        lower : auto
         upper : auto
         start : -1day
       items :
-          - type : AREA
-            definition-name: used
-            color : 75978E
-            legend : Used
+          - type : LINE
+            definition-name: temp
+            color : C03018
+            legend : Temperature
             stack : false
           - type : LINE
-            definition-name: total
-            color : 800130
-            legend : Total
+            definition-name: humidity
+            color : 607878
+            legend : Humidity
             stack : false
       defs:
-          - name: used
-            datastore-name: used
+          - name: temp
+            datastore-name: temp
             cf: AVERAGE
-          - name: total
-            datastore-name: total
+          - name: humidity
+            datastore-name: humidity
             cf: AVERAGE

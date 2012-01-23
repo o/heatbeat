@@ -33,8 +33,8 @@ use Symfony\Component\Console\Input\InputArgument,
     Heatbeat\Autoloader,
     Heatbeat\Command\RRDTool\RRDToolCommand as RRDTool,
     Heatbeat\Command\RRDTool\Update as RRDUpdate,
-    Heatbeat\Source\SourceInput as Input,
-    Heatbeat\Exception\SourceException;
+    Heatbeat\InputOutput\SourceInput as Input,
+    Heatbeat\Source\SourceException;
 
 /**
  * Callback for CLI Tool update command
@@ -64,14 +64,14 @@ class Update extends HeatbeatCommand {
                 if ($entity->offsetGet('enabled') === false)
                     continue;
                 $template = $this->getTemplate($entity->offsetGet('template'));
-                $pluginInstance = $this->getPluginInstance($template->getTemplateOptions()->offsetGet('source-name'));
+                $instance = $this->getSourceInstance($entity->offsetGet('template'));
                 if ($entity->offsetExists('arguments') AND count($entity->offsetGet('arguments'))) {
-                    $pluginInstance->setInput(new Input($entity->offsetGet('arguments')));
+                    $instance->setInput(new Input($entity->offsetGet('arguments')));
                 }
-                $pluginInstance->perform();
+                $instance->perform();
                 $commandObject = new RRDUpdate();
                 $commandObject->setFilename($entity->getRRDFilename());
-                $commandObject->setValues($pluginInstance->getOutput());
+                $commandObject->setValues($instance->getOutput());
                 $this->executeCommand($input, $output, $commandObject, $entity->getRRDFilename() . RRDTool::RRD_EXT);
             } catch (\Exception $e) {
                 $this->logError($e);

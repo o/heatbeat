@@ -16,28 +16,26 @@
  * limitations under the License. 
  *
  * @category    Heatbeat
- * @package     Heatbeat\Source\Plugin\Test
+ * @package     Heatbeat\Source
  * @author      Osman Ungur <osmanungur@gmail.com>
  * @copyright   2011 Osman Ungur
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  * @link        http://github.com/import/heatbeat
  */
 
-namespace Heatbeat\Source\Plugin\Test;
+namespace Heatbeat\Source;
 
 use Heatbeat\Source\AbstractSource,
-    Heatbeat\Source\SourceInput,
-    Heatbeat\Source\SourceOutput,
-    Heatbeat\Exception\SourceException;
+    Heatbeat\InputOutput\SourceOutput;
 
 /**
  * Example source class for fetching random values
  *
  * @category    Heatbeat
- * @package     Heatbeat\Source\Plugin\Test
+ * @package     Heatbeat\Source
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class Random extends AbstractSource {
+class TestRandom extends AbstractSource {
 
     public function perform() {
         /**

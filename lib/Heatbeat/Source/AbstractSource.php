@@ -25,9 +25,9 @@
 
 namespace Heatbeat\Source;
 
-use Heatbeat\Util\CommandExecutor,
-    Heatbeat\Autoloader,
-    Heatbeat\Exception\SourceException;
+use Heatbeat\Autoloader,
+    Heatbeat\InputOutput\SourceInput,
+    Heatbeat\InputOutput\SourceOutput;
 
 /**
  * Abstract source class for data fetching

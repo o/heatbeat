@@ -1,14 +1,13 @@
 template :
-      name : Unix process count
-      version : 1.0
-      source-name : Unix_Processes
+      name : Unix logged users
+      description : How many user logged in an Unix box
       step : 300
 datastores:
-    - name: processes
+    - name: users
       type: GAUGE
       heartbeat: 600
       min: 0
-      max: U
+      max: 100
 rras:
     - cf: ['AVERAGE', 'MAX']
       xff: 0.5
@@ -28,19 +27,19 @@ rras:
       rows: 797
 graphs :
     - options :
-        name : Processes - 1 day
-        label : process count
+        name : Logged in users - 1 day
+        label : users
         base : 1000
         lower : 0
         upper : auto
         start : -1day
       items :
-          - type : AREA
-            definition-name: processes
-            color : EC9D48
-            legend : Processes
-            stack : false
+          - type : LINE
+            definition-name: users
+            color : C9B215
+            legend : Users
+            stack : false               
       defs:
-          - name: processes
-            datastore-name: processes
+          - name: users
+            datastore-name: users
             cf: AVERAGE

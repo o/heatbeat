@@ -25,13 +25,29 @@
 
 namespace Heatbeat\Source;
 
+use Heatbeat\Source\AbstractSource,
+    Heatbeat\InputOutput\SourceOutput;
+
 /**
- * Class for storing input arguments for source plugins
+ * Class for fetching Unix system load values
  *
  * @category    Heatbeat
  * @package     Heatbeat\Source
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class SourceInput extends AbstractInputOutput {
+class UnixLoadAverages extends AbstractSource {
+
+    public function perform() {
+        if (function_exists('sys_getloadavg')) {
+            list ($load1min, $load5min, $load15min) = sys_getloadavg();
+        } else {
+            throw new SourceException('Unable to fetch system load averages');
+        }
+        $output = new SourceOutput();
+        $output->setValue('1min', $load1min);
+        $output->setValue('5min', $load5min);
+        $output->setValue('15min', $load15min);
+        $this->setOutput($output);
+    }
 
 }

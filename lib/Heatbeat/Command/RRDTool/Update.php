@@ -25,7 +25,7 @@
 
 namespace Heatbeat\Command\RRDTool;
 
-use Heatbeat\Source\SourceOutput;
+use Heatbeat\InputOutput\SourceOutput;
 
 /**
  * Implementation for RRDTool update command
@@ -48,7 +48,7 @@ class Update extends RRDToolCommand {
      * @return bool 
      */
     public function setValues(SourceOutput $values) {
-        $this->addArgument(self::RRDTOOL_NOW . self::SEPERATOR . implode(self::SEPERATOR, iterator_to_array($values)));
+        $this->addArgument(self::RRDTOOL_NOW . self::SEPERATOR . implode(self::SEPERATOR, $values->getAsArray()));
         $this->setDatastoreTemplate($values);
     }
 
@@ -58,7 +58,7 @@ class Update extends RRDToolCommand {
      * @param SourceOutput $values 
      */
     private function setDatastoreTemplate(SourceOutput $values) {
-        $this->setOption(self::PARAMETER_TEMPLATE, implode(self::SEPERATOR, array_keys(iterator_to_array($values))));
+        $this->setOption(self::PARAMETER_TEMPLATE, implode(self::SEPERATOR, array_keys($values->getAsArray())));
     }
 
 }

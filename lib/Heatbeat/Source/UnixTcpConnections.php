@@ -25,13 +25,25 @@
 
 namespace Heatbeat\Source;
 
+use Heatbeat\Source\AbstractSource,
+    Heatbeat\InputOutput\SourceOutput;
+
 /**
- * Class for storing source plugin output
+ * Class for fetching active tcp connection count
  *
  * @category    Heatbeat
  * @package     Heatbeat\Source
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class SourceOutput extends AbstractInputOutput {
-    
+class UnixTcpConnections extends AbstractSource {
+
+    public function perform() {
+        $command = 'netstat -n | grep -c tcp';
+        $result = shell_exec($command);
+        $output = new SourceOutput();
+        $output->setValue('connections', (int) $result);
+        $this->setOutput($output);
+        return true;
+    }
+
 }
