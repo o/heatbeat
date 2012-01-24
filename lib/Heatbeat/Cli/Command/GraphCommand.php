@@ -32,24 +32,22 @@ use Symfony\Component\Console\Input\InputArgument,
     Symfony\Component\Console\Output\OutputInterface,
     Heatbeat\Autoloader,
     Heatbeat\Command\RRDTool\RRDToolCommand as RRDTool,
-    Heatbeat\Command\RRDTool\Update as RRDUpdate,
-    Heatbeat\InputOutput\SourceInput as Input,
+    Heatbeat\Command\RRDTool\Graph as RRDGraph,
     Heatbeat\Source\SourceException;
 
 /**
- * Callback for CLI Tool update command
+ * Callback for CLI Tool graph command
  *
  * @category    Heatbeat
  * @package     Heatbeat\Cli\Command
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class Update extends HeatbeatCommand {
+class GraphCommand extends HeatbeatCommand {
 
     public function configure() {
         $this
-                ->setName('update')
-                ->setDescription('Updates all RRD files')
-                ->addOption('no-graph', null, InputOption::VALUE_NONE, 'If set, graphs not will be created.');
+                ->setName('graph')
+                ->setDescription('Creates graphs of RRD files');
     }
 
     /**
@@ -64,15 +62,25 @@ class Update extends HeatbeatCommand {
                 if ($entity->offsetGet('enabled') === false)
                     continue;
                 $template = $this->getTemplate($entity->offsetGet('template'));
-                $instance = $this->getSourceInstance($entity->offsetGet('template'));
-                if ($entity->offsetExists('arguments') AND count($entity->offsetGet('arguments'))) {
-                    $instance->setInput(new Input($entity->offsetGet('arguments')));
+                for ($index = 0; $index < $template->getGraphEntityCount(); $index++) {
+                    $commandObject = new RRDGraph();
+                    $commandObject->setGraphFilename($entity->getRRDFilename() . $index);
+                    $commandObject->setTitle($template->getGraphOptions($index)->offsetGet('name'));
+                    $commandObject->setVerticalLabel($template->getGraphOptions($index)->offsetGet('label'));
+                    $commandObject->setBase($template->getGraphOptions($index)->offsetGet('base'));
+                    $commandObject->setUpperlimit($template->getGraphOptions($index)->offsetGet('upper'));
+                    $commandObject->setLowerlimit($template->getGraphOptions($index)->offsetGet('lower'));
+                    $commandObject->setStart($template->getGraphOptions($index)->offsetGet('start'));
+                    $commandObject->setDefs($template->getGraphDefs($index, $entity->getRRDFilename()));
+                    $commandObject->setItems($template->getGraphItems($index));
+                    if ($template->getGraphGprints($index))
+                        $commandObject->setGprints($template->getGraphGprints($index));
+                    if ($template->getGraphCdefs($index))
+                        $commandObject->setCdefs($template->getGraphCdefs($index));
+                    if ($template->getGraphVdefs($index))
+                        $commandObject->setVdefs($template->getGraphVdefs($index));
+                    $this->executeCommand($input, $output, $commandObject, $entity->getRRDFilename() . $index . RRDTool::PNG_EXT);
                 }
-                $instance->perform();
-                $commandObject = new RRDUpdate();
-                $commandObject->setFilename($entity->getRRDFilename());
-                $commandObject->setValues($instance->getOutput());
-                $this->executeCommand($input, $output, $commandObject, $entity->getRRDFilename() . RRDTool::RRD_EXT);
             } catch (\Exception $e) {
                 $this->logError($e);
                 $this->renderError($e, $output);
@@ -80,26 +88,6 @@ class Update extends HeatbeatCommand {
             }
         }
         $output->writeln($this->getSummary());
-        if ($input->getOption('no-graph') === false) {
-            $this->runGraphCommand($input, $output);
-        }
-    }
-
-    /**
-     * Invokes heatbeat:graph command
-     *
-     * @param InputInterface $input
-     * @param OutputInterface $output
-     */
-    private function runGraphCommand(InputInterface $input, OutputInterface $output) {
-        $command = $this->getApplication()->find('graph');
-        $input = new Console\Input\ArrayInput(
-                        array(
-                            'command' => 'graph',
-                            '--verbose' => $input->getOption('verbose')
-                        )
-        );
-        $command->run($input, $output);
     }
 
 }

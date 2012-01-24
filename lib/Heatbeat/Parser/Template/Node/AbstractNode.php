@@ -26,7 +26,7 @@
 namespace Heatbeat\Parser\Template\Node;
 
 use Heatbeat\Exception\NodeValidationException,
-    Heatbeat\Command\RRDTool\Graph,
+    Heatbeat\Command\RRDTool\GraphCommand,
     Heatbeat\Parser\Validator;
 
 /**

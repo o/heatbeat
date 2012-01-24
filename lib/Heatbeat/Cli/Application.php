@@ -40,10 +40,10 @@ class Application extends Console\Application {
         parent::__construct('Heatbeat (c) 2011, Osman Ungur', '0.20-dev');
 
         $this->addCommands(array(
-            new Command\Create(),
-            new Command\Update(),
-            new Command\TestSource(),
-            new Command\Graph()
+            new Command\CreateCommand(),
+            new Command\UpdateCommand(),
+            new Command\TestSourceCommand(),
+            new Command\GraphCommand()
         ));
     }
 
