@@ -35,7 +35,7 @@ use Heatbeat\Parser\Template\Node\DatastoreNode as Datastore,
  * @package     Heatbeat\Command\RRDTool
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class Create extends RRDToolCommand {
+class CreateCommand extends RRDToolCommand {
     const PARAMETER_STEP = 'step';
     const PARAMETER_START = 'start';
     const PARAMETER_NO_OVERWRITE = 'no-overwrite';

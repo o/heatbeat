@@ -32,7 +32,7 @@ use Symfony\Component\Console\Input\InputArgument,
     Symfony\Component\Console\Output\OutputInterface,
     Heatbeat\Autoloader,
     Heatbeat\Command\RRDTool\RRDToolCommand as RRDTool,
-    Heatbeat\Command\RRDTool\Graph as RRDGraph,
+    Heatbeat\Command\RRDTool\GraphCommand as RRDGraph,
     Heatbeat\Source\SourceException;
 
 /**

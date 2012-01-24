@@ -34,7 +34,7 @@ use Heatbeat\InputOutput\SourceOutput;
  * @package     Heatbeat\Command\RRDTool
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class Update extends RRDToolCommand {
+class UpdateCommand extends RRDToolCommand {
 
     protected $subCommand = 'updatev';
     const PARAMETER_TEMPLATE = 'template';

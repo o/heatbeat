@@ -39,7 +39,7 @@ use Heatbeat\Autoloader,
  * @package     Heatbeat\Command\RRDTool
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class Graph extends RRDToolCommand {
+class GraphCommand extends RRDToolCommand {
 
     protected $subCommand = 'graphv';
 
