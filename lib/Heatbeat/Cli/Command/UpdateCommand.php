@@ -63,7 +63,6 @@ class UpdateCommand extends HeatbeatCommand {
             try {
                 if ($entity->offsetGet('enabled') === false)
                     continue;
-                $template = $this->getTemplate($entity->offsetGet('template'));
                 $instance = $this->getSourceInstance($entity->offsetGet('template'));
                 if ($entity->offsetExists('arguments') AND count($entity->offsetGet('arguments'))) {
                     $instance->setInput(new Input($entity->offsetGet('arguments')));
