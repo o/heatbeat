@@ -32,17 +32,10 @@ namespace Heatbeat;
  * @package     Heatbeat
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-use Symfony\Component\ClassLoader\UniversalClassLoader;
+use Symfony\Component\ClassLoader\UniversalClassLoader,
+    Heatbeat\Helper\PathHelper;
 
 class Autoloader {
-    const FOLDER_ROOT = 'root';
-    const FOLDER_LIBRARY = 'lib';
-    const FOLDER_TEMPLATE = 'templates';
-    const FOLDER_EXTERNAL = 'external';
-    const FOLDER_RRD = 'rrd';
-    const FOLDER_VENDOR = 'vendor';
-    const FOLDER_LOG = 'logs';
-    const FOLDER_GRAPH = 'graphs';
 
     /**
      *
