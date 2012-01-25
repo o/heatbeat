@@ -45,9 +45,9 @@ class Autoloader {
 
     /**
      *
-     * @var array
+     * @var string 
      */
-    private $paths;
+    private $rootPath;
 
     /**
      * Returns instance of autoloader
@@ -62,7 +62,7 @@ class Autoloader {
     }
 
     private function __construct() {
-        $this->setPaths();
+        $this->setRootPath();
         $this->register();
         $this->setErrorExceptionHandling();
     }
@@ -81,17 +81,19 @@ class Autoloader {
 
     /**
      * Registers Heatbeat and Symfony component autoloader
+     * 
+     * @return bool 
      */
     private function register() {
-        require_once $this->getPath('vendor') . '/Symfony/Component/ClassLoader/UniversalClassLoader.php';
+        require_once $this->getFolderPath('vendor') . '/Symfony/Component/ClassLoader/UniversalClassLoader.php';
         $loader = new UniversalClassLoader();
         $loader->registerNamespaces(array(
-            'Symfony' => $this->getPath('vendor'),
-            'Heatbeat' => $this->getPath('lib'),
+            'Symfony' => $this->getFolderPath('vendor'),
+            'Heatbeat' => $this->getFolderPath('lib'),
                 )
         );
 
-        $loader->register();
+        return $loader->register();
     }
 
     /**
