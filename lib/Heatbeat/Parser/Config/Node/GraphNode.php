@@ -56,7 +56,7 @@ class GraphNode extends AbstractNode implements NodeInterface {
      *
      * @return string
      */
-    public function getRRDFilename() {
+    public function getUniqueIdentifier() {
         return $this->offsetGet('template') . self::FILENAME_SEPERATOR . $this->getHash();
     }
 
