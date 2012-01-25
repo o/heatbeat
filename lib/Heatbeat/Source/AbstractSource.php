@@ -27,7 +27,8 @@ namespace Heatbeat\Source;
 
 use Heatbeat\Autoloader,
     Heatbeat\InputOutput\SourceInput,
-    Heatbeat\InputOutput\SourceOutput;
+    Heatbeat\InputOutput\SourceOutput,
+    Heatbeat\Helper\PathHelper;
 
 /**
  * Abstract source class for data fetching
@@ -39,11 +40,13 @@ use Heatbeat\Autoloader,
 abstract class AbstractSource {
 
     /**
-     *
+     * 
      * @var SourceInput
      */
     private $input;
+    
     /**
+     * 
      * @var SourceOutput
      */
     private $output;
@@ -84,12 +87,10 @@ abstract class AbstractSource {
         $this->output = $output;
     }
 
-    public function getExternalFolderPath() {
-        return Autoloader::getInstance()->getPath(Autoloader::FOLDER_EXTERNAL);
-    }
-
     /**
      * Performs data source fetch
+     * 
+     * @todo This method will be moved to an external interface
      */
     public function perform() {
         throw new SourceException('You must override the perform() method in the concrete source class.');
