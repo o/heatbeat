@@ -34,7 +34,8 @@ use Symfony\Component\Console\Input\InputArgument,
     Heatbeat\Command\RRDTool\RRDToolCommand as RRDTool,
     Heatbeat\Command\RRDTool\UpdateCommand as RRDUpdate,
     Heatbeat\InputOutput\SourceInput as Input,
-    Heatbeat\Source\SourceException;
+    Heatbeat\Source\SourceException,
+    Heatbeat\Helper\PathHelper;
 
 /**
  * Callback for CLI Tool update command
@@ -59,6 +60,7 @@ class UpdateCommand extends HeatbeatCommand {
      * @param OutputInterface $output
      */
     protected function execute(InputInterface $input, OutputInterface $output) {
+        $pathHelper = new PathHelper();
         foreach ($this->getConfig()->getGraphEntities() as $entity) {
             try {
                 if ($entity->offsetGet('enabled') === false)
@@ -69,9 +71,9 @@ class UpdateCommand extends HeatbeatCommand {
                 }
                 $instance->perform();
                 $commandObject = new RRDUpdate();
-                $commandObject->setFilename($entity->getRRDFilename());
+                $commandObject->setFilename($pathHelper->getRRDFilePath($entity->getUniqueIdentifier()));
                 $commandObject->setValues($instance->getOutput());
-                $this->executeCommand($input, $output, $commandObject, $entity->getRRDFilename() . RRDTool::RRD_EXT);
+                $this->executeCommand($input, $output, $commandObject, $pathHelper->getRRDFilePath($entity->getUniqueIdentifier()));
             } catch (\Exception $e) {
                 $this->logError($e);
                 $this->renderError($e, $output);

@@ -59,7 +59,7 @@ class HeatbeatCommand extends Command {
 
     public function getConfig() {
         $configObject = new Config();
-        $configObject->setFilepath(Autoloader::getInstance()->getPath(Autoloader::FOLDER_ROOT));
+        $configObject->setFilepath(Autoloader::getInstance()->getRootPath());
         $configObject->setFilename(Config::FILENAME);
         $configObject->parse();
         return $configObject;
@@ -67,7 +67,7 @@ class HeatbeatCommand extends Command {
 
     public function getTemplate($name) {
         $templateObject = new Template();
-        $templateObject->setFilepath(Autoloader::getInstance()->getPath(Autoloader::FOLDER_TEMPLATE));
+        $templateObject->setFilepath(Autoloader::getInstance()->getFolderPath('templates'));
         $templateObject->setFilename($name);
         $templateObject->parse();
         return $templateObject;
@@ -95,9 +95,9 @@ class HeatbeatCommand extends Command {
      * @param InputInterface $input
      * @param OutputInterface $output
      * @param AbstractCommand $commandObject
-     * @param string $message
+     * @param string $successMessage
      */
-    public function executeCommand(InputInterface $input, OutputInterface $output, AbstractCommand $commandObject, $message) {
+    public function executeCommand(InputInterface $input, OutputInterface $output, AbstractCommand $commandObject, $successMessage) {
         $commandString = $commandObject->prepare()
                 ->getCommandString();
 
@@ -110,7 +110,7 @@ class HeatbeatCommand extends Command {
                 ->run();
 
         if ($executor->isSuccess()) {
-            $this->renderSuccess($message, $output);
+            $this->renderSuccess($successMessage, $output);
         } else {
             $this->renderError($executor->getErrorOutput(), $output);
         }

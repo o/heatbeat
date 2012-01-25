@@ -33,7 +33,8 @@ use Symfony\Component\Console\Input\InputArgument,
     Heatbeat\Autoloader,
     Heatbeat\Command\RRDTool\RRDToolCommand as RRDTool,
     Heatbeat\Command\RRDTool\GraphCommand as RRDGraph,
-    Heatbeat\Source\SourceException;
+    Heatbeat\Source\SourceException,
+    Heatbeat\Helper\PathHelper;
 
 /**
  * Callback for CLI Tool graph command
@@ -57,6 +58,7 @@ class GraphCommand extends HeatbeatCommand {
      * @param OutputInterface $output
      */
     protected function execute(InputInterface $input, OutputInterface $output) {
+        $pathHelper = new PathHelper();
         foreach ($this->getConfig()->getGraphEntities() as $entity) {
             try {
                 if ($entity->offsetGet('enabled') === false)
@@ -64,14 +66,14 @@ class GraphCommand extends HeatbeatCommand {
                 $template = $this->getTemplate($entity->offsetGet('template'));
                 for ($index = 0; $index < $template->getGraphEntityCount(); $index++) {
                     $commandObject = new RRDGraph();
-                    $commandObject->setGraphFilename($entity->getRRDFilename() . $index);
+                    $commandObject->setGraphFilename($pathHelper->getGraphFilePath($entity->getUniqueIdentifier() . $index));
                     $commandObject->setTitle($template->getGraphOptions($index)->offsetGet('name'));
                     $commandObject->setVerticalLabel($template->getGraphOptions($index)->offsetGet('label'));
                     $commandObject->setBase($template->getGraphOptions($index)->offsetGet('base'));
                     $commandObject->setUpperlimit($template->getGraphOptions($index)->offsetGet('upper'));
                     $commandObject->setLowerlimit($template->getGraphOptions($index)->offsetGet('lower'));
                     $commandObject->setStart($template->getGraphOptions($index)->offsetGet('start'));
-                    $commandObject->setDefs($template->getGraphDefs($index, $entity->getRRDFilename()));
+                    $commandObject->setDefs($template->getGraphDefs($index, $pathHelper->getRRDFilePath($entity->getUniqueIdentifier())));
                     $commandObject->setItems($template->getGraphItems($index));
                     if ($template->getGraphGprints($index))
                         $commandObject->setGprints($template->getGraphGprints($index));
@@ -79,7 +81,7 @@ class GraphCommand extends HeatbeatCommand {
                         $commandObject->setCdefs($template->getGraphCdefs($index));
                     if ($template->getGraphVdefs($index))
                         $commandObject->setVdefs($template->getGraphVdefs($index));
-                    $this->executeCommand($input, $output, $commandObject, $entity->getRRDFilename() . $index . RRDTool::PNG_EXT);
+                    $this->executeCommand($input, $output, $commandObject, $pathHelper->getGraphFilePath($entity->getUniqueIdentifier() . $index));
                 }
             } catch (\Exception $e) {
                 $this->logError($e);
