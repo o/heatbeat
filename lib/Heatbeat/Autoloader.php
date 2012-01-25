@@ -123,19 +123,9 @@ class Autoloader {
                     $logger = new \Heatbeat\Log\Logger();
                     $logger->setMessage($e->getMessage())
                             ->log();
-                    
+
                     fwrite(STDERR, 'An error occured, please check your log files!.');
                 });
-    }
-
-    /**
-     * Returns full path of given path identifier
-     *
-     * @param string $path
-     * @return string
-     */
-    public function getPath($path) {
-        return $this->paths[$path];
     }
 
 }
