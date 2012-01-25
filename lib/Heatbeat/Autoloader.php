@@ -67,6 +67,16 @@ class Autoloader {
         $this->setErrorExceptionHandling();
     }
 
+    public function setRootPath() {
+        $this->rootPath = realpath(dirname(__FILE__) . '/../../');
+    }
+
+    public function getRootPath() {
+        return $this->rootPath;
+    }
+
+    public function getFolderPath($folder) {
+        return $this->rootPath . DIRECTORY_SEPARATOR . $folder;
     }
 
     /**
