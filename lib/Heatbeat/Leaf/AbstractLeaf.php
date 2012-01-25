@@ -67,4 +67,17 @@ abstract class AbstractLeaf {
         return true;
     }
 
+    /**
+     * Returns value of key, when key not found returns false
+     * 
+     * @param type $key
+     * @return boolean|mixed
+     */
+    public function getValue($key) {
+        if (array_key_exists($key, $this->values)) {
+            return $this->values[$key];
+        }
+        return false;
+    }
+
 }
