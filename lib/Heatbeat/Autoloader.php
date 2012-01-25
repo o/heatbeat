@@ -67,21 +67,6 @@ class Autoloader {
         $this->setErrorExceptionHandling();
     }
 
-    /**
-     * Sets necessary path for using all around Heatbeat
-     */
-    private function setPaths() {
-        $rootPath = realpath(dirname(__DIR__) . DIRECTORY_SEPARATOR . '..');
-        $this->paths = array(
-            'root' => $rootPath,
-            'lib' => $rootPath . DIRECTORY_SEPARATOR . self::FOLDER_LIBRARY,
-            'templates' => $rootPath . DIRECTORY_SEPARATOR . self::FOLDER_TEMPLATE,
-            'external' => $rootPath . DIRECTORY_SEPARATOR . self::FOLDER_EXTERNAL,
-            'rrd' => $rootPath . DIRECTORY_SEPARATOR . self::FOLDER_RRD,
-            'vendor' => $rootPath . DIRECTORY_SEPARATOR . self::FOLDER_VENDOR,
-            'logs' => $rootPath . DIRECTORY_SEPARATOR . self::FOLDER_LOG,
-            'graphs' => $rootPath . DIRECTORY_SEPARATOR . self::FOLDER_GRAPH
-        );
     }
 
     /**
