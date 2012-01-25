@@ -162,7 +162,7 @@ class TemplateParser extends AbstractParser {
         if ($values->offsetExists('defs')) {
             return array_map(function($def, $filename) {
                         $object = new Def($def);
-                        $object->offsetSet('filename', RRDTool::getRRDFilePath($filename));
+                        $object->offsetSet('filename', $filename);
                         $object->validate();
                         return $object;
                     }, $values->offsetGet('defs'), array_fill(0, count($values->offsetGet('defs')), $filename));

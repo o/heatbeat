@@ -60,7 +60,7 @@ class GraphCommand extends RRDToolCommand {
      * @param string $graphFilename
      */
     public function setGraphFilename($graphFilename) {
-        $this->addArgument(self::getGraphFilePath($graphFilename));
+        $this->addArgument($graphFilename);
     }
 
     /**
