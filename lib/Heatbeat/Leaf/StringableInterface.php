@@ -26,18 +26,18 @@
 namespace Heatbeat\Leaf;
 
 /**
- * Interface for leafs of nodes
+ * Interface for stringable leafs
  *
  * @category    Heatbeat
  * @package     Heatbeat\Leaf
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-interface LeafInterface {
+interface StringableInterface {
 
     /**
-     * Returns validation rules of leaf
+     * Returns string represantation of leaf
      * 
-     * @return Symfony\Component\Validator\Constraints\Collection 
+     * @return string
      */
-    public function getValidationRules();
+    public function getAsString();
 }
