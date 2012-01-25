@@ -25,18 +25,18 @@
 
 namespace Heatbeat\Log;
 
-use Heatbeat\Autoloader;
+use Heatbeat\Helper\PathHelper;
 
 /**
- * Class for logging Heatbeat events
+ * Class for logging Heatbeat events/errors
  *
  * @category    Heatbeat
  * @package     Heatbeat\Log
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
 class Logger {
+
     const FILENAME_FORMAT = '%Y-%m-%d';
-    const FILENAME_EXT = '.log';
 
     /**
      *
@@ -54,17 +54,16 @@ class Logger {
         return $this;
     }
 
-    public function getLogFolder() {
-        return Autoloader::getInstance()->getPath(Autoloader::FOLDER_LOG);
-    }
-
-    public function getLogFilename() {
-        return $this->getLogFolder() . DIRECTORY_SEPARATOR . strftime(self::FILENAME_FORMAT) . self::FILENAME_EXT;
-    }
-
+    /**
+     * Logs given message to rotating log file
+     * 
+     * @return int
+     * @throws LoggingException 
+     */
     public function log() {
-        if (is_writable($this->getLogFolder())) {
-            return file_put_contents($this->getLogFilename(), sprintf("%s \t %s \r\n", time(), $this->message), FILE_APPEND | LOCK_EX);
+        $pathHelper = new PathHelper();
+        if (is_writable($pathHelper->getFolderPath('logs'))) {
+            return file_put_contents($pathHelper->getLogFilePath(strftime(self::FILENAME_FORMAT)), sprintf("%s \t %s \r\n", time(), $this->message), FILE_APPEND | LOCK_EX);
         }
         throw new LoggingException('Unable to log message. Please check your log directory is writable.');
     }
