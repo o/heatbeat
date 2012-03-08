@@ -36,7 +36,8 @@ use Symfony\Component\Console\Input\InputArgument,
     Heatbeat\Parser\Config\ConfigParser as Config,
     Heatbeat\Command\AbstractCommand,
     Heatbeat\Log\Logger as Logger,
-    Heatbeat\Exception\SourceException;
+    Heatbeat\Exception\SourceException,
+    Heatbeat\Utility\PathUtility;
 
 /**
  * Shared methods for commands
@@ -48,6 +49,7 @@ use Symfony\Component\Console\Input\InputArgument,
 class HeatbeatCommand extends Command {
 
     private $processStartTime;
+    protected $pathUtility;
 
     /**
      * Initializes template and command object
@@ -55,11 +57,12 @@ class HeatbeatCommand extends Command {
      */
     protected function initialize(InputInterface $input, OutputInterface $output) {
         $this->setProcessStartTime();
+        $this->pathUtility = new PathUtility();
     }
 
     public function getConfig() {
         $configObject = new Config();
-        $configObject->setFilepath(Autoloader::getInstance()->getRootPath());
+        $configObject->setFilepath($this->pathUtility->getRootPath());
         $configObject->setFilename(Config::FILENAME);
         $configObject->parse();
         return $configObject;
@@ -67,7 +70,7 @@ class HeatbeatCommand extends Command {
 
     public function getTemplate($name) {
         $templateObject = new Template();
-        $templateObject->setFilepath(Autoloader::getInstance()->getFolderPath('templates'));
+        $templateObject->setFilepath($this->pathUtility->getFolderPath('templates'));
         $templateObject->setFilename($name);
         $templateObject->parse();
         return $templateObject;

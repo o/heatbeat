@@ -36,8 +36,7 @@ use Symfony\Component\Console\Input\InputArgument,
     Heatbeat\Command\RRDTool\RRDToolCommand as RRDTool,
     Heatbeat\Command\RRDTool\CreateCommand as RRDCreate,
     Heatbeat\Executor\Executor,
-    Heatbeat\Exception\SourceException,
-    Heatbeat\Utility\PathUtility;
+    Heatbeat\Exception\SourceException;
 
 /**
  * Callback for CLI Tool create command
@@ -62,19 +61,18 @@ class CreateCommand extends HeatbeatCommand {
      * @param OutputInterface $output
      */
     protected function execute(InputInterface $input, OutputInterface $output) {
-        $pathHelper = new PathUtility();
         foreach ($this->getConfig()->getGraphEntities() as $entity) {
             try {
                 if ($entity->offsetGet('enabled') === false)
                     continue;
                 $template = $this->getTemplate($entity->offsetGet('template'));
                 $commandObject = new RRDCreate();
-                $commandObject->setFilename($pathHelper->getRRDFilePath($entity->getUniqueIdentifier()));
+                $commandObject->setFilename($this->pathUtility->getRRDFilePath($entity->getUniqueIdentifier()));
                 $commandObject->setOverwrite($input->getOption('overwrite'));
                 $commandObject->setStep($template->getTemplateOptions()->offsetGet('step'));
                 $commandObject->setDatastores($template->getDatastores());
                 $commandObject->setRras($template->getRras());
-                $this->executeCommand($input, $output, $commandObject, $pathHelper->getRRDFilePath($entity->getUniqueIdentifier()));
+                $this->executeCommand($input, $output, $commandObject, $this->pathUtility->getRRDFilePath($entity->getUniqueIdentifier()));
             } catch (\Exception $e) {
                 $this->logError($e);
                 $this->renderError($e, $output);

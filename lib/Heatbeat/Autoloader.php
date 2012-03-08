@@ -32,7 +32,8 @@ namespace Heatbeat;
  * @package     Heatbeat
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-use Symfony\Component\ClassLoader\UniversalClassLoader;
+use Symfony\Component\ClassLoader\UniversalClassLoader,
+    Heatbeat\Utility\PathUtility;
 
 class Autoloader {
 
@@ -41,12 +42,6 @@ class Autoloader {
      * @var Autoloader
      */
     private static $instance;
-
-    /**
-     *
-     * @var string 
-     */
-    private $rootPath;
 
     /**
      * Returns instance of autoloader
@@ -61,21 +56,8 @@ class Autoloader {
     }
 
     private function __construct() {
-        $this->setRootPath();
         $this->register();
         $this->setErrorExceptionHandling();
-    }
-
-    public function setRootPath() {
-        $this->rootPath = realpath(dirname(__FILE__) . '/../../');
-    }
-
-    public function getRootPath() {
-        return $this->rootPath;
-    }
-
-    public function getFolderPath($folder) {
-        return $this->rootPath . DIRECTORY_SEPARATOR . $folder;
     }
 
     /**
@@ -84,11 +66,15 @@ class Autoloader {
      * @return bool 
      */
     private function register() {
-        require_once $this->getFolderPath('vendor') . '/Symfony/Component/ClassLoader/UniversalClassLoader.php';
+        require_once 'Utility/PathUtility.php';
+        $pathUtility = new Utility\PathUtility();
+
+        require_once $pathUtility->getFolderPath('vendor') . '/Symfony/Component/ClassLoader/UniversalClassLoader.php';
         $loader = new UniversalClassLoader();
+
         $loader->registerNamespaces(array(
-            'Symfony' => $this->getFolderPath('vendor'),
-            'Heatbeat' => $this->getFolderPath('lib'),
+            'Symfony' => $pathUtility->getFolderPath('vendor'),
+            'Heatbeat' => $pathUtility->getFolderPath('lib'),
                 )
         );
 

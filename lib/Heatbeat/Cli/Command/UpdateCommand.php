@@ -60,7 +60,7 @@ class UpdateCommand extends HeatbeatCommand {
      * @param OutputInterface $output
      */
     protected function execute(InputInterface $input, OutputInterface $output) {
-        $pathHelper = new PathUtility();
+        $this->pathUtility = new PathUtility();
         foreach ($this->getConfig()->getGraphEntities() as $entity) {
             try {
                 if ($entity->offsetGet('enabled') === false)
@@ -71,9 +71,9 @@ class UpdateCommand extends HeatbeatCommand {
                 }
                 $instance->perform();
                 $commandObject = new RRDUpdate();
-                $commandObject->setFilename($pathHelper->getRRDFilePath($entity->getUniqueIdentifier()));
+                $commandObject->setFilename($this->pathUtility->getRRDFilePath($entity->getUniqueIdentifier()));
                 $commandObject->setValues($instance->getOutput());
-                $this->executeCommand($input, $output, $commandObject, $pathHelper->getRRDFilePath($entity->getUniqueIdentifier()));
+                $this->executeCommand($input, $output, $commandObject, $this->pathUtility->getRRDFilePath($entity->getUniqueIdentifier()));
             } catch (\Exception $e) {
                 $this->logError($e);
                 $this->renderError($e, $output);
