@@ -37,7 +37,7 @@ use Symfony\Component\Console\Input\InputArgument,
     Heatbeat\Command\RRDTool\CreateCommand as RRDCreate,
     Heatbeat\Executor\Executor,
     Heatbeat\Exception\SourceException,
-    Heatbeat\Helper\PathHelper;
+    Heatbeat\Utility\PathUtility;
 
 /**
  * Callback for CLI Tool create command
@@ -62,7 +62,7 @@ class CreateCommand extends HeatbeatCommand {
      * @param OutputInterface $output
      */
     protected function execute(InputInterface $input, OutputInterface $output) {
-        $pathHelper = new PathHelper();
+        $pathHelper = new PathUtility();
         foreach ($this->getConfig()->getGraphEntities() as $entity) {
             try {
                 if ($entity->offsetGet('enabled') === false)

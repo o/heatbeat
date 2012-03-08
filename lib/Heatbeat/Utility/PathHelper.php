@@ -16,23 +16,23 @@
  * limitations under the License. 
  *
  * @category    Heatbeat
- * @package     Heatbeat\Helper
+ * @package     Heatbeat\Utility
  * @author      Osman Ungur <osmanungur@gmail.com>
  * @copyright   2011 Osman Ungur
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  * @link        http://github.com/import/heatbeat
  */
 
-namespace Heatbeat\Helper;
+namespace Heatbeat\Utility;
 
 /**
  * Helper methods for common file paths
  *
  * @category    Heatbeat
- * @package     Heatbeat\Command\RRDTool
+ * @package     Heatbeat\Utility
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-class PathHelper {
+class PathUtility {
 
     /**
      *

@@ -32,8 +32,7 @@ namespace Heatbeat;
  * @package     Heatbeat
  * @author      Osman Ungur <osmanungur@gmail.com>
  */
-use Symfony\Component\ClassLoader\UniversalClassLoader,
-    Heatbeat\Helper\PathHelper;
+use Symfony\Component\ClassLoader\UniversalClassLoader;
 
 class Autoloader {
 

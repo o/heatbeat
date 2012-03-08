@@ -25,7 +25,7 @@
 
 namespace Heatbeat\Log;
 
-use Heatbeat\Helper\PathHelper;
+use Heatbeat\Utility\PathUtility;
 
 /**
  * Class for logging Heatbeat events/errors
@@ -61,7 +61,7 @@ class Logger {
      * @throws LoggingException 
      */
     public function log() {
-        $pathHelper = new PathHelper();
+        $pathHelper = new PathUtility();
         if (is_writable($pathHelper->getFolderPath('logs'))) {
             return file_put_contents($pathHelper->getLogFilePath(strftime(self::FILENAME_FORMAT)), sprintf("%s \t %s \r\n", time(), $this->message), FILE_APPEND | LOCK_EX);
         }

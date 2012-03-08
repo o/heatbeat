@@ -35,7 +35,7 @@ use Symfony\Component\Console\Input\InputArgument,
     Heatbeat\Command\RRDTool\UpdateCommand as RRDUpdate,
     Heatbeat\InputOutput\SourceInput as Input,
     Heatbeat\Source\SourceException,
-    Heatbeat\Helper\PathHelper;
+    Heatbeat\Utility\PathUtility;
 
 /**
  * Callback for CLI Tool update command
@@ -60,7 +60,7 @@ class UpdateCommand extends HeatbeatCommand {
      * @param OutputInterface $output
      */
     protected function execute(InputInterface $input, OutputInterface $output) {
-        $pathHelper = new PathHelper();
+        $pathHelper = new PathUtility();
         foreach ($this->getConfig()->getGraphEntities() as $entity) {
             try {
                 if ($entity->offsetGet('enabled') === false)
