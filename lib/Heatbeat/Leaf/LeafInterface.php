@@ -35,6 +35,15 @@ namespace Heatbeat\Leaf;
 interface LeafInterface {
 
     /**
+     * Seperator that used in concenating values in RRDTool arguments
+     */
+    const SEPERATOR = ':';
+
+    const EQUAL = '=';
+
+    const ALNUM = '/^([a-zA-Z0-9_])*$/';
+
+    /**
      * Returns validation rules of leaf
      * 
      * @return Symfony\Component\Validator\Constraints\Collection 
