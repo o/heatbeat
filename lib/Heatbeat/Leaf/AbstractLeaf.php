@@ -18,7 +18,7 @@
  * @category    Heatbeat
  * @package     Heatbeat\Leaf
  * @author      Osman Ungur <osmanungur@gmail.com>
- * @copyright   2011 Osman Ungur
+ * @copyright   2012 Osman Ungur
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  * @link        http://github.com/import/heatbeat
  */
@@ -42,7 +42,7 @@ abstract class AbstractLeaf {
     private $values;
 
     function __construct(array $values) {
-        $this->values = $values;
+        $this->values = array_merge($this->getDefaultValues(), $values);
     }
 
     /**
@@ -77,7 +77,28 @@ abstract class AbstractLeaf {
         if (array_key_exists($key, $this->values)) {
             return $this->values[$key];
         }
-        return false;
+        throw new \UnexpectedValueException(sprintf('Provided field %s was not found', $key));
+    }
+
+    /**
+     * Returns default values for leaf
+     * @return array
+     */
+    public function getDefaultValues() {
+        return array();
+    }
+
+    /**
+     * Returns valid datastore types
+     * @return array
+     */
+    public function getValidDatastoreTypes() {
+        return array(
+            'GAUGE',
+            'COUNTER',
+            'DERIVE',
+            'ABSOLUTE'
+        );
     }
 
 }
