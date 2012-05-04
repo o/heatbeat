@@ -19,7 +19,7 @@
  * @category    Heatbeat
  * @package     Heatbeat\Leaf
  * @author      Osman Ungur <osmanungur@gmail.com>
- * @copyright   2011 Osman Ungur
+ * @copyright   2012 Osman Ungur
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  * @link        http://github.com/import/heatbeat
  */
